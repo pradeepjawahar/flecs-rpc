@@ -1,10 +1,16 @@
 CONFIGURE_FILE (config.client ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 
+
 ADD_CUSTOM_COMMAND (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/../flecs.h ${CMAKE_CURRENT_BINARY_DIR}/../flecs.cpp
 		COMMAND slice2cpp --output-dir=${CMAKE_CURRENT_BINARY_DIR}/.. ${CMAKE_CURRENT_SOURCE_DIR}/../flecs.ice
 		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../flecs.ice )
 
-INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR}/.. )
 
-ADD_EXECUTABLE ( client client.cpp ${CMAKE_CURRENT_BINARY_DIR}/../flecs.cpp )
+INCLUDE_DIRECTORIES( ../common ${CMAKE_CURRENT_BINARY_DIR}/.. )
+
+ADD_EXECUTABLE ( client
+		${CMAKE_CURRENT_BINARY_DIR}/../flecs.cpp
+		../common/util.cpp
+		client.cpp )
+
 TARGET_LINK_LIBRARIES (client Ice IceUtil)

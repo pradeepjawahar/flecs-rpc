@@ -12,19 +12,21 @@
 
 module FleCS
 {
+	sequence<byte> ByteSeq;
 
-interface C2S
-{
-    void sayHello();
-    int add(int a, int b);
-    void shutdown();
-};
+	interface C2S
+	{
+		// TODO: Add version as a parameter. A simple scalar value will do? or vector?
+
+		void Get(string objID, out ByteSeq content);
+		void Put(string objID, ByteSeq content);
+	};
 
 
-interface S2S
-{
-    int add(int a, int b, int c);
-};
+	interface S2S
+	{
+		int add(int a, int b, int c);
+	};
 
 
 };

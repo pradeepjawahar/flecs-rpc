@@ -1,16 +1,18 @@
-CONFIGURE_FILE (config.client ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
+INCLUDE_DIRECTORIES( ../common ${CMAKE_CURRENT_BINARY_DIR}/../interface )
 
-
-ADD_CUSTOM_COMMAND (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/../flecs.h ${CMAKE_CURRENT_BINARY_DIR}/../flecs.cpp
-		COMMAND slice2cpp --output-dir=${CMAKE_CURRENT_BINARY_DIR}/.. ${CMAKE_CURRENT_SOURCE_DIR}/../flecs.ice
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../flecs.ice )
-
-
-INCLUDE_DIRECTORIES( ../common ${CMAKE_CURRENT_BINARY_DIR}/.. )
+SET_SOURCE_FILES_PROPERTIES(
+		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.h
+		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
+		PROPERTIES GENERATED 1)
 
 ADD_EXECUTABLE ( client
-		${CMAKE_CURRENT_BINARY_DIR}/../flecs.cpp
+		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		../common/util.cpp
 		client.cpp )
 
 TARGET_LINK_LIBRARIES (client Ice IceUtil)
+
+ADD_DEPENDENCIES ( client gen_rpc_interface )
+
+
+CONFIGURE_FILE (config.client ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)

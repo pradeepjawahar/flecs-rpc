@@ -15,6 +15,11 @@ public:
 			const std::string& objID,
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);
+
+    virtual void Append(
+			const std::string& objID,
+			const FleCS::ByteSeq& content,
+			const Ice::Current&);
 };
 
 

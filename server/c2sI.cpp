@@ -16,7 +16,7 @@ void C2SI::Get(
 {
 	cout << "Get(" << objID << ")\n";
 
-	_readfile((string(FleCS::Server::root_dir) + "/" + objID).c_str(), content);
+	_readfile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
 }
 
 
@@ -27,5 +27,16 @@ void C2SI::Put(
 {
 	cout << "Put(" << objID << ")\n";
 
-	_writefile((string(FleCS::Server::root_dir) + "/" + objID).c_str(), content);
+	_writefile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
+}
+
+
+void C2SI::Append(
+		const std::string& objID,
+		const FleCS::ByteSeq& content,
+		const Ice::Current&)
+{
+	cout << "Append(" << objID << ")\n";
+
+	_appendfile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
 }

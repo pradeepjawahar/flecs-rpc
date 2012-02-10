@@ -5,7 +5,10 @@ IF (NOT Boost_FOUND)
 ENDIF()
 
 
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIRS} ../common ${CMAKE_CURRENT_BINARY_DIR}/../interface )
+INCLUDE_DIRECTORIES(
+		${Boost_INCLUDE_DIRS}
+		../common
+		${CMAKE_CURRENT_BINARY_DIR}/../interface )
 
 SET_SOURCE_FILES_PROPERTIES(
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.h

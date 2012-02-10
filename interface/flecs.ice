@@ -12,6 +12,7 @@ module FleCS
 
 		void Get(string objID, out ByteSeq content);
 		void Put(string objID, ByteSeq content);
+		void Append(string objID, ByteSeq content);
 	};
 
 

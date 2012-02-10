@@ -5,7 +5,7 @@ namespace FleCS
 {
 	namespace Server
 	{
-		extern const char* root_dir;
+		extern const char* stg_root_dir;
 	};
 };
 

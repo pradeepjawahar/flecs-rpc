@@ -18,10 +18,8 @@ module FleCS
 
 	interface S2S
 	{
-		int add(int a, int b, int c);
+		void Append(string objID, ByteSeq content);
 	};
-
-
 };
 
 #endif

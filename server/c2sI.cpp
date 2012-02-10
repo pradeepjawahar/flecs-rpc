@@ -8,13 +8,12 @@
 using namespace std;
 
 
-
 void C2SI::Get(
 		const std::string& objID,
 		FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "Get(" << objID << ")\n";
+	cout << "C2S::Get(" << objID << ")\n";
 
 	_readfile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
 }
@@ -25,7 +24,7 @@ void C2SI::Put(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "Put(" << objID << ")\n";
+	cout << "C2S::Put(" << objID << ")\n";
 
 	_writefile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
 }
@@ -36,7 +35,7 @@ void C2SI::Append(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "Append(" << objID << ")\n";
+	cout << "C2S::Append(" << objID << ")\n";
 
 	_appendfile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
 }

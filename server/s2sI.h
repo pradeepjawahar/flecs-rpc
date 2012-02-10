@@ -16,7 +16,10 @@
 class S2SI : public FleCS::S2S
 {
 public:
-	virtual int add(int a, int b, int c, const Ice::Current&);
+	virtual void Append(
+			const std::string& objID,
+			const FleCS::ByteSeq& content,
+			const Ice::Current&);
 };
 
 

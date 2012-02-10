@@ -201,6 +201,7 @@ void FleCSClient::_AppendRandom(const string& filename)
 		content.insert(content.end(), sseqno, sseqno + 6);
 		content.push_back(' ');
 	}
+	content.push_back('\n');
 
 	_c2s_prx->Append(filename, content);
 }

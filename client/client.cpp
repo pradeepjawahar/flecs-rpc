@@ -5,7 +5,11 @@
 #include <string>
 #include <vector>
 
+#include <boost/tokenizer.hpp>
+#include <boost/filesystem.hpp>
+
 using namespace std;
+using namespace boost;
 using namespace FleCS;
 
 #include "util.h"
@@ -112,7 +116,20 @@ void FleCSClient::_load_filelist()
 
 		if (! file.eof())
 		{
-			_filelist.push_back(line);
+			typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+			boost::char_separator<char> sep(" ");
+			tokenizer tokens(line, sep);
+
+			string filename;
+
+			int j = 0;
+			for (tokenizer::iterator i = tokens.begin(); i != tokens.end(); ++ i, ++ j)
+			{
+				if (j == 1)
+					filename = *i;
+			}
+
+			_filelist.push_back(filename);
 		}
 	}
 

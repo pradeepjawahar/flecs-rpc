@@ -20,18 +20,19 @@ void _create_parent_directories(const char* filename);
 void _create_directories(const string& dir);
 
 
+const char* FILELIST = "../../filelist-size";
+const string OUTPUT_DIR = "/usr/local/flecs/no-cnst";
+
 vector<pair<string, int> > name_size_list;
 
 
 void read_file_name_size()
 {
-	const char* filename = "/home/hobin/work/flecs-rpc/data/filelist-size";
-
-	ifstream file(filename, ios::in);
+	ifstream file(FILELIST, ios::in);
 
 	if (! file.is_open())
 	{
-		cerr << "Unable to open file " << filename << "\n";
+		cerr << "Unable to open file " << FILELIST << "\n";
 		exit(EXIT_FAILURE);
 	}
 
@@ -75,7 +76,7 @@ void create_files()
 	{
 		// cout << i->first << " " << i->second << "\n";
 
-		string filename = i->first;
+		string filename = OUTPUT_DIR + "/" + i->first;
 		int filesize = i->second;
 
 		_create_parent_directories(filename.c_str());
@@ -101,6 +102,10 @@ void create_files()
 			}
 		}
 	}
+
+	// copy file list
+	using namespace boost::filesystem;
+	copy_file(FILELIST, OUTPUT_DIR + "/../no-cnst-filelist", copy_option::overwrite_if_exists);
 }
 
 
@@ -135,24 +140,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
-
-
-//void _writefile(
-//		const char* filename,
-//		const vector<unsigned char>& content)
-//{
-//	_create_parent_directories(filename);
-//
-//	ofstream outfile(filename, ios::out | ios::binary);
-//
-//	if (outfile.fail())
-//	{
-//		cerr << "Unable to open file " << filename << "\n";
-//		exit(EXIT_FAILURE);
-//	}
-//
-//	outfile.write(reinterpret_cast<const char*>(&content[0]), content.size());
-//}

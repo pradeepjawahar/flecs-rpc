@@ -8,11 +8,13 @@
 #include <boost/tokenizer.hpp>
 #include <boost/filesystem.hpp>
 
+#include "util.h"
+
+
 using namespace std;
 using namespace boost;
 using namespace FleCS;
 
-#include "util.h"
 
 class FleCSClient : public Ice::Application
 {
@@ -30,7 +32,6 @@ private:
 	void _AppendRandom(const string& filename);
 
 	C2SPrx _c2s_prx;
-	S2SPrx _s2s_prx;
 
 	vector<string> _filelist;
 
@@ -78,18 +79,6 @@ void FleCSClient::_init_rpc_proxy()
 			->ice_timeout(-1)
 			->ice_secure(false));
 	if(!_c2s_prx)
-	{
-		cerr << "invalid proxy" << endl;
-		exit(EXIT_FAILURE);
-	}
-
-	_s2s_prx = S2SPrx::checkedCast(
-			communicator()
-			->propertyToProxy("FleCS_s2s.Proxy")
-			->ice_twoway()
-			->ice_timeout(-1)
-			->ice_secure(false));
-	if(!_s2s_prx)
 	{
 		cerr << "invalid proxy" << endl;
 		exit(EXIT_FAILURE);
@@ -149,12 +138,12 @@ void FleCSClient::_Put(const char* obj_name)
 
 void FleCSClient::_Get(const char* obj_name)
 {
+	cout << __FILE__ << ":" << __LINE__ << " " << obj_name << "\n";
+
 	ByteSeq content;
 	_c2s_prx->Get(obj_name, content);
 
 	_writefile(obj_name, content);
-
-	cout << __FILE__ << ":" << __LINE__ << " " << obj_name << " " << content.size() << "\n";
 }
 
 
@@ -197,6 +186,8 @@ void FleCSClient::_RandomReadsAppends(
 
 void FleCSClient::_AppendRandom(const string& filename)
 {
+	cout << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ << " " << filename << "\n";
+
 	// TODO: parameterize.
 	const long MIN = 10;
 	const long MAX = 100;

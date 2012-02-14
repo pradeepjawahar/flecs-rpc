@@ -6,6 +6,9 @@
 #Hello.Endpoints=tcp -p 10000:udp -p 10000:ssl -p 10001
 FleCS.Endpoints=tcp -p 10000:udp -p 10000
 
+# s2s client proxy
+FleCS_s2s.Proxy=s2s:tcp -h meego -p 10000
+
 #
 # Warn about connection exceptions
 #

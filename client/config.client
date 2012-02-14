@@ -3,8 +3,7 @@
 # "hello" object in the server.
 #
 #Hello.Proxy=hello:tcp -p 10000:udp -p 10000:ssl -p 10001
-FleCS_c2s.Proxy=c2s:tcp -p 10000:udp -p 10000
-FleCS_s2s.Proxy=s2s:tcp -p 10000:udp -p 10000
+FleCS_c2s.Proxy=c2s:tcp -p 10000
 
 #
 # Warn about connection exceptions

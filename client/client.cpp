@@ -24,7 +24,7 @@ public:
     virtual int run(int, char*[]);
 
 private:
-	void _init_rpc_proxy();
+	void _init();
 	void _load_filelist();
 	void _Put(const char* obj_name);
 	void _Get(const char* obj_name);
@@ -54,7 +54,7 @@ int FleCSClient::run(int argc, char* argv[])
 {
 	try
 	{
-		_init_rpc_proxy();
+		_init();
 
 		_load_filelist();
 
@@ -70,8 +70,9 @@ int FleCSClient::run(int argc, char* argv[])
 }
 
 
-void FleCSClient::_init_rpc_proxy()
+void FleCSClient::_init()
 {
+	// init RPC proxy
 	_c2s_prx = C2SPrx::checkedCast(
 			communicator()
 			->propertyToProxy("FleCS_c2s.Proxy")
@@ -83,6 +84,9 @@ void FleCSClient::_init_rpc_proxy()
 		cerr << "invalid proxy" << endl;
 		exit(EXIT_FAILURE);
 	}
+
+	// init other stuff
+	srandom(time(NULL));
 }
 
 

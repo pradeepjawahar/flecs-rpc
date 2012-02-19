@@ -37,7 +37,7 @@ void MasterI::ServerReady(
 		const string& endpoint_,
 		const Ice::Current& cur)
 {
-	cout << __FUNCTION__ << " " << endpoint_ << "\n";
+	cout << __PRETTY_FUNCTION__ << "(" << endpoint_ << ")\n";
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
 	Ice::TCPConnectionInfoPtr tcpInfo = Ice::TCPConnectionInfoPtr::dynamicCast(info);
@@ -65,11 +65,16 @@ void MasterI::ServerReady(
 	_servers[endpoint] = _new_proxy(cur, endpoint);
 
 	// notify all other servers.
+	cout << "  ";
 	for (map<string, FleCS::Server1Prx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 	{
-//		if (i->first == endpoint)
-//			continue;
+		cout << i->first << " ";
+
+		if (i->first == endpoint)
+			continue;
 		
 		(*(i->second))->ServerAdded(endpoint);
 	}
+
+	cout << "\n";
 }

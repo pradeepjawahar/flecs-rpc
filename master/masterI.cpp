@@ -67,16 +67,13 @@ void MasterI::ServerJoin(
 	_servers[endpoint] = _new_proxy(cur, endpoint);
 
 	// notify all other servers.
-	cout << "  ";
 	for (map<string, FleCS::Server1Prx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 	{
-		cout << i->first << " ";
+		cout << "  " << i->first << "\n";
 
 		if (i->first == endpoint)
 			continue;
 		
 		(*(i->second))->ServerJoined(endpoint);
 	}
-
-	cout << "\n";
 }

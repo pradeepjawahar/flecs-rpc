@@ -6,7 +6,7 @@
 #Hello.Endpoints=tcp -p 10000:udp -p 10000:ssl -p 10001
 FleCS.Endpoints=tcp -p 10000
 
-FleCS_master.Proxy=master:tcp -p 10001
+FleCS_master.Proxy=master:tcp -h polynesia1.cc.gatech.edu -p 10001
 
 #
 # Warn about connection exceptions

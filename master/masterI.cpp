@@ -8,7 +8,7 @@ using namespace std;
 #define cout_debug cout << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << "\n"
 
 
-FleCS::Server1Prx* _new_proxy(
+static FleCS::Server1Prx* _new_proxy(
 		const Ice::Current& cur,
 		const string& endpoint)
 {
@@ -33,10 +33,12 @@ FleCS::Server1Prx* _new_proxy(
 
 
 // endpoint example: "Server:tcp -h meego -p 10000"
-void MasterI::ServerReady(
+void MasterI::ServerJoin(
 		const string& endpoint_,
 		const Ice::Current& cur)
 {
+	IceUtil::Mutex::Lock lock(_lock);
+
 	cout << __PRETTY_FUNCTION__ << "(" << endpoint_ << ")\n";
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
@@ -73,7 +75,7 @@ void MasterI::ServerReady(
 		if (i->first == endpoint)
 			continue;
 		
-		(*(i->second))->ServerAdded(endpoint);
+		(*(i->second))->ServerJoined(endpoint);
 	}
 
 	cout << "\n";

@@ -3,7 +3,7 @@
 
 #include "flecs.h"
 
-class Imp_c2s : public FleCS::C2S
+class C2SI : public FleCS::C2S
 {
 public:
     virtual void Get(

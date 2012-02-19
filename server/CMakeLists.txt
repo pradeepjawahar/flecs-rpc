@@ -11,7 +11,7 @@ SET_SOURCE_FILES_PROPERTIES(
 ADD_EXECUTABLE ( server
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		../common/util.cpp
-		main.cpp server-common.cpp c2sI.cpp s2sI.cpp )
+		main.cpp server-common.cpp c2sI.cpp serverI.cpp )
 
 TARGET_LINK_LIBRARIES (server Ice IceUtil ${Boost_LIBRARIES})
 

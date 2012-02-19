@@ -7,8 +7,8 @@
 //
 // **********************************************************************
 
-#ifndef __S2S_I_H__
-#define __S2S_I_H__
+#ifndef __SERVER_I_H__
+#define __SERVER_I_H__
 
 #include "flecs.h"
 
@@ -21,11 +21,11 @@ public:
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);
 
-	virtual void ServerAdded(
+	virtual void ServerJoined(
 			const std::string& endpoint,
 			const Ice::Current&);
 
-	virtual void ServerRemoved(
+	virtual void ServerLeft(
 			const std::string& endpoint,
 			const Ice::Current&);
 };

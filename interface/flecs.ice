@@ -25,14 +25,14 @@ module FleCS
 		void Append(string objID, ByteSeq content);
 
 		// Master to server notification
-		void ServerAdded(string endpoint);
-		void ServerRemoved(string endpoint);
+		void ServerJoined(string endpoint);
+		void ServerLeft(string endpoint);
 	};
 
 
 	interface Master
 	{
-		void ServerReady(string endpoint);
+		void ServerJoin(string endpoint);
 	};
 };
 

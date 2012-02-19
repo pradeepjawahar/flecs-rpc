@@ -4,7 +4,7 @@
 #include "util.h"
 
 #include "c2sI.h"
-#include "s2sI.h"
+#include "serverI.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ public:
 	FleCSServer()
 	{
 		// create server root dir
-		_create_directories(FleCS::Server::stg_root_dir);
+		_create_directories(FleCS::ServerImpl::stg_root_dir);
 	}
 	
 
@@ -25,7 +25,7 @@ public:
 
 		Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("FleCS");
 
-		FleCS::C2SPtr c2s = new Imp_c2s;
+		FleCS::C2SPtr c2s = new C2SI;
 		adapter->add(c2s, communicator()->stringToIdentity("c2s"));
 
 		FleCS::Server1Ptr s2s = new ServerI;
@@ -35,7 +35,15 @@ public:
 
 
 		// Notify master that a server is on.
-
+		//
+		// No deadlock as long as the master do not notify the originating server.
+		//   server --(join)--> master --(notify)--> all other servers.
+		//
+		// Master needs to make sure that join service is serialized.
+		//
+		// If server empolyes multiple thread with a separate dispatch thread,
+		// there won't be a deadlock in any case.
+		
 		FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
 				communicator()
 				->propertyToProxy("FleCS_master.Proxy")
@@ -57,7 +65,7 @@ public:
 			exit(EXIT_FAILURE);
 		}
 
-		m_prx->ServerReady((*eps.begin())->toString());
+		m_prx->ServerJoin((*eps.begin())->toString());
 
 		communicator()->waitForShutdown();
 

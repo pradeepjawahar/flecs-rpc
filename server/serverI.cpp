@@ -10,7 +10,7 @@
 #include <IceUtil/IceUtil.h>
 #include <Ice/Ice.h>
 
-#include "s2sI.h"
+#include "serverI.h"
 #include "util.h"
 #include "server-common.h"
 
@@ -24,20 +24,23 @@ void ServerI::Append(
 {
 	cout << "S2S::Append(" << objID << ")\n";
 
-	_appendfile((string(FleCS::Server::stg_root_dir) + "/" + objID).c_str(), content);
+	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 }
 
 
-void ServerI::ServerAdded(
+void ServerI::ServerJoined(
+		const std::string& endpoint,
+		const Ice::Current& cur)
+{
+	cout << __FUNCTION__ << "(" << endpoint << ")\n";
+
+	FleCS::ServerImpl::AddServer(endpoint, cur);
+}
+
+
+void ServerI::ServerLeft(
 		const std::string& endpoint,
 		const Ice::Current&)
 {
 	cout << __FUNCTION__ << "(" << endpoint << ")\n";
-}
-
-
-void ServerI::ServerRemoved(
-		const std::string& endpoint,
-		const Ice::Current&)
-{
 }

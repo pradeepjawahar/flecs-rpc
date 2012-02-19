@@ -11,12 +11,14 @@
 class MasterI : public FleCS::Master
 {
 public:
-    virtual void ServerReady(
+    virtual void ServerJoin(
 			const std::string& endpoint,
 			const Ice::Current&);
 
 private:
 	std::map<std::string, FleCS::Server1Prx*> _servers;
+
+	IceUtil::Mutex _lock;
 };
 
 

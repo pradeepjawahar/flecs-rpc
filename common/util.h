@@ -24,6 +24,4 @@ int _random(
 		const long min,
 		const long max);
 
-std::string _gethostname();
-
 #endif

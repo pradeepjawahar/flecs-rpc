@@ -13,12 +13,20 @@
 #include "flecs.h"
 
 
-class S2SI : public FleCS::S2S
+class ServerI : public FleCS::Server1
 {
 public:
 	virtual void Append(
 			const std::string& objID,
 			const FleCS::ByteSeq& content,
+			const Ice::Current&);
+
+	virtual void ServerAdded(
+			const std::string& endpoint,
+			const Ice::Current&);
+
+	virtual void ServerRemoved(
+			const std::string& endpoint,
 			const Ice::Current&);
 };
 

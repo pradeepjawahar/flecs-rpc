@@ -112,18 +112,3 @@ int _random(
 	
 	return (int) ((double) (max - min + 1) * ( (double) r / (RAND_MAX + 1.0))) + min;
 }
-
-
-string _gethostname()
-{
-	const int LEN = 100;
-	char hn[LEN];
-
-	if (gethostname(hn, LEN) != 0)
-	{
-		perror("gethostname");
-		exit(1);
-	}
-
-	return hn;
-}

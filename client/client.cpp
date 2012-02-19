@@ -7,6 +7,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/asio/ip/host_name.hpp>
 
 #include "util.h"
 
@@ -46,7 +47,7 @@ FleCSClient::FleCSClient() :
     //
     Ice::Application(Ice::NoSignalHandling)
 {
-	_hostname = _gethostname();
+	_hostname = boost::asio::ip::host_name();
 }
 
 

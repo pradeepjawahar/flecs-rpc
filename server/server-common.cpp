@@ -5,15 +5,15 @@
 using namespace std;
 
 
-static FleCS::Server1Prx* _new_proxy(
+static FleCS::ServerPrx* _new_proxy(
 		const Ice::Current& cur,
 		const string& endpoint)
 {
 	Ice::CommunicatorPtr ic = cur.adapter->getCommunicator();
 
-	FleCS::Server1Prx* s_prx = new FleCS::Server1Prx;
+	FleCS::ServerPrx* s_prx = new FleCS::ServerPrx;
 
-	*s_prx = FleCS::Server1Prx::checkedCast(
+	*s_prx = FleCS::ServerPrx::checkedCast(
 			ic
 			->stringToProxy(endpoint)
 			->ice_twoway()
@@ -34,7 +34,7 @@ void FleCS::ServerImpl::AddServer(
 		const Ice::Current& cur)
 {
 	// check if the endpoint already exists.
-	map<string, FleCS::Server1Prx*>::iterator i = _servers.find(endpoint);
+	map<string, FleCS::ServerPrx*>::iterator i = _servers.find(endpoint);
 
 	if (i != _servers.end())
 	{
@@ -58,4 +58,4 @@ const char* FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs/no-cnst";
 //
 // Serialization is bad for scalability. Reference counting seems a little
 // better. Not implemented yet.
-std::map<std::string, FleCS::Server1Prx*> FleCS::ServerImpl::_servers;
+std::map<std::string, FleCS::ServerPrx*> FleCS::ServerImpl::_servers;

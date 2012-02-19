@@ -18,8 +18,7 @@ module FleCS
 
 
 	// Server-to-server and master-to-server.
-	// It seems that I can't user the name "Server".
-	interface Server1
+	interface Server
 	{
 		// Server to server
 		void Append(string objID, ByteSeq content);

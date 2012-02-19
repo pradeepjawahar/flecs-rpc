@@ -16,7 +16,7 @@ public:
 			const Ice::Current&);
 
 private:
-	std::map<std::string, FleCS::Server1Prx*> _servers;
+	std::map<std::string, FleCS::ServerPrx*> _servers;
 
 	IceUtil::Mutex _lock;
 };

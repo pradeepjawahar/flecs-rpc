@@ -14,7 +14,7 @@ namespace FleCS
 
 		extern const char* stg_root_dir;
 
-		extern std::map<std::string, FleCS::Server1Prx*> _servers;
+		extern std::map<std::string, FleCS::ServerPrx*> _servers;
 	};
 };
 

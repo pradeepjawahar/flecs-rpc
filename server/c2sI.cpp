@@ -30,8 +30,8 @@ void C2SI::Put(
 	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 
 	// propagate update to the other servers.
-	map<string, FleCS::Server1Prx*>& s = FleCS::ServerImpl::_servers;
-	for (map<string, FleCS::Server1Prx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+	map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 	{
 		(*(i->second))->Append(objID, content);
 	}
@@ -55,8 +55,8 @@ void C2SI::Append(
 	//
 	// The size of thread pool seems to be large, thus the above won't happen.
 	
-	map<string, FleCS::Server1Prx*>& s = FleCS::ServerImpl::_servers;
-	for (map<string, FleCS::Server1Prx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+	map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 	{
 		(*(i->second))->Append(objID, content);
 	}

@@ -28,8 +28,8 @@ public:
 		FleCS::C2SPtr c2s = new C2SI;
 		adapter->add(c2s, communicator()->stringToIdentity("c2s"));
 
-		FleCS::Server1Ptr s2s = new ServerI;
-		adapter->add(s2s, communicator()->stringToIdentity("server1"));
+		FleCS::ServerPtr s2s = new ServerI;
+		adapter->add(s2s, communicator()->stringToIdentity("server"));
 
 		adapter->activate();
 

@@ -13,7 +13,7 @@
 #include "flecs.h"
 
 
-class ServerI : public FleCS::Server1
+class ServerI : public FleCS::Server
 {
 public:
 	virtual void Append(

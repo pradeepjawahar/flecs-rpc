@@ -57,8 +57,6 @@ int FleCSClient::run(int argc, char* argv[])
 	{
 		_init();
 
-		_load_filelist();
-
 		_RandomReadsAppends(0.1, 100);
 
 	}
@@ -73,6 +71,10 @@ int FleCSClient::run(int argc, char* argv[])
 
 void FleCSClient::_init()
 {
+	_load_filelist();
+
+	srandom(time(NULL));
+
 	// init RPC proxy
 	_c2s_prx = C2SPrx::checkedCast(
 			communicator()
@@ -85,9 +87,6 @@ void FleCSClient::_init()
 		cerr << "invalid proxy" << endl;
 		exit(EXIT_FAILURE);
 	}
-
-	// init other stuff
-	srandom(time(NULL));
 }
 
 

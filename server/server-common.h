@@ -8,12 +8,15 @@ namespace FleCS
 {
 	namespace ServerImpl
 	{
+		void AddServers(
+				const std::vector<std::string>& servers,
+				const Ice::CommunicatorPtr& comm);
+
 		void AddServer(
 				const std::string& endpoint,
-				const Ice::Current& cur);
+				const Ice::CommunicatorPtr& comm);
 
 		extern const char* stg_root_dir;
-
 		extern std::map<std::string, FleCS::ServerPrx*> _servers;
 	};
 };

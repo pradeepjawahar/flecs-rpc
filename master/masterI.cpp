@@ -33,8 +33,9 @@ static FleCS::ServerPrx* _new_proxy(
 
 
 // endpoint example: "Server:tcp -h meego -p 10000"
-void MasterI::ServerJoin(
+void MasterI::Join(
 		const string& endpoint_,
+		std::vector<std::string>& existingServers,
 		const Ice::Current& cur)
 {
 	IceUtil::Mutex::Lock lock(_lock);
@@ -74,6 +75,8 @@ void MasterI::ServerJoin(
 		if (i->first == endpoint)
 			continue;
 		
+		existingServers.push_back(i->first);
+
 		(*(i->second))->ServerJoined(endpoint);
 	}
 }

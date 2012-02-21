@@ -34,7 +34,7 @@ void ServerI::ServerJoined(
 {
 	cout << __FUNCTION__ << "(" << endpoint << ")\n";
 
-	FleCS::ServerImpl::AddServer(endpoint, cur);
+	FleCS::ServerImpl::AddServer(endpoint, cur.adapter->getCommunicator());
 }
 
 

@@ -6,15 +6,13 @@ using namespace std;
 
 
 static FleCS::ServerPrx* _new_proxy(
-		const Ice::Current& cur,
-		const string& endpoint)
+		const string& endpoint,
+		const Ice::CommunicatorPtr& comm)
 {
-	Ice::CommunicatorPtr ic = cur.adapter->getCommunicator();
-
 	FleCS::ServerPrx* s_prx = new FleCS::ServerPrx;
 
 	*s_prx = FleCS::ServerPrx::checkedCast(
-			ic
+			comm
 			->stringToProxy(endpoint)
 			->ice_twoway()
 			->ice_timeout(-1)
@@ -29,9 +27,18 @@ static FleCS::ServerPrx* _new_proxy(
 }
 
 
+void FleCS::ServerImpl::AddServers(
+		const vector<string>& servers,
+		const Ice::CommunicatorPtr& comm)
+{
+	for (vector<string>::const_iterator j = servers.begin(); j != servers.end(); ++ j)
+		AddServer(*j, comm);
+}
+
+
 void FleCS::ServerImpl::AddServer(
 		const string& endpoint,
-		const Ice::Current& cur)
+		const Ice::CommunicatorPtr& comm)
 {
 	// check if the endpoint already exists.
 	map<string, FleCS::ServerPrx*>::iterator i = _servers.find(endpoint);
@@ -45,7 +52,7 @@ void FleCS::ServerImpl::AddServer(
 		delete i->second;
 	}
 
-	_servers[endpoint] = _new_proxy(cur, endpoint);
+	_servers[endpoint] = _new_proxy(endpoint, comm);
 }
 
 

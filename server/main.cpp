@@ -57,7 +57,6 @@ public:
 		}
 
 		// Assume that this server has one endpoint.
-
 		Ice::EndpointSeq eps = adapter->getEndpoints();
 		if (eps.size() != 1)
 		{
@@ -65,7 +64,10 @@ public:
 			exit(EXIT_FAILURE);
 		}
 
-		m_prx->ServerJoin((*eps.begin())->toString());
+		// Join the system.
+		vector<string> existingServers;
+		m_prx->Join((*eps.begin())->toString(), existingServers);
+		FleCS::ServerImpl::AddServers(existingServers, communicator());
 
 		communicator()->waitForShutdown();
 

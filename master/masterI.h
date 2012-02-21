@@ -11,8 +11,9 @@
 class MasterI : public FleCS::Master
 {
 public:
-    virtual void ServerJoin(
+    virtual void Join(
 			const std::string& endpoint,
+			std::vector<std::string>& existingServers,
 			const Ice::Current&);
 
 private:

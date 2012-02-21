@@ -5,6 +5,7 @@
 module FleCS
 {
 	sequence<byte> ByteSeq;
+	sequence<string> StringSeq;
 
 
 	// Client-to-server
@@ -31,7 +32,7 @@ module FleCS
 
 	interface Master
 	{
-		void ServerJoin(string endpoint);
+		void Join(string endpoint, out StringSeq existingServers);
 	};
 };
 

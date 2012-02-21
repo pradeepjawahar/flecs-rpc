@@ -31,8 +31,13 @@ void FleCS::ServerImpl::AddServers(
 		const vector<string>& servers,
 		const Ice::CommunicatorPtr& comm)
 {
+	cout << "AddServers: \n";
+
 	for (vector<string>::const_iterator j = servers.begin(); j != servers.end(); ++ j)
+	{
 		AddServer(*j, comm);
+		cout << "  " << *j << "\n";
+	}
 }
 
 

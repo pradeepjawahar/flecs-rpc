@@ -40,7 +40,7 @@ void MasterI::Join(
 {
 	IceUtil::Mutex::Lock lock(_lock);
 
-	cout << __PRETTY_FUNCTION__ << "(" << endpoint_ << ")\n";
+	cout << "MasterI::" << __FUNCTION__ << "(" << endpoint_ << ")\n";
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
 	Ice::TCPConnectionInfoPtr tcpInfo = Ice::TCPConnectionInfoPtr::dynamicCast(info);

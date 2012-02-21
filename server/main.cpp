@@ -56,15 +56,17 @@ public:
 			exit(EXIT_FAILURE);
 		}
 
-		// Assume that this server has one endpoint.
+		// Ask to join the system. Give my endpoint and get the existing
+		// servers.
+
 		Ice::EndpointSeq eps = adapter->getEndpoints();
+		// Assume that this server has one endpoint.
 		if (eps.size() != 1)
 		{
 			cerr << "Unexpected" << endl;
 			exit(EXIT_FAILURE);
 		}
 
-		// Join the system.
 		vector<string> existingServers;
 		m_prx->Join((*eps.begin())->toString(), existingServers);
 		FleCS::ServerImpl::AddServers(existingServers, communicator());

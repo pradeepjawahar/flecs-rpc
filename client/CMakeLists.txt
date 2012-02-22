@@ -13,7 +13,7 @@ ADD_EXECUTABLE ( client
 		../common/util.cpp
 		client.cpp )
 
-TARGET_LINK_LIBRARIES (client Ice IceUtil ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES (client Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
 ADD_DEPENDENCIES ( client gen_rpc_interface )
 

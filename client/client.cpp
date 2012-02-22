@@ -9,12 +9,15 @@
 #include <boost/filesystem.hpp>
 #include <boost/asio/ip/host_name.hpp>
 
+#include <log4cxx/logger.h>
+
 #include "util.h"
 
+#define _LOG(A) LOG4CXX_INFO(logger, (A))
 
 using namespace std;
-using namespace boost;
-using namespace FleCS;
+
+static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("client"));
 
 
 class FleCSClient : public Ice::Application
@@ -32,7 +35,7 @@ private:
 	void _RandomReadsAppends(const double r_ratio, const int runs);
 	void _AppendRandom(const string& filename);
 
-	C2SPrx _c2s_prx;
+	FleCS::C2SPrx _c2s_prx;
 
 	vector<string> _filelist;
 
@@ -58,11 +61,10 @@ int FleCSClient::run(int argc, char* argv[])
 		_init();
 
 		_RandomReadsAppends(0.1, 100);
-
 	}
-	catch(const Ice::Exception& ex)
+	catch(const Ice::Exception& e)
 	{
-		cerr << ex << endl;
+		_LOG(e);
 	}
 
     return EXIT_SUCCESS;
@@ -76,7 +78,7 @@ void FleCSClient::_init()
 	srandom(time(NULL));
 
 	// init RPC proxy
-	_c2s_prx = C2SPrx::checkedCast(
+	_c2s_prx = FleCS::C2SPrx::checkedCast(
 			communicator()
 			->propertyToProxy("FleCS_c2s.Proxy")
 			->ice_twoway()
@@ -84,9 +86,11 @@ void FleCSClient::_init()
 			->ice_secure(false));
 	if(!_c2s_prx)
 	{
-		cerr << "invalid proxy" << endl;
+		_LOG("invalid proxy");
 		exit(EXIT_FAILURE);
 	}
+
+	_LOG("Initialized.");
 }
 
 
@@ -98,7 +102,7 @@ void FleCSClient::_load_filelist()
 
 	if (! file.is_open())
 	{
-		cerr << "Unable to open file " << filename << "\n";
+		_LOG(string("Unable to open file ") + filename);
 		exit(EXIT_FAILURE);
 	}
 
@@ -132,7 +136,7 @@ void FleCSClient::_load_filelist()
 
 void FleCSClient::_Put(const char* obj_name)
 {
-	ByteSeq content;
+	FleCS::ByteSeq content;
 
 	_readfile(obj_name, content);
 
@@ -142,9 +146,9 @@ void FleCSClient::_Put(const char* obj_name)
 
 void FleCSClient::_Get(const char* obj_name)
 {
-	cout << __FILE__ << ":" << __LINE__ << " " << obj_name << "\n";
+	_LOG(obj_name);
 
-	ByteSeq content;
+	FleCS::ByteSeq content;
 	_c2s_prx->Get(obj_name, content);
 
 	_writefile(obj_name, content);
@@ -190,7 +194,7 @@ void FleCSClient::_RandomReadsAppends(
 
 void FleCSClient::_AppendRandom(const string& filename)
 {
-	cout << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ << " " << filename << "\n";
+	_LOG(filename);
 
 	// TODO: parameterize.
 	const long MIN = 10;
@@ -203,7 +207,7 @@ void FleCSClient::_AppendRandom(const string& filename)
 	++ seqno;
 
 	// Generate random content
-	ByteSeq content;
+	FleCS::ByteSeq content;
 
 	int cnt = _random(MIN, MAX);
 	for (int i = 0; i < cnt; i ++)
@@ -221,6 +225,10 @@ void FleCSClient::_AppendRandom(const string& filename)
 
 int main(int argc, char* argv[])
 {
+	_LOG("Client starting...");
+
     FleCSClient app;
     return app.main(argc, argv, "config.client");
+
+	_LOG("Client finished.");
 }

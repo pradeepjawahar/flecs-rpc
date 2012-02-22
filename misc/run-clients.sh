@@ -39,7 +39,7 @@ ssh -A hyoon45@$HOSTNAME <<!
 
 hostname
 
-daemon /dev/shm/work/flecs-rpc/misc/wait-and-exec $WAIT_UNTIL
+daemon -o /dev/shm/flecs-client-output /dev/shm/work/flecs-rpc/misc/wait-and-exec $WAIT_UNTIL
 
 echo
 

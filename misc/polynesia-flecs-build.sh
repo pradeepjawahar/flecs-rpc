@@ -20,7 +20,6 @@ cd /dev/shm/work/flecs-rpc/.build
 git pull
 echo
 
-\rm -rf *
 cmake ..
 make -j
 

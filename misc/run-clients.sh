@@ -20,9 +20,10 @@ hostname
 date
 
 # wait until after 10 seconds from now.
+#   calc does not work with leading 0s. bc works.
 
 CUR_TIME=`date +"%H%M%S%N"`
-WAIT_UNTIL=`calc $CUR_TIME + 10000000000`
+WAIT_UNTIL=`echo "scale=4; $CUR_TIME + 10000000000" | bc`
 
 echo $WAIT_UNTIL
 
@@ -41,6 +42,8 @@ TERM=linux
 
 hostname
 
+killall -KILL -w daemon || true
+killall -KILL -w client || true
 daemon -o /dev/shm/flecs-client-output /dev/shm/work/flecs-rpc/misc/wait-and-exec $WAIT_UNTIL
 
 echo

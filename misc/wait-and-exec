@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+set -u
+
+# $1 is in format HHMMSSNNNNNNNNN
+
+CUR=`date +"%H%M%S%N"`
+
+DIFF=`echo "scale=4; ($1 - $CUR) / 1000000000" | bc`
+#echo $DIFF
+
+cd /dev/shm/work/flecs-rpc/.build
+git pull
+cmake ..
+make -j
+cd client
+
+sleep $DIFF
+
+date
+./client
+date

@@ -13,7 +13,7 @@ ADD_EXECUTABLE ( server
 		../common/util.cpp
 		main.cpp server-common.cpp c2sI.cpp serverI.cpp )
 
-TARGET_LINK_LIBRARIES (server Ice IceUtil ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES (server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
 ADD_DEPENDENCIES ( server gen_rpc_interface )
 

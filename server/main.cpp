@@ -2,7 +2,6 @@
 
 #include "server-common.h"
 #include "util.h"
-
 #include "c2sI.h"
 #include "serverI.h"
 
@@ -52,7 +51,7 @@ public:
 				->ice_secure(false));
 		if(!m_prx)
 		{
-			cerr << "invalid proxy m_prx" << endl;
+			_LOG("invalid proxy m_prx");
 			exit(EXIT_FAILURE);
 		}
 
@@ -63,7 +62,7 @@ public:
 		// Assume that this server has one endpoint.
 		if (eps.size() != 1)
 		{
-			cerr << "Unexpected" << endl;
+			_LOG("Unexpected");
 			exit(EXIT_FAILURE);
 		}
 
@@ -73,7 +72,7 @@ public:
 
 		communicator()->waitForShutdown();
 
-		cout << "Serverr closing.\n";
+		_LOG("Serverr closing.");
 		return EXIT_SUCCESS;
 	}
 };

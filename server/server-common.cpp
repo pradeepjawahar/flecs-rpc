@@ -19,7 +19,7 @@ static FleCS::ServerPrx* _new_proxy(
 			->ice_secure(false));
 	if(!s_prx)
 	{
-		cerr << "invalid proxy" << endl;
+		_LOG("invalid proxy");
 		exit(EXIT_FAILURE);
 	}
 
@@ -34,10 +34,10 @@ void FleCS::ServerImpl::AddServers(
 	for (vector<string>::const_iterator i = servers.begin(); i != servers.end(); ++ i)
 	{
 		if (i == servers.begin())
-			cout << "AddServers:\n";
+			_LOG("AddServers:");
 
 		AddServer(*i, comm);
-		cout << "  " << *i << "\n";
+		_LOG(string("  ") + *i);
 	}
 }
 
@@ -51,8 +51,7 @@ void FleCS::ServerImpl::AddServer(
 
 	if (i != _servers.end())
 	{
-		cout << "A server with endpoint " << endpoint << " already exist!\n";
-		cout << "Replacing with a new one.\n";
+		_LOG(string("A server with endpoint ") + endpoint + " already exist! Replacing with a new one.");
 
 		// remove old proxy.
 		delete i->second;
@@ -72,3 +71,6 @@ const char* FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs/no-cnst";
 // Serialization is bad for scalability. Reference counting seems a little
 // better. Not implemented yet.
 std::map<std::string, FleCS::ServerPrx*> FleCS::ServerImpl::_servers;
+
+
+log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("server"));

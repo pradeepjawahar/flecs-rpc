@@ -1,6 +1,8 @@
 #ifndef __SERVER_COMMON_H__
 #define __SERVER_COMMON_H__
 
+#include <log4cxx/logger.h>
+
 #include "flecs.h"
 
 
@@ -20,5 +22,10 @@ namespace FleCS
 		extern std::map<std::string, FleCS::ServerPrx*> _servers;
 	};
 };
+
+
+extern log4cxx::LoggerPtr logger;
+#define _LOG(A) LOG4CXX_INFO(logger, (A))
+
 
 #endif

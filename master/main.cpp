@@ -1,10 +1,15 @@
-#include <iostream>
 #include <Ice/Ice.h>
+
+#include <log4cxx/logger.h>
 
 #include "flecs.h"
 #include "masterI.h"
 
 using namespace std;
+
+#define _LOG(A) LOG4CXX_INFO(logger, (A))
+
+static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("master"));
 
 
 class FleCSMaster : public Ice::Application
@@ -22,7 +27,6 @@ public:
 		adapter->activate();
 		communicator()->waitForShutdown();
 
-		cout << "Serverr closing.\n";
 		return EXIT_SUCCESS;
 	}
 };
@@ -30,6 +34,10 @@ public:
 
 int main(int argc, char* argv[])
 {
+	_LOG("Master starting...");
+
     FleCSMaster app;
     return app.main(argc, argv, "config.master");
+
+	_LOG("Master finished.");
 }

@@ -1,11 +1,15 @@
-#include <IceUtil/IceUtil.h>
 #include <Ice/Ice.h>
+#include <IceUtil/IceUtil.h>
+
+#include <log4cxx/logger.h>
 
 #include "masterI.h"
 
+#define _LOG(A) LOG4CXX_INFO(logger, (A))
+
 using namespace std;
 
-#define cout_debug cout << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << "\n"
+static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("master"));
 
 
 static FleCS::ServerPrx* _new_proxy(
@@ -24,7 +28,7 @@ static FleCS::ServerPrx* _new_proxy(
 			->ice_secure(false));
 	if(!s_prx)
 	{
-		cerr << "invalid proxy" << endl;
+		_LOG("invalid proxy");
 		exit(EXIT_FAILURE);
 	}
 
@@ -40,14 +44,14 @@ void MasterI::Join(
 {
 	IceUtil::Mutex::Lock lock(_lock);
 
-	cout << "MasterI::" << __FUNCTION__ << "(" << endpoint_ << ")\n";
+	_LOG(string("endpoint: ") + endpoint_);
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
 	Ice::TCPConnectionInfoPtr tcpInfo = Ice::TCPConnectionInfoPtr::dynamicCast(info);
 
 	if (!tcpInfo)
 	{
-		cerr << __FUNCTION__ << "Can not get tcpInfo.\n";
+		_LOG("Can not get tcpInfo.");
 		exit(EXIT_FAILURE);
 	}
 
@@ -58,8 +62,8 @@ void MasterI::Join(
 
 	if (i != _servers.end())
 	{
-		cout << "A server with endpoint " << endpoint << " already exist!\n";
-		cout << "Replacing with a new one.\n";
+		_LOG(string("A server with endpoint ") + endpoint
+				+ " already exist! Replacing with a new one.");
 
 		// remove old proxy.
 		delete i->second;
@@ -70,7 +74,7 @@ void MasterI::Join(
 	// notify all other servers.
 	for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 	{
-		cout << "  " << i->first << "\n";
+		_LOG(string("  ") + i->first);
 
 		if (i->first == endpoint)
 			continue;

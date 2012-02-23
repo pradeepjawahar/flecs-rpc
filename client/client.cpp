@@ -1,6 +1,3 @@
-#include <Ice/Ice.h>
-#include <flecs.h>
-
 #include <fstream>
 #include <string>
 #include <vector>
@@ -9,8 +6,11 @@
 #include <boost/filesystem.hpp>
 #include <boost/asio/ip/host_name.hpp>
 
+#include <Ice/Ice.h>
+
 #include <log4cxx/logger.h>
 
+#include "flecs.h"
 #include "util.h"
 
 #define _LOG(A) LOG4CXX_INFO(logger, (A))

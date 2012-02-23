@@ -22,7 +22,7 @@ void ServerI::Append(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "S2S::Append(" << objID << ")\n";
+	_LOG(objID);
 
 	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 }
@@ -32,7 +32,7 @@ void ServerI::ServerJoined(
 		const std::string& endpoint,
 		const Ice::Current& cur)
 {
-	cout << __FUNCTION__ << "(" << endpoint << ")\n";
+	_LOG(endpoint);
 
 	FleCS::ServerImpl::AddServer(endpoint, cur.adapter->getCommunicator());
 }
@@ -42,5 +42,5 @@ void ServerI::ServerLeft(
 		const std::string& endpoint,
 		const Ice::Current&)
 {
-	cout << __FUNCTION__ << "(" << endpoint << ")\n";
+	_LOG(endpoint);
 }

@@ -3,7 +3,6 @@
 #include <linux/limits.h>
 
 #include <fstream>
-#include <iostream>
 
 #include <boost/filesystem.hpp>
 
@@ -22,10 +21,7 @@ void _readfile(
 	ifstream file(filename, ios::in | ios::binary | ios::ate);
 
 	if (! file.is_open())
-	{
-		cerr << "Unable to open file " << filename << "\n";
-		exit(EXIT_FAILURE);
-	}
+		throw runtime_error(string("Unable to open file ") + filename);
 
 	ifstream::pos_type size;
 	size = file.tellg();
@@ -52,10 +48,7 @@ void _writefile(
 	ofstream outfile(filename, ios::out | ios::binary);
 
 	if (outfile.fail())
-	{
-		cerr << "Unable to open file " << filename << "\n";
-		exit(EXIT_FAILURE);
-	}
+		throw runtime_error(string("Unable to open file ") + filename);
 
 	outfile.write(reinterpret_cast<const char*>(&content[0]), content.size());
 }
@@ -70,10 +63,7 @@ void _appendfile(
 	ofstream outfile(filename, ios::out | ios::binary | ios::app);
 
 	if (outfile.fail())
-	{
-		cerr << "Unable to open file " << filename << "\n";
-		exit(EXIT_FAILURE);
-	}
+		throw runtime_error(string("Unable to open file ") + filename);
 
 	outfile.write(reinterpret_cast<const char*>(&content[0]), content.size());
 }
@@ -95,10 +85,7 @@ void _create_directories(const string& dir)
 	boost::system::error_code ec;
 	bool r = boost::filesystem::create_directories(dir, ec);
 	if (!r && ec != boost::system::errc::success)
-	{
-		cerr << "create_directories. ec=" << ec << "\n";
-		exit(EXIT_FAILURE);
-	}
+		throw runtime_error(string("create_directories. ec=") + ec.message());
 }
 
 

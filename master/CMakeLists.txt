@@ -10,8 +10,10 @@ ADD_EXECUTABLE ( master
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		main.cpp masterI.cpp )
 
-TARGET_LINK_LIBRARIES (master Ice IceUtil)
+TARGET_LINK_LIBRARIES (master Ice IceUtil log4cxx)
 
 ADD_DEPENDENCIES ( master gen_rpc_interface )
 
+
 CONFIGURE_FILE (config.master ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
+CONFIGURE_FILE (log4j.properties ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)

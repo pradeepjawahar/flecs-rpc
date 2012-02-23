@@ -13,7 +13,7 @@ void C2SI::Get(
 		FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "C2S::Get(" << objID << ")\n";
+	_LOG(objID);
 
 	_readfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 }
@@ -25,7 +25,7 @@ void C2SI::Put(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	cout << "C2S::Put(" << objID << ")\n";
+	_LOG(objID);
 
 	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 
@@ -43,7 +43,7 @@ void C2SI::Append(
 		const FleCS::ByteSeq& content,
 		const Ice::Current& cur)
 {
-	cout << "C2S::Append(" << objID << ")\n";
+	_LOG(objID);
 
 	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 

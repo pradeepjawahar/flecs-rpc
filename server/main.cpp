@@ -80,10 +80,19 @@ public:
 
 int main(int argc, char* argv[])
 {
+	int rc;
+
 	_LOG("server starting...");
 
-    FleCSServer app;
-	int rc = app.main(argc, argv, "config.server");
+	try
+	{
+		FleCSServer app;
+		rc = app.main(argc, argv, "config.server");
+	}
+	catch(const exception& e)
+	{
+		_LOG(e.what());
+	}
 
 	_LOG("server finished.");
 

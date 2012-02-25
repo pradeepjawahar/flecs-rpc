@@ -56,16 +56,9 @@ FleCSClient::FleCSClient() :
 
 int FleCSClient::run(int argc, char* argv[])
 {
-	try
-	{
-		_init();
+	_init();
 
-		_RandomReadsAppends(0.1, 100);
-	}
-	catch(const Ice::Exception& e)
-	{
-		_LOG(e);
-	}
+	_RandomReadsAppends(0.1, 100);
 
     return EXIT_SUCCESS;
 }
@@ -225,10 +218,19 @@ void FleCSClient::_AppendRandom(const string& filename)
 
 int main(int argc, char* argv[])
 {
+	int rc;
+
 	_LOG("Client starting...");
 
-    FleCSClient app;
-	int rc = app.main(argc, argv, "config.client");
+	try
+	{
+		FleCSClient app;
+		rc = app.main(argc, argv, "config.client");
+	}
+	catch(const exception& e)
+	{
+		_LOG(e.what());
+	}
 
 	_LOG("Client finished.");
 

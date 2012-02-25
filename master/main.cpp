@@ -34,10 +34,19 @@ public:
 
 int main(int argc, char* argv[])
 {
+	int rc;
+
 	_LOG("Master starting...");
 
-    FleCSMaster app;
-	int rc = app.main(argc, argv, "config.master");
+	try
+	{
+		FleCSMaster app;
+		rc = app.main(argc, argv, "config.master");
+	}
+	catch(const exception& e)
+	{
+		_LOG(e.what());
+	}
 
 	_LOG("Master finished.");
 

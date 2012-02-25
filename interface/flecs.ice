@@ -22,6 +22,7 @@ module FleCS
 	interface Server
 	{
 		// Server to server
+		void Put(string objID, ByteSeq content);
 		void Append(string objID, ByteSeq content);
 
 		// Master to server notification

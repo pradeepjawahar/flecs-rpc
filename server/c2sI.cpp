@@ -8,6 +8,54 @@
 using namespace std;
 
 
+class PutThread : public IceUtil::Thread
+{
+public:
+	PutThread(
+			const FleCS::ServerPrx& s,
+			const string& objID,
+			const FleCS::ByteSeq& content)
+		: _s(s), _objID(objID), _content(content)
+	{
+	}
+
+	virtual void run()
+	{
+		_s->Put(_objID, _content);
+	}
+
+
+private:
+	const FleCS::ServerPrx& _s;
+	const string& _objID;
+	const FleCS::ByteSeq& _content;
+};
+
+
+class AppendThread : public IceUtil::Thread
+{
+public:
+	AppendThread(
+			const FleCS::ServerPrx& s,
+			const string& objID,
+			const FleCS::ByteSeq& content)
+		: _s(s), _objID(objID), _content(content)
+	{
+	}
+
+	virtual void run()
+	{
+		_s->Append(_objID, _content);
+	}
+
+
+private:
+	const FleCS::ServerPrx& _s;
+	const string& _objID;
+	const FleCS::ByteSeq& _content;
+};
+
+
 void C2SI::Get(
 		const std::string& objID,
 		FleCS::ByteSeq& content,
@@ -19,7 +67,6 @@ void C2SI::Get(
 }
 
 
-// TODO: parallelize Put() and Append()
 void C2SI::Put(
 		const std::string& objID,
 		const FleCS::ByteSeq& content,
@@ -30,11 +77,27 @@ void C2SI::Put(
 	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
 
 	// propagate update to the other servers.
+
 	map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+
+#ifdef _SERIAL_PROCESSING
+	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		(*(i->second))->Put(objID, content);
+#else	// Parallel processing
+
+	vector<IceUtil::ThreadPtr> tpv;
+	vector<IceUtil::ThreadControl> tcv;
+
 	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 	{
-		(*(i->second))->Append(objID, content);
+		IceUtil::ThreadPtr t = new PutThread(*(i->second), objID, content);
+		tcv.push_back(t->start());
+		tpv.push_back(t);
 	}
+
+	for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
+		j->join();
+#endif
 }
 
 
@@ -54,10 +117,24 @@ void C2SI::Append(
 	//   C2 ----> S2 --(S1 is not responding while processing C1's request)--> S1
 	//
 	// The size of thread pool seems to be large, thus the above won't happen.
-	
 	map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+
+#ifdef _SERIAL_PROCESSING
+	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		(*(i->second))->Append(objID, content);
+#else	// Parallel processing
+
+	vector<IceUtil::ThreadPtr> tpv;
+	vector<IceUtil::ThreadControl> tcv;
+
 	for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 	{
-		(*(i->second))->Append(objID, content);
+		IceUtil::ThreadPtr t = new AppendThread(*(i->second), objID, content);
+		tcv.push_back(t->start());
+		tpv.push_back(t);
 	}
+
+	for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
+		j->join();
+#endif
 }

@@ -1,12 +1,3 @@
-// **********************************************************************
-//
-// Copyright (c) 2003-2011 ZeroC, Inc. All rights reserved.
-//
-// This copy of Ice is licensed to you under the terms described in the
-// ICE_LICENSE file included in this distribution.
-//
-// **********************************************************************
-
 #ifndef __SERVER_I_H__
 #define __SERVER_I_H__
 
@@ -16,6 +7,11 @@
 class ServerI : public FleCS::Server
 {
 public:
+	virtual void Put(
+			const std::string& objID,
+			const FleCS::ByteSeq& content,
+			const Ice::Current&);
+
 	virtual void Append(
 			const std::string& objID,
 			const FleCS::ByteSeq& content,

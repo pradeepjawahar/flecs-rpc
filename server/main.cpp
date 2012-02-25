@@ -80,6 +80,12 @@ public:
 
 int main(int argc, char* argv[])
 {
+	_LOG("server starting...");
+
     FleCSServer app;
-    return app.main(argc, argv, "config.server");
+	int rc = app.main(argc, argv, "config.server");
+
+	_LOG("server finished.");
+
+	return rc;
 }

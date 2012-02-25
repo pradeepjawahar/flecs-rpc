@@ -37,7 +37,9 @@ int main(int argc, char* argv[])
 	_LOG("Master starting...");
 
     FleCSMaster app;
-    return app.main(argc, argv, "config.master");
+	int rc = app.main(argc, argv, "config.master");
 
 	_LOG("Master finished.");
+
+	return rc;
 }

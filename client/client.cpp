@@ -228,7 +228,9 @@ int main(int argc, char* argv[])
 	_LOG("Client starting...");
 
     FleCSClient app;
-    return app.main(argc, argv, "config.client");
+	int rc = app.main(argc, argv, "config.client");
 
 	_LOG("Client finished.");
+
+	return rc;
 }

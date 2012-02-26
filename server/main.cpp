@@ -72,7 +72,6 @@ public:
 
 		communicator()->waitForShutdown();
 
-		_LOG("Serverr closing.");
 		return EXIT_SUCCESS;
 	}
 };

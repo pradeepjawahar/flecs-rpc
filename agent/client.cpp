@@ -29,6 +29,13 @@ public:
 		// _agent_prx->Exec("date; date;", ret, logFile);
 
 		Ice::AsyncResultPtr asr = _agent_prx->begin_Exec("date; date;");
+
+		// TODO: verify the commands are overlapping by sleeping 10 secs
+		// between the two dates. (:10)
+
+		// TODO: read command from file. (:10)
+		// TODO: load server list from file (:20)
+
 		_agent_prx->end_Exec(ret, logFile, asr);
 
 		if (ret == -1)
@@ -47,9 +54,7 @@ public:
 private:
 	void _init()
 	{
-		string endpoint = "agent:tcp -p 10002";
-		// TODO: "agent:tcp -h polynesia1.cc.gatech.edu -p 10002"
-		// 4 proxies.
+		string endpoint = "agent:tcp -p 10010 -h polynesia2.cc.gatech.edu";
 
 		// init RPC proxy
 		_agent_prx = Common::AgentPrx::checkedCast(

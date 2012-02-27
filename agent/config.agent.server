@@ -4,7 +4,7 @@
 # adapter.
 #
 #Hello.Endpoints=tcp -p 10000:udp -p 10000:ssl -p 10001
-Agent.Endpoints=tcp -p 10002
+Agent.Endpoints=tcp -p 10010
 
 #
 # Warn about connection exceptions

@@ -13,22 +13,22 @@ SET_SOURCE_FILES_PROPERTIES(
 		${CMAKE_CURRENT_BINARY_DIR}/agent.cpp
 		PROPERTIES GENERATED 1)
 
-ADD_EXECUTABLE ( agent-server
+ADD_EXECUTABLE ( flecs-agent-server
 		${CMAKE_CURRENT_BINARY_DIR}/agent.cpp
 		server.cpp agentI.cpp )
 
-TARGET_LINK_LIBRARIES (agent-server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
+TARGET_LINK_LIBRARIES (flecs-agent-server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
-ADD_DEPENDENCIES ( agent-server gen_agent_interface )
+ADD_DEPENDENCIES ( flecs-agent-server gen_agent_interface )
 
 
-ADD_EXECUTABLE ( agent-client
+ADD_EXECUTABLE ( flecs-agent-client
 		${CMAKE_CURRENT_BINARY_DIR}/agent.cpp
 		client.cpp )
 
-TARGET_LINK_LIBRARIES (agent-client Ice IceUtil ${Boost_LIBRARIES} log4cxx)
+TARGET_LINK_LIBRARIES (flecs-agent-client Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
-ADD_DEPENDENCIES ( agent-client gen_agent_interface )
+ADD_DEPENDENCIES ( flecs-agent-client gen_agent_interface )
 
 CONFIGURE_FILE (config.agent.server ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 CONFIGURE_FILE (config.agent.client ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)

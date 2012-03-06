@@ -8,14 +8,14 @@ SET_SOURCE_FILES_PROPERTIES(
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		PROPERTIES GENERATED 1)
 
-ADD_EXECUTABLE ( client
+ADD_EXECUTABLE ( flecs-client
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		../common/util.cpp
 		client.cpp )
 
-TARGET_LINK_LIBRARIES (client Ice IceUtil ${Boost_LIBRARIES} log4cxx)
+TARGET_LINK_LIBRARIES (flecs-client Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
-ADD_DEPENDENCIES ( client gen_rpc_interface )
+ADD_DEPENDENCIES ( flecs-client gen_rpc_interface )
 
 
 CONFIGURE_FILE (config.client ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)

@@ -8,14 +8,14 @@ SET_SOURCE_FILES_PROPERTIES(
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		PROPERTIES GENERATED 1)
 
-ADD_EXECUTABLE ( server
+ADD_EXECUTABLE ( flecs-server
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		../common/util.cpp
 		main.cpp server-common.cpp c2sI.cpp serverI.cpp )
 
-TARGET_LINK_LIBRARIES (server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
+TARGET_LINK_LIBRARIES (flecs-server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
-ADD_DEPENDENCIES ( server gen_rpc_interface )
+ADD_DEPENDENCIES ( flecs-server gen_rpc_interface )
 
 
 CONFIGURE_FILE (config.server ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)

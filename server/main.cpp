@@ -81,6 +81,14 @@ int main(int argc, char* argv[])
 {
 	int rc;
 
+	cout << "server started.\n";
+
+	if (daemon(1, 0) == -1)
+	{
+		perror("daemon");
+		return EXIT_FAILURE;
+	}
+
 	_LOG("server starting...");
 
 	try

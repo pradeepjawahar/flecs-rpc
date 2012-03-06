@@ -220,6 +220,14 @@ int main(int argc, char* argv[])
 {
 	int rc;
 
+	cout << "client started.\n";
+
+	if (daemon(1, 0) == -1)
+	{
+		perror("daemon");
+		return EXIT_FAILURE;
+	}
+
 	_LOG("Client starting...");
 
 	try

@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 {
 	int rc;
 
-	cout << "server starting...\n";
+	cout << "server started.\n";
 
 	if (daemon(1, 0) == -1)
 	{
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 		AgentServer app;
 		rc = app.main(argc, argv, "config.agent.server");
 	}
-	catch(const exception& e)
+	catch (const exception& e)
 	{
 		_LOG(e.what());
 	}

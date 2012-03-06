@@ -36,6 +36,14 @@ int main(int argc, char* argv[])
 {
 	int rc;
 
+	cout << "master started.\n";
+
+	if (daemon(1, 0) == -1)
+	{
+		perror("daemon");
+		return EXIT_FAILURE;
+	}
+
 	_LOG("Master starting...");
 
 	try

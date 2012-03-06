@@ -35,7 +35,6 @@ public:
 				_LOG("invalid proxy");
 				exit(EXIT_FAILURE);
 			}
-			_LOG(("Initialized prx of ") + _hostname);
 		}
 
 
@@ -72,7 +71,7 @@ public:
 	}
 
 
-	virtual int run(int, char*[])
+	virtual int run(int argc, char* argv[])
 	{
 		try
 		{
@@ -82,7 +81,10 @@ public:
 
 			_KillServices();
 			_StartMaster();
+			sleep(1);
 			_StartServers();
+			sleep(1);
+			_StartClients();
 
 			return EXIT_SUCCESS;
 		}
@@ -129,11 +131,7 @@ private:
 		{
 			if (i->_hostname == "polynesia1.cc.gatech.edu")
 			{
-				// daemon is needed here. Even though flecs-master daemonize
-				// itself, there agent-server seems to wait for it to finish.
-				// There might be some resources that agent-server waits to be
-				// released.
-				string cmd = "cd /dev/shm/work/flecs-rpc/.build/master; daemon ./flecs-master; ";
+				string cmd = "touch /dev/shm/work/flecs-rpc/.build/master/master.trigger; ";
 				i->BeginExec(cmd);
 				i->EndExec();
 			}
@@ -145,13 +143,29 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "cd /dev/shm/work/flecs-rpc/.build/server; daemon ./flecs-server; ";
+		string cmd = "touch /dev/shm/work/flecs-rpc/.build/server/server.trigger; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->BeginExec(cmd);
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->EndExec();
+	}
+
+
+	void _StartClients()
+	{
+		_LOG("");
+
+		string cmd = "touch /dev/shm/work/flecs-rpc/.build/client/client.trigger; ";
+
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			if (i->_hostname == "polynesia1.cc.gatech.edu")
+				i->BeginExec(cmd);
+
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			if (i->_hostname == "polynesia1.cc.gatech.edu")
+				i->EndExec();
 	}
 
 

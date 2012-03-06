@@ -14,17 +14,26 @@ class AgentServer : public Ice::Application
 public:
     virtual int run(int, char*[])
 	{
-		shutdownOnInterrupt();
+		try
+		{
+			shutdownOnInterrupt();
 
-		Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("Agent");
+			Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("Agent");
 
-		Common::AgentPtr agent = new AgentI;
-		adapter->add(agent, communicator()->stringToIdentity("agent"));
-		adapter->activate();
+			Common::AgentPtr agent = new AgentI;
+			adapter->add(agent, communicator()->stringToIdentity("agent"));
+			adapter->activate();
 
-		communicator()->waitForShutdown();
+			communicator()->waitForShutdown();
 
-		return EXIT_SUCCESS;
+			return EXIT_SUCCESS;
+		}
+		catch (const exception& e)
+		{
+			_LOG(e.what());
+		}
+
+		return EXIT_FAILURE;
 	}
 };
 

@@ -20,59 +20,67 @@ public:
 
     virtual int run(int, char*[])
 	{
-		shutdownOnInterrupt();
-
-		Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("FleCS");
-
-		FleCS::C2SPtr c2s = new C2SI;
-		adapter->add(c2s, communicator()->stringToIdentity("c2s"));
-
-		FleCS::ServerPtr s2s = new ServerI;
-		adapter->add(s2s, communicator()->stringToIdentity("server"));
-
-		adapter->activate();
-
-
-		// Notify master that a server is on.
-		//
-		// No deadlock as long as the master do not notify the originating server.
-		//   server --(join)--> master --(notify)--> all other servers.
-		//
-		// Master needs to make sure that join service is serialized.
-		//
-		// If server empolyes multiple thread with a separate dispatch thread,
-		// there won't be a deadlock in any case.
-		
-		FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
-				communicator()
-				->propertyToProxy("FleCS_master.Proxy")
-				->ice_twoway()
-				->ice_timeout(-1)
-				->ice_secure(false));
-		if(!m_prx)
+		try
 		{
-			_LOG("invalid proxy m_prx");
-			exit(EXIT_FAILURE);
+			shutdownOnInterrupt();
+
+			Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("FleCS");
+
+			FleCS::C2SPtr c2s = new C2SI;
+			adapter->add(c2s, communicator()->stringToIdentity("c2s"));
+
+			FleCS::ServerPtr s2s = new ServerI;
+			adapter->add(s2s, communicator()->stringToIdentity("server"));
+
+			adapter->activate();
+
+			// Notify master that a server is on.
+			//
+			// No deadlock as long as the master do not notify the originating server.
+			//   server --(join)--> master --(notify)--> all other servers.
+			//
+			// Master needs to make sure that join service is serialized.
+			//
+			// If server empolyes multiple thread with a separate dispatch thread,
+			// there won't be a deadlock in any case.
+
+			FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
+					communicator()
+					->propertyToProxy("FleCS_master.Proxy")
+					->ice_twoway()
+					->ice_timeout(-1)
+					->ice_secure(false));
+			if(!m_prx)
+			{
+				_LOG("invalid proxy m_prx");
+				exit(EXIT_FAILURE);
+			}
+
+			// Ask to join the system. Give my endpoint and get the existing
+			// servers.
+
+			Ice::EndpointSeq eps = adapter->getEndpoints();
+			// Assume that this server has one endpoint.
+			if (eps.size() != 1)
+			{
+				_LOG("Unexpected");
+				exit(EXIT_FAILURE);
+			}
+
+			vector<string> existingServers;
+			m_prx->Join((*eps.begin())->toString(), existingServers);
+			FleCS::ServerImpl::AddServers(existingServers, communicator());
+
+			communicator()->waitForShutdown();
+
+			return EXIT_SUCCESS;
+		}
+		catch (const exception& e)
+		{
+			_LOG(e.what());
 		}
 
-		// Ask to join the system. Give my endpoint and get the existing
-		// servers.
-
-		Ice::EndpointSeq eps = adapter->getEndpoints();
-		// Assume that this server has one endpoint.
-		if (eps.size() != 1)
-		{
-			_LOG("Unexpected");
-			exit(EXIT_FAILURE);
-		}
-
-		vector<string> existingServers;
-		m_prx->Join((*eps.begin())->toString(), existingServers);
-		FleCS::ServerImpl::AddServers(existingServers, communicator());
-
-		communicator()->waitForShutdown();
-
-		return EXIT_SUCCESS;
+		return EXIT_FAILURE;
 	}
 };
 
@@ -96,7 +104,7 @@ int main(int argc, char* argv[])
 		FleCSServer app;
 		rc = app.main(argc, argv, "config.server");
 	}
-	catch(const exception& e)
+	catch (const exception& e)
 	{
 		_LOG(e.what());
 	}

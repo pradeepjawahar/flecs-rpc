@@ -75,15 +75,24 @@ public:
 
 	virtual int run(int, char*[])
 	{
-		_init();
+		try
+		{
+			_init();
 
-		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			i->BeginExec();
+			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+				i->BeginExec();
 
-		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			i->EndExec();
+			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+				i->EndExec();
 
-		return EXIT_SUCCESS;
+			return EXIT_SUCCESS;
+		}
+		catch (const exception& e)
+		{
+			_LOG(e.what());
+		}
+
+		return EXIT_FAILURE;
 	}
 
 

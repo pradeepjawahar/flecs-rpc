@@ -17,17 +17,26 @@ class FleCSMaster : public Ice::Application
 public:
 	virtual int run(int, char*[])
 	{
-		shutdownOnInterrupt();
+		try
+		{
+			shutdownOnInterrupt();
 
-		Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("FleCS");
+			Ice::ObjectAdapterPtr adapter = communicator()->createObjectAdapter("FleCS");
 
-		FleCS::MasterPtr m = new MasterI;
-		adapter->add(m, communicator()->stringToIdentity("master"));
+			FleCS::MasterPtr m = new MasterI;
+			adapter->add(m, communicator()->stringToIdentity("master"));
 
-		adapter->activate();
-		communicator()->waitForShutdown();
+			adapter->activate();
+			communicator()->waitForShutdown();
 
-		return EXIT_SUCCESS;
+			return EXIT_SUCCESS;
+		}
+		catch (const exception& e)
+		{
+			_LOG(e.what());
+		}
+
+		return EXIT_FAILURE;
 	}
 };
 

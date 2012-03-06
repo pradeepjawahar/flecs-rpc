@@ -4,6 +4,6 @@
 #include <log4cxx/logger.h>
 
 extern log4cxx::LoggerPtr logger;
-#define _LOG(A) LOG4CXX_INFO(logger, (A))
+#define _LOG(A) LOG4CXX_INFO(logger, A)
 
 #endif

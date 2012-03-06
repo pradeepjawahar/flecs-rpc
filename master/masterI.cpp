@@ -5,7 +5,7 @@
 
 #include "masterI.h"
 
-#define _LOG(A) LOG4CXX_INFO(logger, (A))
+#define _LOG(A) LOG4CXX_INFO(logger, A)
 
 using namespace std;
 
@@ -36,7 +36,6 @@ static FleCS::ServerPrx* _new_proxy(
 }
 
 
-// endpoint example: "Server:tcp -h meego -p 10000"
 void MasterI::Join(
 		const string& endpoint_,
 		std::vector<std::string>& existingServers,
@@ -45,6 +44,7 @@ void MasterI::Join(
 	IceUtil::Mutex::Lock lock(_lock);
 
 	_LOG(string("endpoint: ") + endpoint_);
+	// endpoint example: "Server:tcp -h meego -p 10000"
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
 	Ice::TCPConnectionInfoPtr tcpInfo = Ice::TCPConnectionInfoPtr::dynamicCast(info);

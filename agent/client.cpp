@@ -1,17 +1,71 @@
-#include <log4cxx/logger.h>
-
 #include <Ice/Ice.h>
 
 #include "agent.h"
+#include "agent-common.h"
 
 using namespace std;
 
-static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("agent.client"));
-#define _LOG(A) LOG4CXX_INFO(logger, (A))
+log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("agent.client"));
 
 
 class AgentClient : public Ice::Application
 {
+public:
+	struct ServerPrx
+	{
+		string _hostname;
+		string _endpoint;
+		Common::AgentPrx _prx;
+		Ice::AsyncResultPtr asr;
+
+		ServerPrx(const string& h)
+			: _hostname(h)
+		{
+			_endpoint = string("agent:tcp -p 10010 -h ") + _hostname;
+
+			// init RPC proxy
+			_prx = Common::AgentPrx::checkedCast(
+					communicator()
+					->stringToProxy(_endpoint)
+					->ice_twoway()
+					->ice_timeout(-1)
+					->ice_secure(false));
+			if(!_prx)
+			{
+				_LOG("invalid proxy");
+				exit(EXIT_FAILURE);
+			}
+			_LOG(("Initialized prx to ") + _hostname);
+		}
+
+
+		void BeginExec()
+		{
+			asr = _prx->begin_Exec("date; sleep 2; date;");
+
+			// TODO: read command from file. (:10) low priority.
+		}
+
+
+		void EndExec()
+		{
+			int ret;
+			string log_filename;
+
+			_prx->end_Exec(ret, log_filename, asr);
+
+			if (ret == -1)
+				_LOG("exec failed.");
+			if (WIFSIGNALED(ret))
+				_LOG("signaled: " << WTERMSIG(ret));
+			if (WEXITSTATUS(ret) != 0)
+				_LOG("exit status: " << WEXITSTATUS(ret));
+
+			_LOG(_hostname + " " + log_filename);
+		}
+	};
+
+
 public:
 	AgentClient() :
 		Ice::Application(Ice::NoSignalHandling)
@@ -23,29 +77,11 @@ public:
 	{
 		_init();
 
-		int ret;
-		string logFile;
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			i->BeginExec();
 
-		// _agent_prx->Exec("date; date;", ret, logFile);
-
-		Ice::AsyncResultPtr asr = _agent_prx->begin_Exec("date; date;");
-
-		// TODO: verify the commands are overlapping by sleeping 10 secs
-		// between the two dates. (:10)
-
-		// TODO: read command from file. (:10)
-		// TODO: load server list from file (:20)
-
-		_agent_prx->end_Exec(ret, logFile, asr);
-
-		if (ret == -1)
-			cout << "exec failed." << "\n";
-
-		if (WIFSIGNALED(ret))
-			cout << "signaled: " << WTERMSIG(ret) << "\n";
-
-		if (WEXITSTATUS(ret) != 0)
-			cout << "exit status: " << WEXITSTATUS(ret) << "\n";
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			i->EndExec();
 
 		return EXIT_SUCCESS;
 	}
@@ -54,26 +90,15 @@ public:
 private:
 	void _init()
 	{
-		string endpoint = "agent:tcp -p 10010 -h polynesia2.cc.gatech.edu";
-
-		// init RPC proxy
-		_agent_prx = Common::AgentPrx::checkedCast(
-				communicator()
-				->stringToProxy(endpoint)
-				->ice_twoway()
-				->ice_timeout(-1)
-				->ice_secure(false));
-		if(!_agent_prx)
-		{
-			_LOG("invalid proxy");
-			exit(EXIT_FAILURE);
-		}
-
-		_LOG("Initialized.");
+		// TODO: load server list from file (:20) low priority.
+		_servers.push_back(ServerPrx("polynesia1.cc.gatech.edu"));
+		_servers.push_back(ServerPrx("polynesia2.cc.gatech.edu"));
+		_servers.push_back(ServerPrx("polynesia4.cc.gatech.edu"));
+		_servers.push_back(ServerPrx("polynesia5.cc.gatech.edu"));
 	}
 
 
-	Common::AgentPrx _agent_prx;
+	vector<ServerPrx> _servers;
 };
 
 

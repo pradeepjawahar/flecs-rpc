@@ -13,7 +13,7 @@
 #include "flecs.h"
 #include "util.h"
 
-#define _LOG(A) LOG4CXX_INFO(logger, (A))
+#define _LOG(A) LOG4CXX_INFO(logger, A)
 
 using namespace std;
 

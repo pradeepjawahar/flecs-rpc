@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define _LOG(A) LOG4CXX_INFO(logger, (A))
+#define _LOG(A) LOG4CXX_INFO(logger, A)
 
 static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("master"));
 

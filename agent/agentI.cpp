@@ -36,7 +36,8 @@ void AgentI::Exec(
 	// This function itself may block while executing... let's see.
 
 	logFile = "/dev/shm/flecs-log/agent-" + cur_datetime();
-	string cmd = "( " + cmd_ + ") >> " + logFile + " 2>&1";
+	string cmd = "echo \"" + cmd_ + "\n\" >> logFile; "
+		"( " + cmd_ + ") >> " + logFile + " 2>&1";
 
 	ret = system(cmd.c_str());
 }

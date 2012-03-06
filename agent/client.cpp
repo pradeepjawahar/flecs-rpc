@@ -39,9 +39,9 @@ public:
 		}
 
 
-		void BeginExec()
+		void BeginExec(const string& cmd)
 		{
-			asr = _prx->begin_Exec("date; sleep 2; date;");
+			asr = _prx->begin_Exec(cmd);
 
 			// TODO: read command from file. (:10) low priority.
 		}
@@ -67,8 +67,7 @@ public:
 
 
 public:
-	AgentClient() :
-		Ice::Application(Ice::NoSignalHandling)
+	AgentClient()
 	{
 	}
 
@@ -77,13 +76,11 @@ public:
 	{
 		try
 		{
+			shutdownOnInterrupt();
+
 			_init();
 
-			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-				i->BeginExec();
-
-			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-				i->EndExec();
+			_RestartAllServices();
 
 			return EXIT_SUCCESS;
 		}
@@ -104,6 +101,26 @@ private:
 		_servers.push_back(ServerPrx("polynesia2.cc.gatech.edu"));
 		_servers.push_back(ServerPrx("polynesia4.cc.gatech.edu"));
 		_servers.push_back(ServerPrx("polynesia5.cc.gatech.edu"));
+	}
+
+
+	void _RestartAllServices()
+	{
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+		{
+			string cmd = "killall -w flecs-server flecs-master flecs-client || true; "
+				"killall -w -s KILL flecs-server flecs-master flecs-client || true; ";
+
+			if (i->_hostname == "polynesia1.cc.gatech.edu")
+				cmd += "cd /dev/shm/work/flecs-rpc/.build/master; ./flecs-master; ";
+
+			cmd += "sleep 1; cd /dev/shm/work/flecs-rpc/.build/server; ./flecs-server; ";
+
+			i->BeginExec(cmd);
+		}
+
+		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			i->EndExec();
 	}
 
 

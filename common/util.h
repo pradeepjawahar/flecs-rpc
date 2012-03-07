@@ -51,6 +51,19 @@ public:
 	}
 
 
+	unsigned int GetMicro()
+	{
+		struct timeval cur;
+
+		if (gettimeofday(&cur, NULL) == -1)
+			throw std::runtime_error("gettimeofday");
+
+		return static_cast<unsigned int> (
+				(cur.tv_sec * 1000000.0 + cur.tv_usec)
+				- (_start.tv_sec * 1000000.0 + _start.tv_usec) );
+	}
+
+
 	void Reset()
 	{
 		if (gettimeofday(&_start, NULL) == -1)

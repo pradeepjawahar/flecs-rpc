@@ -131,7 +131,7 @@ private:
 
 		StopWatch sw;
 		_c2s_prx->Get(obj_name, content);
-		unsigned int laps = sw.GetMilli();
+		unsigned int laps = sw.GetMicro();
 		_LOG("G " << laps << " " << content.size());
 
 		_writefile(obj_name, content);
@@ -181,7 +181,7 @@ private:
 
 		// TODO: parameterize.
 		const long MIN = 100;
-		const long MAX = 1000;
+		const long MAX = 10000;
 
 		static int seqno = 0;
 
@@ -204,7 +204,7 @@ private:
 
 		StopWatch sw;
 		_c2s_prx->Append(filename, content);
-		unsigned int laps = sw.GetMilli();
+		unsigned int laps = sw.GetMicro();
 		_LOG("A " << laps << " " << content.size());
 	}
 

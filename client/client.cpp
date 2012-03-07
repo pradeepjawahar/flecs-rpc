@@ -36,7 +36,7 @@ public:
 		{
 			_init();
 
-			_RandomReadsAppends(0.1, 100);
+			_RandomReadsAppends(0.1, 1000);
 
 			return EXIT_SUCCESS;
 		}
@@ -128,7 +128,11 @@ private:
 		_LOG(obj_name);
 
 		FleCS::ByteSeq content;
+
+		StopWatch sw;
 		_c2s_prx->Get(obj_name, content);
+		unsigned int laps = sw.GetMilli();
+		_LOG("G " << laps << " " << content.size());
 
 		_writefile(obj_name, content);
 	}
@@ -176,8 +180,8 @@ private:
 		_LOG(filename);
 
 		// TODO: parameterize.
-		const long MIN = 10;
-		const long MAX = 100;
+		const long MIN = 100;
+		const long MAX = 1000;
 
 		static int seqno = 0;
 
@@ -198,7 +202,10 @@ private:
 		}
 		content.push_back('\n');
 
+		StopWatch sw;
 		_c2s_prx->Append(filename, content);
+		unsigned int laps = sw.GetMilli();
+		_LOG("A " << laps << " " << content.size());
 	}
 
 

@@ -81,7 +81,7 @@ private:
 
 		if (! file.is_open())
 		{
-			_LOG(string("Unable to open file ") + filename);
+			_LOG("Unable to open file " << filename);
 			exit(EXIT_FAILURE);
 		}
 

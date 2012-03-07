@@ -43,7 +43,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = 0;
 
 	cout << "master started.\n";
 

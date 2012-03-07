@@ -62,8 +62,7 @@ void MasterI::Join(
 
 	if (i != _servers.end())
 	{
-		_LOG("A server with endpoint " << endpoint << " already exist!
-				Replacing with a new one.");
+		_LOG("A server with endpoint " << endpoint << " already exist! Replacing with a new one.");
 
 		// remove old proxy.
 		delete i->second;

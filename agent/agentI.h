@@ -11,6 +11,9 @@ public:
 			int& ret,
 			std::string& logFile,
 			const Ice::Current&);
+
+private:
+	IceUtil::Mutex _lock;
 };
 
 

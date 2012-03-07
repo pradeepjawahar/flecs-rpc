@@ -30,6 +30,8 @@ void AgentI::Exec(
 		std::string& logFile,
 		const Ice::Current&)
 {
+	IceUtil::Mutex::Lock lock(_lock);
+
 	_LOG(cmd_);
 
 	// Allow only one instance of this function by employing a lock?

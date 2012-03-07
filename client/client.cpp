@@ -36,7 +36,7 @@ public:
 		{
 			_init();
 
-			_RandomReadsAppends(0.1, 1000);
+			_RandomReadsAppends(0.1, 5000);
 
 			return EXIT_SUCCESS;
 		}

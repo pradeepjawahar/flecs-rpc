@@ -131,7 +131,7 @@ private:
 		{
 			if (i->_hostname == "polynesia1.cc.gatech.edu")
 			{
-				string cmd = "touch /dev/shm/work/flecs-rpc/.build/master/master.trigger; ";
+				string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.master; ";
 				i->BeginExec(cmd);
 				i->EndExec();
 			}
@@ -143,7 +143,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/work/flecs-rpc/.build/server/server.trigger; ";
+		string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.server; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->BeginExec(cmd);
@@ -157,7 +157,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/work/flecs-rpc/.build/client/client.trigger; ";
+		string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			if (i->_hostname == "polynesia1.cc.gatech.edu")

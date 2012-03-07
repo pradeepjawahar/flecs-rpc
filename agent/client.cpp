@@ -60,7 +60,7 @@ public:
 			if (WEXITSTATUS(ret) != 0)
 				_LOG("exit status: " << WEXITSTATUS(ret));
 
-			_LOG(_hostname + " " + log_filename);
+			_LOG(_hostname << " " << log_filename);
 		}
 	};
 

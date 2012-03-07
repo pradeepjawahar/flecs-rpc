@@ -37,7 +37,7 @@ void FleCS::ServerImpl::AddServers(
 			_LOG("AddServers:");
 
 		AddServer(*i, comm);
-		_LOG(string("  ") + *i);
+		_LOG("  " <<  *i);
 	}
 }
 
@@ -51,7 +51,7 @@ void FleCS::ServerImpl::AddServer(
 
 	if (i != _servers.end())
 	{
-		_LOG(string("A server with endpoint ") + endpoint + " already exist! Replacing with a new one.");
+		_LOG("A server with endpoint " << endpoint << " already exist! Replacing with a new one.");
 
 		// remove old proxy.
 		delete i->second;

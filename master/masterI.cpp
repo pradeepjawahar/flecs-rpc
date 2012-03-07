@@ -43,7 +43,7 @@ void MasterI::Join(
 {
 	IceUtil::Mutex::Lock lock(_lock);
 
-	_LOG(string("endpoint: ") + endpoint_);
+	_LOG("endpoint: " << endpoint_);
 	// endpoint example: "Server:tcp -h meego -p 10000"
 
 	Ice::ConnectionInfoPtr info = cur.con->getInfo();
@@ -62,8 +62,8 @@ void MasterI::Join(
 
 	if (i != _servers.end())
 	{
-		_LOG(string("A server with endpoint ") + endpoint
-				+ " already exist! Replacing with a new one.");
+		_LOG("A server with endpoint " << endpoint << " already exist!
+				Replacing with a new one.");
 
 		// remove old proxy.
 		delete i->second;
@@ -74,7 +74,7 @@ void MasterI::Join(
 	// notify all other servers.
 	for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 	{
-		_LOG(string("  ") + i->first);
+		_LOG("  " << i->first);
 
 		if (i->first == endpoint)
 			continue;

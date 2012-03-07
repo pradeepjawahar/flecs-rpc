@@ -15,7 +15,8 @@ TERM=linux
 
 hostname
 
-killall -w flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher || true
+killall flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher || true
+sleep 1
 killall -w -s KILL flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher || true
 
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64

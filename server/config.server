@@ -47,3 +47,6 @@ Ice.Warn.Connections=1
 # IceSSL.CertAuthFile=cacert.pem
 # IceSSL.CertFile=s_rsa1024_pub.pem
 # IceSSL.KeyFile=s_rsa1024_priv.pem
+
+# 100MB
+Ice.MessageSizeMax=102400

@@ -1,11 +1,3 @@
-#include <fstream>
-#include <string>
-#include <vector>
-
-#include <boost/tokenizer.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/asio/ip/host_name.hpp>
-
 #include <Ice/Ice.h>
 
 #include <log4cxx/logger.h>
@@ -26,7 +18,6 @@ public:
     FleCSClient() :
 		Ice::Application(Ice::NoSignalHandling)
 	{
-		_hostname = boost::asio::ip::host_name();
 	}
 
 
@@ -73,49 +64,7 @@ private:
 	}
 
 
-	void _load_filelist()
-	{
-		const char* filename = "/usr/local/flecs/no-cnst-filelist";
-
-		ifstream file(filename, ios::in);
-
-		if (! file.is_open())
-		{
-			_LOG("Unable to open file " << filename);
-			exit(EXIT_FAILURE);
-		}
-
-		while (file.good())
-		{
-			string line;
-			getline(file, line);
-
-			if (! file.eof())
-			{
-				typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-				boost::char_separator<char> sep(" ");
-				tokenizer tokens(line, sep);
-
-				string filename;
-
-				int j = 0;
-				for (tokenizer::iterator i = tokens.begin(); i != tokens.end(); ++ i, ++ j)
-				{
-					if (j == 1)
-						filename = *i;
-				}
-
-				_filelist.push_back(filename);
-			}
-		}
-
-		file.close();
-	}
-
-
 	FleCS::C2SPrx _c2s_prx;
-	vector<string> _filelist;
-	string _hostname;
 };
 
 

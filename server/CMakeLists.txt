@@ -11,7 +11,7 @@ SET_SOURCE_FILES_PROPERTIES(
 ADD_EXECUTABLE ( flecs-server
 		${CMAKE_CURRENT_BINARY_DIR}/../interface/flecs.cpp
 		../common/util.cpp
-		main.cpp server-common.cpp c2sI.cpp serverI.cpp )
+		main.cpp server-common.cpp c2sI.cpp serverI.cpp container.cpp )
 
 TARGET_LINK_LIBRARIES (flecs-server Ice IceUtil ${Boost_LIBRARIES} log4cxx)
 
@@ -20,3 +20,13 @@ ADD_DEPENDENCIES ( flecs-server gen_rpc_interface )
 
 CONFIGURE_FILE (config.server ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 CONFIGURE_FILE (log4j.properties ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
+
+
+# Container plugins.
+
+FOREACH ( CONTAINER_PLUGIN
+		rep-no-const )
+
+ADD_LIBRARY ( flecs-container-${CONTAINER_PLUGIN} MODULE container-${CONTAINER_PLUGIN}.cpp )
+
+ENDFOREACH ( CONTAINER_PLUGIN )

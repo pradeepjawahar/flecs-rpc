@@ -29,7 +29,7 @@ public:
 
 			FleCS::ByteSeq content;
 
-			_c2s_prx->Get("00000001/00000001/00000001", content);
+			_c2s_prx->Get("rep-no-const", "00000001/00000001/00000001", content);
 
 			_writefile("abc", content);
 

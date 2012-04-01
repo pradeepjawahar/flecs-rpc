@@ -9,24 +9,26 @@ using namespace std;
 
 
 void ServerI::Put(
+		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
 	_LOG(objID);
 
-	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
+	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 }
 
 
 void ServerI::Append(
+		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
 	_LOG(objID);
 
-	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + objID).c_str(), content);
+	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 }
 
 

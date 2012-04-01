@@ -11,10 +11,10 @@ module FleCS
 	// Client-to-server
 	interface C2S
 	{
-		// TODO: Add version as a parameter. A simple scalar value will do? or vector?
-		void Get(string objID, out ByteSeq content);
-		void Put(string objID, ByteSeq content);
-		void Append(string objID, ByteSeq content);
+		// TODO: Add version as a parameter. A simple scalar value will do? or a vector clock?
+		void Get(string bucketID, string objID, out ByteSeq content);
+		void Put(string bucketID, string objID, ByteSeq content);
+		void Append(string bucketID, string objID, ByteSeq content);
 	};
 
 
@@ -22,8 +22,8 @@ module FleCS
 	interface Server
 	{
 		// Server to server
-		void Put(string objID, ByteSeq content);
-		void Append(string objID, ByteSeq content);
+		void Put(string bucketID, string objID, ByteSeq content);
+		void Append(string bucketID, string objID, ByteSeq content);
 
 		// Master to server notification
 		void ServerJoined(string endpoint);

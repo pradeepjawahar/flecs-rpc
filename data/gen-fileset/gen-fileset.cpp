@@ -21,7 +21,7 @@ void _create_directories(const string& dir);
 
 
 const char* FILELIST = "../../../data/gen-fileset/filelist-size";
-const string OUTPUT_DIR = "/usr/local/flecs/no-cnst";
+const string OUTPUT_DIR = "/usr/local/flecs/rep-no-const";
 
 vector<pair<string, int> > name_size_list;
 

@@ -61,7 +61,7 @@ void FleCS::ServerImpl::AddServer(
 }
 
 
-const char* FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs/no-cnst";
+const char* FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs";
 
 
 // TODO: When to delete a proxy? Unless server serializes access to the proxy

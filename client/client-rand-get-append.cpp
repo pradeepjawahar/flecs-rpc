@@ -119,7 +119,7 @@ private:
 
 		_readfile(obj_name, content);
 
-		_c2s_prx->Put(obj_name, content);
+		_c2s_prx->Put(_bucket_name, obj_name, content);
 	}
 
 
@@ -130,7 +130,7 @@ private:
 		FleCS::ByteSeq content;
 
 		StopWatch sw;
-		_c2s_prx->Get(obj_name, content);
+		_c2s_prx->Get(_bucket_name, obj_name, content);
 		unsigned int laps = sw.GetMicro();
 		_LOG("G " << laps << " " << content.size());
 
@@ -203,7 +203,7 @@ private:
 		content.push_back('\n');
 
 		StopWatch sw;
-		_c2s_prx->Append(filename, content);
+		_c2s_prx->Append(_bucket_name, filename, content);
 		unsigned int laps = sw.GetMicro();
 		_LOG("A " << laps << " " << content.size());
 	}
@@ -212,7 +212,12 @@ private:
 	FleCS::C2SPrx _c2s_prx;
 	vector<string> _filelist;
 	string _hostname;
+
+	static const char* _bucket_name;
 };
+
+
+const char* FleCSClient::_bucket_name = "rep-no-const";
 
 
 int main(int argc, char* argv[])

@@ -8,11 +8,13 @@ class ServerI : public FleCS::Server
 {
 public:
 	virtual void Put(
+			const std::string& bucketID,
 			const std::string& objID,
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);
 
 	virtual void Append(
+			const std::string& bucketID,
 			const std::string& objID,
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);

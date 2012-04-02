@@ -3,11 +3,13 @@
 set -e
 set -u
 
-USER=hyoon45
+#USER=hyoon45
+USER=hobin
 
-for i in 1 2 4 5
+for i in 1 2 5
 do
-HOSTNAME="polynesia"$i".cc.gatech.edu"
+#HOSTNAME="polynesia"$i".cc.gatech.edu"
+HOSTNAME="flecs"$i"0"
 
 ssh -A $USER@$HOSTNAME <<!
 
@@ -19,10 +21,10 @@ killall flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher
 sleep 1
 killall -w -s KILL flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher || true
 
-export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-cd /dev/shm/work/flecs-rpc/.build/agent
+export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64
+cd /dev/shm/flecs-rpc/.build/agent
 ./flecs-agent-server
-cd /dev/shm/work/flecs-rpc/.build/launcher
+cd /dev/shm/flecs-rpc/.build/launcher
 ./flecs-launcher
 
 echo

@@ -100,11 +100,10 @@ public:
 private:
 	void _init()
 	{
-		// TODO: load server list from file (:20) low priority.
-		_servers.push_back(ServerPrx("polynesia1.cc.gatech.edu"));
-		_servers.push_back(ServerPrx("polynesia2.cc.gatech.edu"));
-		_servers.push_back(ServerPrx("polynesia4.cc.gatech.edu"));
-		_servers.push_back(ServerPrx("polynesia5.cc.gatech.edu"));
+		_servers.push_back(ServerPrx("flecs10"));
+		_servers.push_back(ServerPrx("flecs20"));
+		// _servers.push_back(ServerPrx("flecs40"));
+		_servers.push_back(ServerPrx("flecs50"));
 	}
 
 
@@ -129,7 +128,7 @@ private:
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 		{
-			if (i->_hostname == "polynesia1.cc.gatech.edu")
+			if (i->_hostname == "flecs10")
 			{
 				string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.master; ";
 				i->BeginExec(cmd);
@@ -160,11 +159,11 @@ private:
 		string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if (i->_hostname == "polynesia1.cc.gatech.edu")
+			if (i->_hostname == "flecs10")
 				i->BeginExec(cmd);
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if (i->_hostname == "polynesia1.cc.gatech.edu")
+			if (i->_hostname == "flecs10")
 				i->EndExec();
 	}
 

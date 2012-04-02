@@ -24,9 +24,11 @@ CONFIGURE_FILE (log4j.properties ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 
 # Container plugins.
 
-FOREACH ( CONTAINER_PLUGIN
-		rep-no-const )
+FOREACH (CONTAINER_PLUGIN
+		rep-no-const)
 
-ADD_LIBRARY ( flecs-container-${CONTAINER_PLUGIN} MODULE container-${CONTAINER_PLUGIN}.cpp )
+ADD_LIBRARY (flecs-container-${CONTAINER_PLUGIN} MODULE container-${CONTAINER_PLUGIN}.cpp)
 
-ENDFOREACH ( CONTAINER_PLUGIN )
+ADD_DEPENDENCIES (flecs-container-${CONTAINER_PLUGIN} gen_rpc_interface)
+
+ENDFOREACH (CONTAINER_PLUGIN)

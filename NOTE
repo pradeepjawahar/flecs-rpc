@@ -1,1 +1,6 @@
 Add . (current directory) to LD_LIBRARY_PATH to load container plugins.
+
+
+TODOs
+-----
+* let launcher load command from files, not hard-code. (:20)

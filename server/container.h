@@ -17,8 +17,28 @@ public:
 		const std::string& bucketID,
 		const std::string& objID,
 		FleCS::ByteSeq& content) = 0;
+
+	virtual void C2S_Put(
+		const std::string& bucketID,
+		const std::string& objID,
+		const FleCS::ByteSeq& content) = 0;
+
+	virtual void C2S_Append(
+		const std::string& bucketID,
+		const std::string& objID,
+		const FleCS::ByteSeq& content) = 0;
+
+	virtual void Server_Put(
+		const std::string& bucketID,
+		const std::string& objID,
+		const FleCS::ByteSeq& content) = 0;
+
+	virtual void Server_Append(
+		const std::string& bucketID,
+		const std::string& objID,
+		const FleCS::ByteSeq& content) = 0;
 };
-	
+
 
 class ContainerMgr
 {

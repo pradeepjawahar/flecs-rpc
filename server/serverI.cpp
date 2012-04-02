@@ -1,9 +1,9 @@
-#include <IceUtil/IceUtil.h>
 #include <Ice/Ice.h>
 
 #include "serverI.h"
 #include "util.h"
 #include "server-common.h"
+#include "container.h"
 
 using namespace std;
 
@@ -14,9 +14,10 @@ void ServerI::Put(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	_LOG(objID);
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
 
-	_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+	c.Server_Put(bucketID, objID, content);
 }
 
 
@@ -26,9 +27,10 @@ void ServerI::Append(
 		const FleCS::ByteSeq& content,
 		const Ice::Current&)
 {
-	_LOG(objID);
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
 
-	_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+	c.Server_Append(bucketID, objID, content);
 }
 
 

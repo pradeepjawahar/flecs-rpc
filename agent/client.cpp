@@ -111,8 +111,8 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "killall -w flecs-server flecs-master flecs-client || true; "
-			"killall -w -s KILL flecs-server flecs-master flecs-client || true; ";
+		string cmd = "killall -w flecs-server flecs-master flecs-client* || true; "
+			"killall -w -s KILL flecs-server flecs-master flecs-client* || true; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->BeginExec(cmd);
@@ -130,7 +130,7 @@ private:
 		{
 			if (i->_hostname == "flecs10")
 			{
-				string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.master; ";
+				string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.master; ";
 				i->BeginExec(cmd);
 				i->EndExec();
 			}
@@ -142,7 +142,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.server; ";
+		string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.server; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->BeginExec(cmd);
@@ -156,7 +156,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/work/flecs-rpc/.build/launcher/flecs.trigger.client; ";
+		string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			if (i->_hostname == "flecs10")

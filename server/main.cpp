@@ -127,8 +127,7 @@ int main(int argc, char* argv[])
 	parse_args(argc, argv);
 
 	cout << "server started.\n";
-
-	cout << povm["master"].as<string>() << "\n";
+	cout << "  master: " << povm["master"].as<string>() << "\n";
 
 	if (daemon(1, 0) == -1)
 	{

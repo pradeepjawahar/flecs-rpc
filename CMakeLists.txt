@@ -8,7 +8,7 @@ LIST (APPEND CMAKE_CXX_FLAGS "-Wall -Werror")
 #SET (CMAKE_BUILD_TYPE Debug)
 
 FIND_PACKAGE(Boost
-		COMPONENTS filesystem system
+		COMPONENTS filesystem system program_options
 		REQUIRED)
 
 ADD_SUBDIRECTORY (interface)

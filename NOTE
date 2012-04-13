@@ -1,5 +1,8 @@
 Add . (current directory) to LD_LIBRARY_PATH to load container plugins.
 
+flecs-server takes the location of the master as a parameter. For example:
+  ./flecs-server --master flecs60
+
 
 TODOs
 -----

@@ -1,3 +1,4 @@
+#include <boost/program_options.hpp>
 #include <Ice/Ice.h>
 
 #include "server-common.h"
@@ -6,6 +7,8 @@
 #include "serverI.h"
 
 using namespace std;
+
+boost::program_options::variables_map povm;
 
 
 class FleCSServer : public Ice::Application
@@ -46,7 +49,7 @@ public:
 
 			FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
 					communicator()
-					->propertyToProxy("FleCS_master.Proxy")
+					->stringToProxy(string("master:tcp -p 10001 -h ") + povm["master"].as<string>())
 					->ice_twoway()
 					->ice_timeout(-1)
 					->ice_secure(false));
@@ -85,11 +88,47 @@ public:
 };
 
 
+void parse_args(int argc, char* argv[])
+{
+	namespace po_ = boost::program_options;
+
+	po_::options_description visible("Options");
+	visible.add_options()
+		("master", po_::value<string>(), "master hostname")
+		("help", "produce help message")
+		;
+
+	po_::options_description cmdline_opt;
+	cmdline_opt.add(visible);
+
+	po_::store(po_::command_line_parser(argc, argv).
+			options(cmdline_opt).run(), povm);
+	po_::notify(povm);
+
+	if (povm.count("help"))
+	{
+		cout << visible << "\n";
+		exit(EXIT_SUCCESS);
+	}
+
+	if (povm.count("master") == 0)
+	{
+		cout << "You need to specify master.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = 1;
+
+	parse_args(argc, argv);
 
 	cout << "server started.\n";
+
+	cout << povm["master"].as<string>() << "\n";
 
 	if (daemon(1, 0) == -1)
 	{

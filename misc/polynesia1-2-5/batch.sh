@@ -13,7 +13,7 @@ fi
 USER=$1
 CMD=$2
 
-for i in 1 2 4 5
+for i in 1 2 5
 do
 HOSTNAME="polynesia"$i".cc.gatech.edu"
 

@@ -214,7 +214,8 @@ int main()
 	w.Add("flecs.trigger.master", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/master; ./flecs-master;");
 	w.Add("flecs.trigger.server", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/server; ./flecs-server --master flecs10;");
 	w.Add("flecs.trigger.client", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/client; ./flecs-client-rand-get-append;");
-	w.Add("flecs.trigger.regen-fileset", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; rm -rf /usr/local/flecs/*; cd /dev/shm/flecs-rpc/.build/data/gen-fileset; ./gen-fileset;");
+	w.Add("flecs.trigger.regen-fileset", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; rm -rf /usr/local/flecs/*; cd /dev/shm/flecs-rpc/.build/data/gen-fileset; ./gen-fileset --dist uniform;");
+	//w.Add("flecs.trigger.regen-fileset", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; rm -rf /usr/local/flecs/*; cd /dev/shm/flecs-rpc/.build/data/gen-fileset; ./gen-fileset --dist zifian;");
 
 	w.Watch();
 

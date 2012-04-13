@@ -11,6 +11,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 using namespace std;
 using namespace boost;
@@ -24,6 +25,8 @@ const char* FILELIST = "../../../data/gen-fileset/filelist-size";
 const string OUTPUT_DIR = "/usr/local/flecs/rep-no-const";
 
 vector<pair<string, int> > name_size_list;
+
+boost::program_options::variables_map povm;
 
 
 void read_file_name_size()
@@ -77,7 +80,12 @@ void create_files()
 		// cout << i->first << " " << i->second << "\n";
 
 		string filename = OUTPUT_DIR + "/" + i->first;
-		int filesize = i->second;
+		int filesize = 0;
+
+		if (povm["dist"].as<string>() == "zifian")
+			filesize = i->second;
+		else if (povm["dist"].as<string>() == "uniform")
+			filesize = 10240;	// 10KB
 
 		_create_parent_directories(filename.c_str());
 
@@ -132,8 +140,42 @@ void _create_directories(const string& dir)
 }
 
 
+void parse_args(int argc, char* argv[])
+{
+	namespace po_ = boost::program_options;
+
+	po_::options_description visible("Options");
+	visible.add_options()
+		("dist", po_::value<string>(), "file size distribution. either zifian or uniform.")
+		("help", "produce help message")
+		;
+
+	po_::options_description cmdline_opt;
+	cmdline_opt.add(visible);
+
+	po_::store(po_::command_line_parser(argc, argv).
+			options(cmdline_opt).run(), povm);
+	po_::notify(povm);
+
+	if (povm.count("help"))
+	{
+		cout << visible << "\n";
+		exit(EXIT_SUCCESS);
+	}
+
+	if (povm.count("dist") == 0)
+	{
+		cout << "You need to specify a distribution.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+
 int main(int argc, char* argv[])
 {
+	parse_args(argc, argv);
+
 	read_file_name_size();
 	
 	create_files();

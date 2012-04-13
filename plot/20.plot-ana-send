@@ -7,4 +7,4 @@ gnuplot plot-perf-by-num-servers.gnuplot
 
 SCP_DEST=hobin@localhost:
 
-scp -P 20022 g-a-perf-*.png g-a-perf-*.pdf $SCP_DEST
+scp -P 20022 *.png *.pdf $SCP_DEST

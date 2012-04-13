@@ -1,3 +1,4 @@
+#include <boost/program_options.hpp>
 #include <Ice/Ice.h>
 
 #include "agent.h"
@@ -6,6 +7,8 @@
 using namespace std;
 
 log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("agent.client"));
+
+boost::program_options::variables_map povm;
 
 
 class AgentClient : public Ice::Application
@@ -41,8 +44,6 @@ public:
 		void BeginExec(const string& cmd)
 		{
 			_arp = _prx->begin_Exec(cmd);
-
-			// TODO: read command from file. (:10) low priority.
 		}
 
 
@@ -100,10 +101,18 @@ public:
 private:
 	void _init()
 	{
-		_servers.push_back(ServerPrx("flecs10"));
-		_servers.push_back(ServerPrx("flecs20"));
-		// _servers.push_back(ServerPrx("flecs40"));
-		_servers.push_back(ServerPrx("flecs50"));
+		if (povm["cluster"].as<string>() == "polynesia")
+		{
+			_servers.push_back(ServerPrx("polynesia1.cc.gatech.edu"));
+			_servers.push_back(ServerPrx("polynesia2.cc.gatech.edu"));
+			_servers.push_back(ServerPrx("polynesia5.cc.gatech.edu"));
+		}
+		else if (povm["cluster"].as<string>() == "flecsx0")
+		{
+			_servers.push_back(ServerPrx("flecs10"));
+			_servers.push_back(ServerPrx("flecs20"));
+			_servers.push_back(ServerPrx("flecs50"));
+		}
 	}
 
 
@@ -128,7 +137,10 @@ private:
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 		{
-			if (i->_hostname == "flecs10")
+			if ((povm["cluster"].as<string>() == "polynesia"
+					&& i->_hostname == "polynesia1.cc.gatech.edu")
+					|| (povm["cluster"].as<string>() == "flecsx0"
+					&& i->_hostname == "flecs10"))
 			{
 				string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.master; ";
 				i->BeginExec(cmd);
@@ -159,11 +171,17 @@ private:
 		string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if (i->_hostname == "flecs10")
+			if ((povm["cluster"].as<string>() == "polynesia"
+					&& i->_hostname == "polynesia1.cc.gatech.edu")
+					|| (povm["cluster"].as<string>() == "flecsx0"
+					&& i->_hostname == "flecs10"))
 				i->BeginExec(cmd);
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if (i->_hostname == "flecs10")
+			if ((povm["cluster"].as<string>() == "polynesia"
+						&& i->_hostname == "polynesia1.cc.gatech.edu")
+					|| (povm["cluster"].as<string>() == "flecsx0"
+						&& i->_hostname == "flecs10"))
 				i->EndExec();
 	}
 
@@ -172,13 +190,48 @@ private:
 };
 
 
+void parse_args(int argc, char* argv[])
+{
+	namespace po_ = boost::program_options;
+
+	po_::options_description visible("Options");
+	visible.add_options()
+		("cluster", po_::value<string>(), "e.g., polynesia or flecsx0")
+		("help", "produce help message")
+		;
+
+	po_::options_description cmdline_opt;
+	cmdline_opt.add(visible);
+
+	po_::store(po_::command_line_parser(argc, argv).
+			options(cmdline_opt).run(), povm);
+	po_::notify(povm);
+
+	if (povm.count("help"))
+	{
+		cout << visible << "\n";
+		exit(EXIT_SUCCESS);
+	}
+
+	if (povm.count("cluster") == 0)
+	{
+		cout << "You need to specify master.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = EXIT_FAILURE;
+
+	parse_args(argc, argv);
 
 	try
 	{
 		_LOG("Client starting...");
+		_LOG("  cluster: " << povm["cluster"].as<string>());
 
 		AgentClient app;
 		rc = app.main(argc, argv, "config.agent.client");

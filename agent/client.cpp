@@ -215,7 +215,7 @@ void parse_args(int argc, char* argv[])
 
 	if (povm.count("cluster") == 0)
 	{
-		cout << "You need to specify master.\n\n";
+		cout << "You need to specify a cluster.\n\n";
 		cout << visible << "\n";
 		exit(EXIT_FAILURE);
 	}

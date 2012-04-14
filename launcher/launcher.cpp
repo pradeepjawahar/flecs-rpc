@@ -11,6 +11,8 @@
 
 #include <log4cxx/logger.h>
 
+#include "util.h"
+
 using namespace std;
 
 log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("flecs.launcher"));
@@ -89,7 +91,7 @@ public:
 	}
 
 
-	void Add(const char* filename, const char* cmd)
+	void Add(const char* filename)
 	{
 		int wd = inotify_add_watch(_fd, filename, IN_CLOSE_WRITE);
 		if (wd == -1)
@@ -97,6 +99,10 @@ public:
 			perror("inotify_add_watch");
 			exit(1);
 		}
+
+		string cmd;
+
+		_readfile(filename, cmd);
 
 		WatchEntry we(wd, filename, cmd);
 		_wds[wd] = we;
@@ -210,13 +216,11 @@ int main()
 	_LOG("launcher starting...");
 
 	Watcher w;
-	w.Add("flecs.trigger.agent", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/agent; ./flecs-agent-server;");
-	w.Add("flecs.trigger.master", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/master; ./flecs-master;");
-	w.Add("flecs.trigger.server", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/server; ./flecs-server --master flecs10;");
-	w.Add("flecs.trigger.client", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; cd /dev/shm/flecs-rpc/.build/client; ./flecs-client-rand-get-append;");
-	w.Add("flecs.trigger.regen-fileset", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; rm -rf /usr/local/flecs/*; cd /dev/shm/flecs-rpc/.build/data/gen-fileset; ./gen-fileset --dist uniform;");
-	//w.Add("flecs.trigger.regen-fileset", "export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; rm -rf /usr/local/flecs/*; cd /dev/shm/flecs-rpc/.build/data/gen-fileset; ./gen-fileset --dist zifian;");
-
+	w.Add("flecs.trigger.agent");
+	w.Add("flecs.trigger.master");
+	w.Add("flecs.trigger.server");
+	w.Add("flecs.trigger.client");
+	w.Add("flecs.trigger.regen-fileset");
 	w.Watch();
 
 	_LOG("launcher ended.");

@@ -37,7 +37,7 @@ void AgentI::Exec(
 	// Allow only one instance of this function by employing a lock?
 	// This function itself may block while executing... let's see.
 
-	logFile = "/dev/shm/flecs-log/agent-" + cur_datetime();
+	logFile = "/dev/shm/flecs/log/agent-" + cur_datetime();
 	string cmd = "echo \"" + cmd_ + "\n\" >> logFile; "
 		"( " + cmd_ + ") >> " + logFile + " 2>&1";
 

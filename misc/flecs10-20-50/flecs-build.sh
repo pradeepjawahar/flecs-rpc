@@ -17,15 +17,16 @@ TERM=linux
 
 hostname
 
-cd /dev/shm
+mkdir -p /dev/shm/flecs
+cd /dev/shm/flecs
 
-if [ ! -d /dev/shm/flecs-rpc ]
+if [ ! -d /dev/shm/flecs/src ]
 then
-git clone ssh://hyoon45@killerbee1.cc.gatech.edu/~/www/code/flecs-rpc
+git clone ssh://hyoon45@killerbee1.cc.gatech.edu/~/www/code/flecs-rpc src
 fi
 
-mkdir -p /dev/shm/flecs-rpc/.build
-cd /dev/shm/flecs-rpc/.build
+mkdir -p /dev/shm/flecs/src/.build
+cd /dev/shm/flecs/src/.build
 
 git pull
 echo

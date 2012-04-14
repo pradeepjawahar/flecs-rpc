@@ -61,15 +61,11 @@ void FleCS::ServerImpl::AddServer(
 }
 
 
-const char* FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs";
+const char* FleCS::ServerImpl::stg_root_dir = NULL;
 
 
-// TODO: When to delete a proxy? Unless server serializes access to the proxy
-// lists or keep track of reference counter, it won't be safe to delete a
-// proxy.
-//
-// Serialization is bad for scalability. Reference counting seems a little
-// better. Not implemented yet.
+// TODO: Delete proxies to other servers. After app.main(). Need to test if
+// they can be safely released.
 std::map<std::string, FleCS::ServerPrx*> FleCS::ServerImpl::_servers;
 
 

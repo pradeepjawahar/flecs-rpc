@@ -16,6 +16,13 @@ class FleCSServer : public Ice::Application
 public:
 	FleCSServer()
 	{
+		if (povm["storage"].as<string>() == "disk")
+			FleCS::ServerImpl::stg_root_dir = "/usr/local/flecs/data";
+		else if (povm["storage"].as<string>() == "memory")
+			FleCS::ServerImpl::stg_root_dir = "/dev/shm/flecs/data";
+		else
+			throw runtime_error(string("Unknown storage: ") + FleCS::ServerImpl::stg_root_dir);
+
 		// create server root dir
 		_create_directories(FleCS::ServerImpl::stg_root_dir);
 	}
@@ -43,9 +50,6 @@ public:
 			//   server --(join)--> master --(notify)--> all other servers.
 			//
 			// Master needs to make sure that join service is serialized.
-			//
-			// If server empolyes multiple thread with a separate dispatch thread,
-			// there won't be a deadlock in any case.
 
 			FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
 					communicator()
@@ -95,6 +99,7 @@ void parse_args(int argc, char* argv[])
 	po_::options_description visible("Options");
 	visible.add_options()
 		("master", po_::value<string>(), "master hostname")
+		("storage", po_::value<string>(), "disk or memory")
 		("help", "produce help message")
 		;
 
@@ -122,7 +127,7 @@ void parse_args(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	int rc = 1;
+	int rc = EXIT_FAILURE;
 
 	parse_args(argc, argv);
 

@@ -22,7 +22,6 @@ void _create_directories(const string& dir);
 
 
 const char* FILELIST = "../../../data/gen-fileset/filelist-size";
-const string OUTPUT_DIR = "/usr/local/flecs/rep-no-const";
 
 vector<pair<string, int> > name_size_list;
 
@@ -75,11 +74,19 @@ void read_file_name_size()
 
 void create_files()
 {
+	string output_dir;
+	if (povm["storage"].as<string>() == "disk")
+		output_dir = "/usr/local/flecs/data/rep-no-const";
+	else if (povm["storage"].as<string>() == "memory")
+		output_dir = "/dev/shm/flecs/data/rep-no-const";
+	else
+		throw runtime_error(string("Unknown storage: ") + povm["storage"].as<string>());
+
 	for (vector<pair<string, int> >::iterator i = name_size_list.begin(); i != name_size_list.end(); ++ i)
 	{
 		// cout << i->first << " " << i->second << "\n";
 
-		string filename = OUTPUT_DIR + "/" + i->first;
+		string filename = output_dir + "/" + i->first;
 		int filesize = 0;
 
 		if (povm["dist"].as<string>() == "zifian")
@@ -113,7 +120,7 @@ void create_files()
 
 	// copy file list
 	using namespace boost::filesystem;
-	copy_file(FILELIST, OUTPUT_DIR + "/../no-cnst-filelist", copy_option::overwrite_if_exists);
+	copy_file(FILELIST, output_dir + "/../rep-no-cnst-filelist", copy_option::overwrite_if_exists);
 }
 
 
@@ -146,6 +153,7 @@ void parse_args(int argc, char* argv[])
 
 	po_::options_description visible("Options");
 	visible.add_options()
+		("storage", po_::value<string>()->default_value("disk"), "disk or memory.")
 		("dist", po_::value<string>(), "file size distribution. either zifian or uniform.")
 		("help", "produce help message")
 		;

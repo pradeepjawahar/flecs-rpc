@@ -12,6 +12,10 @@ void _readfile(
 		const char* filename,
 		std::vector<unsigned char>& content);
 
+void _readfile(
+		const char* filename,
+		std::string& content);
+
 void _writefile(
 		const char* filename,
 		const std::vector<unsigned char>& content);

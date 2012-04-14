@@ -10,10 +10,7 @@
 
 using namespace std;
 
-// TODO: generate flecs exceptions instead of boolean value.
-//  FleCS::Error
-//  FleCS::Error::Client
-//  FleCS::Error::Server
+
 void _readfile(
 		const char* filename,
 		vector<unsigned char>& content)
@@ -29,8 +26,33 @@ void _readfile(
 	char* memblock;
 	memblock = new char [size];
 
-	file.seekg (0, ios::beg);
-	file.read (memblock, size);
+	file.seekg(0, ios::beg);
+	file.read(memblock, size);
+	file.close();
+
+	content.insert(content.begin(), memblock, memblock + size);
+
+	delete[] memblock;
+}
+
+
+void _readfile(
+		const char* filename,
+		string& content)
+{
+	ifstream file(filename, ios::in | ios::ate);
+
+	if (! file.is_open())
+		throw runtime_error(string("Unable to open file ") + filename);
+
+	ifstream::pos_type size;
+	size = file.tellg();
+
+	char* memblock;
+	memblock = new char [size];
+
+	file.seekg(0, ios::beg);
+	file.read(memblock, size);
 	file.close();
 
 	content.insert(content.begin(), memblock, memblock + size);

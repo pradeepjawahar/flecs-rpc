@@ -253,7 +253,7 @@ void parse_args(int argc, char* argv[])
 		exit(EXIT_SUCCESS);
 	}
 
-	if (povm.count("master") == 0)
+	if (povm.count("dist") == 0)
 	{
 		cout << "You need to specify a distribution.\n\n";
 		cout << visible << "\n";

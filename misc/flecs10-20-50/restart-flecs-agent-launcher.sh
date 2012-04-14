@@ -22,9 +22,9 @@ sleep 1
 killall -w -s KILL flecs-agent-server flecs-server flecs-master flecs-client flecs-launcher || true
 
 export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64
-cd /dev/shm/flecs-rpc/.build/agent
+cd /dev/shm/flecs/src/.build/agent
 ./flecs-agent-server
-cd /dev/shm/flecs-rpc/.build/launcher
+cd /dev/shm/flecs/src/.build/launcher
 ./flecs-launcher
 
 echo

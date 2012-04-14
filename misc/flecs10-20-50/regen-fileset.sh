@@ -17,7 +17,7 @@ TERM=linux
 
 hostname
 
-touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.regen-fileset
+touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.regen-fileset
 
 echo
 

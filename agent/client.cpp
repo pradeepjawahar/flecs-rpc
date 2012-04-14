@@ -142,7 +142,7 @@ private:
 					|| (povm["cluster"].as<string>() == "flecsx0"
 					&& i->_hostname == "flecs10"))
 			{
-				string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.master; ";
+				string cmd = "touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.master; ";
 				i->BeginExec(cmd);
 				i->EndExec();
 			}
@@ -154,7 +154,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.server; ";
+		string cmd = "touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.server; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			i->BeginExec(cmd);
@@ -168,7 +168,7 @@ private:
 	{
 		_LOG("");
 
-		string cmd = "touch /dev/shm/flecs-rpc/.build/launcher/flecs.trigger.client; ";
+		string cmd = "touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			if ((povm["cluster"].as<string>() == "polynesia"

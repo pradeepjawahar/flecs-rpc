@@ -5,6 +5,7 @@
 #include <boost/tokenizer.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/asio/ip/host_name.hpp>
+#include <boost/program_options.hpp>
 
 #include <Ice/Ice.h>
 
@@ -18,6 +19,8 @@
 using namespace std;
 
 static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("client"));
+
+boost::program_options::variables_map povm;
 
 
 class FleCSClient : public Ice::Application
@@ -165,7 +168,7 @@ private:
 				// store, not a key-value store. Or a key-value store with
 				// append support.
 			case 'W':
-				_AppendRandom(filename);
+				_Append(filename);
 				break;
 
 			default:
@@ -175,13 +178,9 @@ private:
 	}
 	
 	
-	void _AppendRandom(const string& filename)
+	void _Append(const string& filename)
 	{
 		_LOG(filename);
-
-		// TODO: parameterize.
-		const long MIN = 100;
-		const long MAX = 10000;
 
 		static int seqno = 0;
 
@@ -192,7 +191,18 @@ private:
 		// Generate random content
 		FleCS::ByteSeq content;
 
-		int cnt = _random(MIN, MAX);
+		int cnt;
+		if (povm["dist"].as<string>() == "zifian")
+		{
+			const long MIN = 100;
+			const long MAX = 10000;
+			cnt = _random(MIN, MAX);
+		}
+		else if (povm["dist"].as<string>() == "uniform")
+			cnt = 1000;
+		else
+			throw runtime_error(string("Unknown dist: ") + povm["dist"].as<string>());
+
 		for (int i = 0; i < cnt; i ++)
 		{
 			content.insert(content.end(), _hostname.c_str(), _hostname.c_str() + _hostname.size());
@@ -220,9 +230,43 @@ private:
 const char* FleCSClient::_bucket_name = "rep-no-const";
 
 
+void parse_args(int argc, char* argv[])
+{
+	namespace po_ = boost::program_options;
+
+	po_::options_description visible("Options");
+	visible.add_options()
+		("dist", po_::value<string>(), "zifian or uniform")
+		("help", "produce help message")
+		;
+
+	po_::options_description cmdline_opt;
+	cmdline_opt.add(visible);
+
+	po_::store(po_::command_line_parser(argc, argv).
+			options(cmdline_opt).run(), povm);
+	po_::notify(povm);
+
+	if (povm.count("help"))
+	{
+		cout << visible << "\n";
+		exit(EXIT_SUCCESS);
+	}
+
+	if (povm.count("master") == 0)
+	{
+		cout << "You need to specify a distribution.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = EXIT_FAILURE;
+
+	parse_args(argc, argv);
 
 	cout << "client started.\n";
 

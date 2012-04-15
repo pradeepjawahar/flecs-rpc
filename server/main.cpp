@@ -118,7 +118,14 @@ void parse_args(int argc, char* argv[])
 
 	if (povm.count("master") == 0)
 	{
-		cout << "You need to specify master.\n\n";
+		cout << "You need to specify a master.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+
+	if (povm.count("storage") == 0)
+	{
+		cout << "You need to specify a storage.\n\n";
 		cout << visible << "\n";
 		exit(EXIT_FAILURE);
 	}

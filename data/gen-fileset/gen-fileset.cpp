@@ -120,7 +120,7 @@ void create_files()
 
 	// copy file list
 	using namespace boost::filesystem;
-	copy_file(FILELIST, output_dir + "/../rep-no-cnst-filelist", copy_option::overwrite_if_exists);
+	copy_file(FILELIST, output_dir + "/../rep-no-const-filelist", copy_option::overwrite_if_exists);
 }
 
 

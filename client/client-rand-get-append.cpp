@@ -81,9 +81,9 @@ private:
 		const char* filename = NULL;
 
 		if (povm["storage"].as<string>() == "disk")
-			filename = "/usr/local/flecs/data/rep-no-cnst-filelist";
+			filename = "/usr/local/flecs/data/rep-no-const-filelist";
 		else if (povm["storage"].as<string>() == "memory")
-			filename = "/dev/shm/flecs/data/rep-no-cnst-filelist";
+			filename = "/dev/shm/flecs/data/rep-no-const-filelist";
 		else
 			throw runtime_error(string("Unknown storage: ") + povm["storage"].as<string>());
 

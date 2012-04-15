@@ -30,5 +30,5 @@ set logscale y
 # used (), since curly bracket {} doesn't work.
 set title "C1->S1->(S2, S3), Get:Append=1:9"
 set output "get-append-perf." . FILEEXT
-plot "/dev/shm/flecs-log/clientA" using ($4 + 0.0):3 with points linecolor rgb "blue" title "Append", \
-"/dev/shm/flecs-log/clientG" using ($4 + 0.0):3 with points linecolor rgb "red" title "Get"
+plot "/dev/shm/flecs/log/clientA" using ($4 + 0.0):2 with points linecolor rgb "blue" title "Append", \
+"/dev/shm/flecs/log/clientG" using ($4 + 0.0):2 with points linecolor rgb "red" title "Get"

@@ -78,7 +78,14 @@ private:
 
 	void _load_filelist()
 	{
-		const char* filename = "/usr/local/flecs/no-cnst-filelist";
+		const char* filename = NULL;
+
+		if (povm["storage"].as<string>() == "disk")
+			filename = "/usr/local/flecs/data/no-cnst-filelist";
+		else if (povm["storage"].as<string>() == "memory")
+			filename = "/dev/shm/flecs/data/no-cnst-filelist";
+		else
+			throw runtime_error(string("Unknown storage: ") + povm["storage"].as<string>());
 
 		ifstream file(filename, ios::in);
 
@@ -237,6 +244,7 @@ void parse_args(int argc, char* argv[])
 	po_::options_description visible("Options");
 	visible.add_options()
 		("dist", po_::value<string>(), "zifian or uniform")
+		("storage", po_::value<string>(), "disk or memory. needed fo loading file list.")
 		("help", "produce help message")
 		;
 
@@ -256,6 +264,13 @@ void parse_args(int argc, char* argv[])
 	if (povm.count("dist") == 0)
 	{
 		cout << "You need to specify a distribution.\n\n";
+		cout << visible << "\n";
+		exit(EXIT_FAILURE);
+	}
+
+	if (povm.count("storage") == 0)
+	{
+		cout << "You need to specify a storage.\n\n";
 		cout << visible << "\n";
 		exit(EXIT_FAILURE);
 	}

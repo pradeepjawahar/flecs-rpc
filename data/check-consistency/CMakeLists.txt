@@ -1,0 +1,5 @@
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIRS} )
+
+ADD_EXECUTABLE ( ccheck ccheck.cpp )
+
+TARGET_LINK_LIBRARIES (ccheck ${Boost_LIBRARIES})

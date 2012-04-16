@@ -70,7 +70,7 @@ private:
 
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = EXIT_FAILURE;
 
 	cout << "client started.\n";
 

@@ -40,7 +40,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-	int rc;
+	int rc = EXIT_FAILURE;
 
 	cout << "server started.\n";
 

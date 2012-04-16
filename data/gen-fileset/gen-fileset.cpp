@@ -51,7 +51,7 @@ void read_file_name_size()
 		boost::char_separator<char> sep(" ");
 		tokenizer tokens(line, sep);
 
-		int filesize;
+		int filesize = 0;
 		string filename;
 
 		int j = 0;

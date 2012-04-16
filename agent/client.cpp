@@ -171,17 +171,17 @@ private:
 		string cmd = "touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.client; ";
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if ((povm["cluster"].as<string>() == "polynesia"
-					&& i->_hostname == "polynesia1.cc.gatech.edu")
-					|| (povm["cluster"].as<string>() == "flecsx0"
-					&& i->_hostname == "flecs10"))
+//			if ((povm["cluster"].as<string>() == "polynesia"
+//					&& i->_hostname == "polynesia1.cc.gatech.edu")
+//					|| (povm["cluster"].as<string>() == "flecsx0"
+//					&& i->_hostname == "flecs10"))
 				i->BeginExec(cmd);
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-			if ((povm["cluster"].as<string>() == "polynesia"
-						&& i->_hostname == "polynesia1.cc.gatech.edu")
-					|| (povm["cluster"].as<string>() == "flecsx0"
-						&& i->_hostname == "flecs10"))
+//			if ((povm["cluster"].as<string>() == "polynesia"
+//						&& i->_hostname == "polynesia1.cc.gatech.edu")
+//					|| (povm["cluster"].as<string>() == "flecsx0"
+//						&& i->_hostname == "flecs10"))
 				i->EndExec();
 	}
 

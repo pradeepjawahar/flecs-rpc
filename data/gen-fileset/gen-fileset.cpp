@@ -21,7 +21,7 @@ void _create_parent_directories(const char* filename);
 void _create_directories(const string& dir);
 
 
-const char* FILELIST = "../../../data/gen-fileset/filelist-size";
+string FILELIST;
 
 vector<pair<string, int> > name_size_list;
 
@@ -30,7 +30,7 @@ boost::program_options::variables_map povm;
 
 void read_file_name_size()
 {
-	ifstream file(FILELIST, ios::in);
+	ifstream file(FILELIST.c_str(), ios::in);
 
 	if (! file.is_open())
 	{
@@ -153,8 +153,9 @@ void parse_args(int argc, char* argv[])
 
 	po_::options_description visible("Options");
 	visible.add_options()
-		("storage", po_::value<string>()->default_value("disk"), "disk or memory.")
+		("storage", po_::value<string>()->default_value("memory"), "disk or memory.")
 		("dist", po_::value<string>(), "file size distribution. either zifian or uniform.")
+		("filelist", po_::value<string>()->default_value("filelist-7981"), "file list, e.g., filelist-7981")
 		("help", "produce help message")
 		;
 
@@ -177,6 +178,9 @@ void parse_args(int argc, char* argv[])
 		cout << visible << "\n";
 		exit(EXIT_FAILURE);
 	}
+
+	FILELIST = "../../../data/gen-fileset/";
+	FILELIST += povm["filelist"].as<string>();
 }
 
 

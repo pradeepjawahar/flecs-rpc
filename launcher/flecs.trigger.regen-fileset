@@ -2,4 +2,4 @@ export LD_LIBRARY_PATH=.:/usr/local/lib:/usr/local/lib64; \
 rm -rf /usr/local/flecs/data/*; \
 rm -rf /dev/shm/flecs/data/*; \
 cd /dev/shm/flecs/src/.build/data/gen-fileset; \
-./gen-fileset --storage memory --dist uniform;
+./gen-fileset --storage memory --dist uniform --filelist=filelist-5;

@@ -121,14 +121,15 @@ public:
 
 		// propagate update to the other servers.
 		//
-		// If there is only one thread that acts as dispatcher and worker, this may cause a deadlock.
+		// You need to make sure that a deadlock does not happen, such as:
 		//   C1 ----> S1 --(S2 is not responding while processing C2's request)--> S2
 		//   C2 ----> S2 --(S1 is not responding while processing C1's request)--> S1
 		//
-		// The size of thread pool seems to be large enough, thus the above case
-		// won't happen. But it happens!, which means (at least by default) the
-		// dispatcher and workers are, in some way, closely related. It applies the
-		// same to Put() method.
+		// It can be avoided by serializing requests from a connection and
+		// setting the thread pool size large enough. At least to the (number
+		// of local clients) * (number of servers).
+		//
+		// It applies the same to the Put().
 		map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
 
 #ifdef _SERIAL_PROCESSING

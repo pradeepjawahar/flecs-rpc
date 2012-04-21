@@ -1,6 +1,8 @@
 #ifndef __SERVER_COMMON_H__
 #define __SERVER_COMMON_H__
 
+#include <boost/program_options.hpp>
+
 #include <log4cxx/logger.h>
 
 #include "flecs.h"

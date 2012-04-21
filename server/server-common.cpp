@@ -1,4 +1,3 @@
-#include <boost/program_options.hpp>
 #include <Ice/Ice.h>
 
 #include "server-common.h"

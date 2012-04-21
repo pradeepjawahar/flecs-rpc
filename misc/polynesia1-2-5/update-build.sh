@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# update source code and build.
+
 set -e
 set -u
 

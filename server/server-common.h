@@ -6,6 +6,9 @@
 #include "flecs.h"
 
 
+extern boost::program_options::variables_map povm;
+
+
 namespace FleCS
 {
 	namespace ServerImpl
@@ -18,8 +21,32 @@ namespace FleCS
 				const std::string& endpoint,
 				const Ice::CommunicatorPtr& comm);
 
+		FleCS::MasterPrx& GetMasterProxy();
+
 		extern const char* stg_root_dir;
 		extern std::map<std::string, FleCS::ServerPrx*> _servers;
+
+
+		class GlobalLock
+		{
+		public:
+			GlobalLock(
+					const std::string& path,
+					const char type);
+
+			~GlobalLock();
+
+		private:
+			static void _Init();
+
+			IceUtil::Mutex _locks_lock;
+
+			std::map<std::string, IceUtil::Mutex*> _locks;
+
+			std::vector<std::string> _lock_servers;
+
+			static bool _initialized;
+		};
 	};
 };
 

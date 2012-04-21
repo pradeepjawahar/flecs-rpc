@@ -8,8 +8,6 @@
 
 using namespace std;
 
-boost::program_options::variables_map povm;
-
 
 class FleCSServer : public Ice::Application
 {
@@ -51,17 +49,7 @@ public:
 			//
 			// Master needs to make sure that join service is serialized.
 
-			FleCS::MasterPrx m_prx = FleCS::MasterPrx::checkedCast(
-					communicator()
-					->stringToProxy(string("master:tcp -p 10001 -h ") + povm["master"].as<string>())
-					->ice_twoway()
-					->ice_timeout(-1)
-					->ice_secure(false));
-			if(!m_prx)
-			{
-				_LOG("invalid proxy m_prx");
-				exit(EXIT_FAILURE);
-			}
+			FleCS::MasterPrx& m_prx = FleCS::ServerImpl::GetMasterProxy();
 
 			// Ask to join the system. Give my endpoint and get the existing
 			// servers.

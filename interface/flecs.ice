@@ -34,6 +34,8 @@ module FleCS
 	interface Master
 	{
 		void Join(string endpoint, out StringSeq existingServers);
+
+		StringSeq GetLockServers();
 	};
 };
 

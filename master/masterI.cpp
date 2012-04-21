@@ -1,3 +1,6 @@
+#include <iterator>
+#include <stdexcept>
+
 #include <Ice/Ice.h>
 #include <IceUtil/IceUtil.h>
 
@@ -82,4 +85,47 @@ void MasterI::Join(
 
 		(*(i->second))->ServerJoined(endpoint);
 	}
+}
+
+
+std::vector<std::string> MasterI::GetLockServers(
+		const Ice::Current&)
+{
+	IceUtil::Mutex::Lock lock(_lock);
+
+	static bool first_request = true;
+	static vector<string> servers;
+
+	if (first_request)
+	{
+		first_request = false;
+
+		for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			servers.push_back(i->first);
+	}
+	else
+	{
+		// check the list of servers is not changed.
+		
+		vector<string> servers2;
+
+		for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
+			servers2.push_back(i->first);
+
+		if (servers != servers2)
+		{
+			ostringstream err("server list has changed after the first request. servers: ");
+
+			// string err = "server list has changed after the first request. servers: ";
+
+			copy(servers.begin(), servers.end(), ostream_iterator<string>(err, " "));
+
+			err << "servers2: ";
+			copy(servers2.begin(), servers2.end(), ostream_iterator<string>(err, " "));
+
+			throw runtime_error(err.str());
+		}
+	}
+
+	return servers;
 }

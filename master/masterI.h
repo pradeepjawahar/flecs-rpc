@@ -16,9 +16,13 @@ public:
 			std::vector<std::string>& existingServers,
 			const Ice::Current&);
 
+    virtual std::vector<std::string> GetLockServers(
+			const Ice::Current&);
+
 private:
 	std::map<std::string, FleCS::ServerPrx*> _servers;
 
+	// Serialize all Join and GetLockServers requests.
 	IceUtil::Mutex _lock;
 };
 

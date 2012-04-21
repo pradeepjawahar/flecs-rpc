@@ -78,22 +78,24 @@ private:
 
 	void _load_filelist()
 	{
-		const char* filename = NULL;
+		string filename;
 
 		if (povm["storage"].as<string>() == "disk")
-			filename = "/usr/local/flecs/data/rep-no-const-filelist";
+			filename = "/usr/local/flecs/data/";
 		else if (povm["storage"].as<string>() == "memory")
-			filename = "/dev/shm/flecs/data/rep-no-const-filelist";
+			filename = "/dev/shm/flecs/data/";
 		else
 			throw runtime_error(string("Unknown storage: ") + povm["storage"].as<string>());
+		filename += povm["bucket_name"].as<string>();
+		filename += "-filelist";
 
-		ifstream file(filename, ios::in);
+		if (boost::filesystem::is_regular_file(filename) == false)
+			throw runtime_error(string("Unable to open the file list: ") + filename);
+
+		ifstream file(filename.c_str(), ios::in);
 
 		if (! file.is_open())
-		{
-			_LOG("Unable to open file " << filename);
-			exit(EXIT_FAILURE);
-		}
+			throw runtime_error(string("Unable to open file ") + filename);
 
 		while (file.good())
 		{
@@ -129,7 +131,8 @@ private:
 
 		_readfile(obj_name, content);
 
-		_c2s_prx->Put(_bucket_name, obj_name, content);
+		_c2s_prx->Put(povm["bucket_name"].as<string>(), obj_name, content);
+		
 	}
 
 
@@ -140,7 +143,7 @@ private:
 		FleCS::ByteSeq content;
 
 		StopWatch sw;
-		_c2s_prx->Get(_bucket_name, obj_name, content);
+		_c2s_prx->Get(povm["bucket_name"].as<string>(), obj_name, content);
 		unsigned int laps = sw.GetMicro();
 		_LOG("G " << laps << " " << content.size());
 
@@ -220,7 +223,7 @@ private:
 		content.push_back('\n');
 
 		StopWatch sw;
-		_c2s_prx->Append(_bucket_name, filename, content);
+		_c2s_prx->Append(povm["bucket_name"].as<string>(), filename, content);
 		unsigned int laps = sw.GetMicro();
 		_LOG("A " << laps << " " << content.size());
 	}
@@ -229,12 +232,7 @@ private:
 	FleCS::C2SPrx _c2s_prx;
 	vector<string> _filelist;
 	string _hostname;
-
-	static const char* _bucket_name;
 };
-
-
-const char* FleCSClient::_bucket_name = "rep-no-const";
 
 
 void parse_args(int argc, char* argv[])
@@ -243,6 +241,7 @@ void parse_args(int argc, char* argv[])
 
 	po_::options_description visible("Options");
 	visible.add_options()
+		("bucket_name", po_::value<string>()->default_value("rep-strong-const"), "bucket name")
 		("dist", po_::value<string>(), "zifian or uniform")
 		("storage", po_::value<string>(), "disk or memory. needed fo loading file list.")
 		("help", "produce help message")

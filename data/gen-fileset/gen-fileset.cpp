@@ -76,11 +76,12 @@ void create_files()
 {
 	string output_dir;
 	if (povm["storage"].as<string>() == "disk")
-		output_dir = "/usr/local/flecs/data/rep-no-const";
+		output_dir = "/usr/local/flecs/data/";
 	else if (povm["storage"].as<string>() == "memory")
-		output_dir = "/dev/shm/flecs/data/rep-no-const";
+		output_dir = "/dev/shm/flecs/data/";
 	else
 		throw runtime_error(string("Unknown storage: ") + povm["storage"].as<string>());
+	output_dir += povm["container-name"].as<string>();
 
 	for (vector<pair<string, int> >::iterator i = name_size_list.begin(); i != name_size_list.end(); ++ i)
 	{
@@ -120,7 +121,7 @@ void create_files()
 
 	// copy file list
 	using namespace boost::filesystem;
-	copy_file(FILELIST, output_dir + "/../rep-no-const-filelist", copy_option::overwrite_if_exists);
+	copy_file(FILELIST, output_dir + "/../" + povm["container-name"].as<string>() + "-filelist", copy_option::overwrite_if_exists);
 }
 
 
@@ -156,6 +157,7 @@ void parse_args(int argc, char* argv[])
 		("storage", po_::value<string>()->default_value("memory"), "disk or memory.")
 		("dist", po_::value<string>(), "file size distribution. either zifian or uniform.")
 		("filelist", po_::value<string>()->default_value("filelist-7981"), "file list, e.g., filelist-7981")
+		("container-name", po_::value<string>()->default_value("rep-strong-const"), "container name.")
 		("help", "produce help message")
 		;
 

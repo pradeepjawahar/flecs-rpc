@@ -20,11 +20,21 @@ Container& ContainerMgr::GetContainer(const std::string& container_name)
 
 	if (i == _containers.end())
 	{
-		_LoadContainerPlugin(container_name);
+		// Multiple threads can be here simultaneously.
 
+		// acquire a lock.
+		IceUtil::Mutex::Lock _(_container_load_lock);
+		
+		// Make sure no other thread have loaded the container before.
 		i = _containers.find(container_name);
 		if (i == _containers.end())
-			throw runtime_error("unexpected!");
+		{
+			_LoadContainerPlugin(container_name);
+
+			i = _containers.find(container_name);
+			if (i == _containers.end())
+				throw runtime_error("unexpected!");
+		}
 	}
 
 	return *(i->second._container);

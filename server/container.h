@@ -66,6 +66,8 @@ private:
 
 
 	std::map<std::string, Plugin> _containers;
+
+	IceUtil::Mutex _container_load_lock;
 };
 
 

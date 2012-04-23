@@ -39,7 +39,7 @@ public:
 		{
 			_init();
 
-			_RandomReadsAppends(0.1, 5000);
+			_RandomReadsAppends(povm["ga_ratio"].as<double>(), 5000);
 
 			return EXIT_SUCCESS;
 		}
@@ -244,6 +244,7 @@ void parse_args(int argc, char* argv[])
 		("bucket_name", po_::value<string>()->default_value("rep-strong-const"), "bucket name")
 		("dist", po_::value<string>(), "zifian or uniform")
 		("storage", po_::value<string>(), "disk or memory. needed fo loading file list.")
+		("ga_ratio", po_::value<double>()->default_value(0.01), "get/append ratio.")
 		("help", "produce help message")
 		;
 

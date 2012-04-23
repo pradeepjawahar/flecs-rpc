@@ -170,19 +170,21 @@ private:
 
 		string cmd = "touch /dev/shm/flecs/src/.build/launcher/flecs.trigger.client; ";
 
-		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-//			if ((povm["cluster"].as<string>() == "polynesia"
-//					&& i->_hostname == "polynesia1.cc.gatech.edu")
-//					|| (povm["cluster"].as<string>() == "flecsx0"
-//					&& i->_hostname == "flecs10"))
+		if (povm["client_on"].as<string>() == "all")
+		{
+			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 				i->BeginExec(cmd);
 
-		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
-//			if ((povm["cluster"].as<string>() == "polynesia"
-//						&& i->_hostname == "polynesia1.cc.gatech.edu")
-//					|| (povm["cluster"].as<string>() == "flecsx0"
-//						&& i->_hostname == "flecs10"))
+			for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 				i->EndExec();
+		}
+		else if (povm["client_on"].as<string>() == "first")
+		{
+			_servers.begin()->BeginExec(cmd);
+			_servers.begin()->EndExec();
+		}
+		else
+			throw runtime_error(string("Unknown client_on: ") + povm["client_on"].as<string>());
 	}
 
 
@@ -197,6 +199,7 @@ void parse_args(int argc, char* argv[])
 	po_::options_description visible("Options");
 	visible.add_options()
 		("cluster", po_::value<string>(), "e.g., polynesia or flecsx0")
+		("client_on", po_::value<string>()->default_value("all"), "all (run client on every node) or first (only on the first node)")
 		("help", "produce help message")
 		;
 

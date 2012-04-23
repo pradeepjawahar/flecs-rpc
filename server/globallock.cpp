@@ -1,6 +1,8 @@
 #include "globallock.h"
 #include "server.h"
 
+#include <boost/functional/hash.hpp>
+
 using namespace std;
 
 
@@ -29,33 +31,62 @@ GlobalLockMgr& GlobalLockMgr::GetInstance()
 }
 
 
-int GlobalLockMgr::Acquire(
+LockID GlobalLockMgr::Acquire(
 		const std::string& path,
 		const char type)
 {
-	// TODO: select a lock server
-	// TODO: acquire
+	LockID lid;
+
+	// select a lock server
+	boost::hash<string> string_hash;
+	lid.server = string_hash(path) % _lock_servers.size();
+
+	// acquire a lock
+	lid.id = (*_lock_servers[lid.server])->AcquireLock(path, type);
 	
-	return 0;
+	return lid;
 }
 
 
-void GlobalLockMgr::Release(int lock_id)
+void GlobalLockMgr::Release(LockID lid)
 {
-	// TODO: select a lock server
-	// TODO: release
+	(*_lock_servers[lid.server])->ReleaseLock(lid.id);
 }
 
 
 GlobalLockMgr::GlobalLockMgr()
 {
-	// get a list of lock servers from the master.  master needs a
-	// lock for the operation. and after serving the first request,
-	// the lock server list will remain unchanged.
+	// Get a list of lock servers from the master.  master needs a lock for the
+	// operation. and after serving the first request, the lock server list
+	// will remain unchanged.
+	
 	FleCS::MasterPrx& mp = FleCSServer::GetMasterProxy();
-	std::vector<std::string> lock_servers = mp->GetLockServers();
+	vector<string> lsvrs = mp->GetLockServers();
 
 	ostringstream oss;
-	copy(lock_servers.begin(), lock_servers.end(), ostream_iterator<string>(oss, " "));
+	copy(lsvrs.begin(), lsvrs.end(), ostream_iterator<string>(oss, " "));
 	_LOG(oss.str());
+
+	// Prepare lock server proxies. A separate server proxy list from the one
+	// at the server module is maintained here.
+	// 
+	// The idea of reusing the peer proxies (peer_servers) in the server module
+	// has been dropped, since it lacks the server itself (the same server with
+	// the lock requester).  Adding *self* to the peer_servers would complicate
+	// the update propagation and freeing of proxies.
+	//
+	// Would freeing a proxy affect another proxy that points the same server?
+	// It should be fine, since Proxy is a handle that reference-counts an
+	// object. Deallocation of the object will occur when the last reference
+	// goes away.
+	
+	for (vector<string>::iterator i = lsvrs.begin(); i != lsvrs.end(); ++ i)
+		_lock_servers.push_back(_new_sm2s_proxy(*i));
+}
+
+
+GlobalLockMgr::~GlobalLockMgr()
+{
+	for (vector<FleCS::SM2SPrx*>::iterator i = _lock_servers.begin(); i != _lock_servers.end(); ++ i)
+		delete *i;
 }

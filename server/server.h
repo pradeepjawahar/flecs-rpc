@@ -11,6 +11,9 @@ extern log4cxx::LoggerPtr logger;
 #define _LOG(A) LOG4CXX_INFO(logger, A)
 
 
+FleCS::SM2SPrx* _new_sm2s_proxy(const std::string& endpoint);
+
+
 class FleCSServer : public Ice::Application
 {
 public:
@@ -19,9 +22,7 @@ public:
 	
     virtual int run(int, char*[]);
 
-	static void AddServer(
-			const std::string& endpoint,
-			const Ice::CommunicatorPtr& comm);
+	static void AddServer(const std::string& endpoint);
 
 	static FleCS::MasterPrx& GetMasterProxy();
 
@@ -30,9 +31,7 @@ public:
 	static std::map<std::string, FleCS::SM2SPrx*> peer_servers;
 
 private:
-	void AddServers(
-			const std::vector<std::string>& servers,
-			const Ice::CommunicatorPtr& comm);
+	void AddServers(const std::vector<std::string>& servers);
 };
 
 

@@ -26,6 +26,15 @@ public:
 	virtual void ServerLeft(
 			const std::string& endpoint,
 			const Ice::Current&);
+
+	virtual int AcquireLock(
+			const std::string& lockPath,
+			Ice::Byte type,
+			const Ice::Current&);
+
+	virtual void ReleaseLock(
+			int lockID,
+			const Ice::Current&);
 };
 
 

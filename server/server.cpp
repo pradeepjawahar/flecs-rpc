@@ -11,14 +11,13 @@ boost::program_options::variables_map povm;
 log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("server"));
 
 
-static FleCS::SM2SPrx* _new_proxy(
-		const string& endpoint,
-		const Ice::CommunicatorPtr& comm)
+FleCS::SM2SPrx* _new_sm2s_proxy(
+		const string& endpoint)
 {
 	FleCS::SM2SPrx* s_prx = new FleCS::SM2SPrx;
 
 	*s_prx = FleCS::SM2SPrx::checkedCast(
-			comm
+			Ice::Application::communicator()
 			->stringToProxy(endpoint)
 			->ice_twoway()
 			->ice_timeout(-1)
@@ -93,7 +92,7 @@ int FleCSServer::run(int, char*[])
 
 		vector<string> existingServers;
 		m_prx->Join((*eps.begin())->toString(), existingServers);
-		AddServers(existingServers, communicator());
+		AddServers(existingServers);
 
 		communicator()->waitForShutdown();
 
@@ -109,23 +108,21 @@ int FleCSServer::run(int, char*[])
 
 
 void FleCSServer::AddServers(
-		const vector<string>& servers,
-		const Ice::CommunicatorPtr& comm)
+		const vector<string>& servers)
 {
 	for (vector<string>::const_iterator i = servers.begin(); i != servers.end(); ++ i)
 	{
 		if (i == servers.begin())
 			_LOG("AddServers:");
 
-		AddServer(*i, comm);
+		AddServer(*i);
 		_LOG("  " <<  *i);
 	}
 }
 
 
 void FleCSServer::AddServer(
-		const string& endpoint,
-		const Ice::CommunicatorPtr& comm)
+		const string& endpoint)
 {
 	// check if the endpoint already exists.
 	map<string, FleCS::SM2SPrx*>::iterator i = peer_servers.find(endpoint);
@@ -138,7 +135,7 @@ void FleCSServer::AddServer(
 		delete i->second;
 	}
 
-	peer_servers[endpoint] = _new_proxy(endpoint, comm);
+	peer_servers[endpoint] = _new_sm2s_proxy(endpoint);
 }
 
 

@@ -24,6 +24,11 @@ module FleCS
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
 
+		// Global lock
+		int AcquireLock(string lockPath, byte type);
+		void ReleaseLock(int lockID);
+
+
 		// Master to server notification
 		void ServerJoined(string endpoint);
 		void ServerLeft(string endpoint);

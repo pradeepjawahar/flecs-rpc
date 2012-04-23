@@ -40,7 +40,7 @@ void SM2SI::ServerJoined(
 {
 	_LOG(endpoint);
 
-	FleCSServer::AddServer(endpoint, cur.adapter->getCommunicator());
+	FleCSServer::AddServer(endpoint);
 }
 
 
@@ -49,4 +49,25 @@ void SM2SI::ServerLeft(
 		const Ice::Current&)
 {
 	_LOG(endpoint);
+}
+
+
+int SM2SI::AcquireLock(
+		const std::string& lockPath,
+		Ice::Byte type,
+		const Ice::Current&)
+{
+	_LOG(lockPath << " " << type);
+	// TODO
+	
+	return 0;
+}
+
+
+void SM2SI::ReleaseLock(
+		int lockID,
+		const Ice::Current&)
+{
+	_LOG("lockID: " << lockID);
+	// TODO
 }

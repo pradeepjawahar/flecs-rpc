@@ -5,6 +5,15 @@
 #include <map>
 #include <Ice/Ice.h>
 
+#include "flecs.h"
+
+
+struct LockID
+{
+	int server;	// server ID
+	int id;		// per-server lock ID
+};
+
 
 class GlobalLock
 {
@@ -16,7 +25,7 @@ public:
 	~GlobalLock();
 
 private:
-	int _lock_id;
+	LockID _lock_id;
 };
 
 
@@ -25,19 +34,20 @@ class GlobalLockMgr
 public:
 	static GlobalLockMgr& GetInstance();
 
-	int Acquire(
+	LockID Acquire(
 			const std::string& path,
 			const char type);
 
-	void Release(int lock_id);
+	void Release(LockID lid);
 
 
 private:
 	GlobalLockMgr();
+	~GlobalLockMgr();
 
 	std::map<std::string, IceUtil::Mutex*> _locks;
 
-	std::vector<std::string> _lock_servers;
+	std::vector<FleCS::SM2SPrx*> _lock_servers;
 };
 
 

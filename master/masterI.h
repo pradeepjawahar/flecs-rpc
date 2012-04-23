@@ -20,7 +20,7 @@ public:
 			const Ice::Current&);
 
 private:
-	std::map<std::string, FleCS::ServerPrx*> _servers;
+	std::map<std::string, FleCS::SM2SPrx*> _servers;
 
 	// Serialize all Join and GetLockServers requests.
 	IceUtil::Mutex _lock;

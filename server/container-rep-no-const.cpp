@@ -1,5 +1,6 @@
 #include "container.h"
 #include "util.h"
+#include "server.h"
 
 using namespace std;
 
@@ -8,7 +9,7 @@ class PutThread : public IceUtil::Thread
 {
 public:
 	PutThread(
-			const FleCS::ServerPrx& s,
+			const FleCS::SM2SPrx& s,
 			const string& bucketID,
 			const string& objID,
 			const FleCS::ByteSeq& content)
@@ -23,7 +24,7 @@ public:
 
 
 private:
-	const FleCS::ServerPrx& _s;
+	const FleCS::SM2SPrx& _s;
 	const string& _bucketID;
 	const string& _objID;
 	const FleCS::ByteSeq& _content;
@@ -34,7 +35,7 @@ class AppendThread : public IceUtil::Thread
 {
 public:
 	AppendThread(
-			const FleCS::ServerPrx& s,
+			const FleCS::SM2SPrx& s,
 			const string& bucketID,
 			const string& objID,
 			const FleCS::ByteSeq& content)
@@ -49,7 +50,7 @@ public:
 
 
 private:
-	const FleCS::ServerPrx& _s;
+	const FleCS::SM2SPrx& _s;
 	const string& _bucketID;
 	const string& _objID;
 	const FleCS::ByteSeq& _content;
@@ -72,7 +73,7 @@ public:
 	{
 		_LOG(objID);
 
-		_readfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_readfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 	
 
@@ -83,21 +84,21 @@ public:
 	{
 		_LOG(objID);
 
-		_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_writefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 
 		// propagate update to the other servers.
 
-		map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
 
 #ifdef _SERIAL_PROCESSING
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 			(*(i->second))->Put(objID, content);
 
 #else	// Parallel processing (by default)
 		vector<IceUtil::ThreadPtr> tpv;
 		vector<IceUtil::ThreadControl> tcv;
 
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 		{
 			IceUtil::ThreadPtr t = new PutThread(*(i->second), bucketID, objID, content);
 			tcv.push_back(t->start());
@@ -117,7 +118,7 @@ public:
 	{
 		_LOG(objID);
 
-		_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 
 		// propagate update to the other servers.
 		//
@@ -130,17 +131,17 @@ public:
 		// of local clients) * (number of servers).
 		//
 		// It applies the same to the Put().
-		map<string, FleCS::ServerPrx*>& s = FleCS::ServerImpl::_servers;
+		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
 
 #ifdef _SERIAL_PROCESSING
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 			(*(i->second))->Append(objID, content);
 
 #else	// Parallel processing (by default)
 		vector<IceUtil::ThreadPtr> tpv;
 		vector<IceUtil::ThreadControl> tcv;
 
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 		{
 			IceUtil::ThreadPtr t = new AppendThread(*(i->second), bucketID, objID, content);
 			tcv.push_back(t->start());
@@ -160,7 +161,7 @@ public:
 	{
 		_LOG(objID);
 
-		_writefile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_writefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 	
 	
@@ -171,7 +172,7 @@ public:
 	{
 		_LOG(objID);
 
-		_appendfile((string(FleCS::ServerImpl::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 
 

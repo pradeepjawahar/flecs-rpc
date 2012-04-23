@@ -4,7 +4,7 @@
 #include "flecs.h"
 
 
-class ServerI : public FleCS::Server
+class SM2SI : public FleCS::SM2S
 {
 public:
 	virtual void Put(

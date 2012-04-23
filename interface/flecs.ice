@@ -19,7 +19,7 @@ module FleCS
 
 
 	// Server-to-server and master-to-server.
-	interface Server
+	interface SM2S
 	{
 		// Server to server
 		void Put(string bucketID, string objID, ByteSeq content);

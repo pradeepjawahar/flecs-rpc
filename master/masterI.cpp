@@ -15,15 +15,15 @@ using namespace std;
 static log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("master"));
 
 
-static FleCS::ServerPrx* _new_proxy(
+static FleCS::SM2SPrx* _new_proxy(
 		const Ice::Current& cur,
 		const string& endpoint)
 {
 	Ice::CommunicatorPtr ic = cur.adapter->getCommunicator();
 
-	FleCS::ServerPrx* s_prx = new FleCS::ServerPrx;
+	FleCS::SM2SPrx* s_prx = new FleCS::SM2SPrx;
 
-	*s_prx = FleCS::ServerPrx::checkedCast(
+	*s_prx = FleCS::SM2SPrx::checkedCast(
 			ic
 			->stringToProxy(endpoint)
 			->ice_twoway()
@@ -61,7 +61,7 @@ void MasterI::Join(
 	string endpoint = string("server: ") + endpoint_ + " -h " + tcpInfo->remoteAddress;
 
 	// check if the endpoint already exists.
-	map<string, FleCS::ServerPrx*>::iterator i = _servers.find(endpoint);
+	map<string, FleCS::SM2SPrx*>::iterator i = _servers.find(endpoint);
 
 	if (i != _servers.end())
 	{
@@ -74,7 +74,7 @@ void MasterI::Join(
 	_servers[endpoint] = _new_proxy(cur, endpoint);
 
 	// notify all other servers.
-	for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
+	for (map<string, FleCS::SM2SPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 	{
 		_LOG("  " << i->first);
 
@@ -100,7 +100,7 @@ std::vector<std::string> MasterI::GetLockServers(
 	{
 		first_request = false;
 
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			servers.push_back(i->first);
 	}
 	else
@@ -109,7 +109,7 @@ std::vector<std::string> MasterI::GetLockServers(
 		
 		vector<string> servers2;
 
-		for (map<string, FleCS::ServerPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = _servers.begin(); i != _servers.end(); ++ i)
 			servers2.push_back(i->first);
 
 		if (servers != servers2)

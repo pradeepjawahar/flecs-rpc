@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "container.h"
+#include "server.h"
 
 using namespace std;
 

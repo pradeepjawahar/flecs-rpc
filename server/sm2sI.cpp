@@ -1,14 +1,14 @@
 #include <Ice/Ice.h>
 
-#include "serverI.h"
+#include "sm2sI.h"
 #include "util.h"
-#include "server-common.h"
 #include "container.h"
+#include "server.h"
 
 using namespace std;
 
 
-void ServerI::Put(
+void SM2SI::Put(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content,
@@ -21,7 +21,7 @@ void ServerI::Put(
 }
 
 
-void ServerI::Append(
+void SM2SI::Append(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content,
@@ -34,17 +34,17 @@ void ServerI::Append(
 }
 
 
-void ServerI::ServerJoined(
+void SM2SI::ServerJoined(
 		const std::string& endpoint,
 		const Ice::Current& cur)
 {
 	_LOG(endpoint);
 
-	FleCS::ServerImpl::AddServer(endpoint, cur.adapter->getCommunicator());
+	FleCSServer::AddServer(endpoint, cur.adapter->getCommunicator());
 }
 
 
-void ServerI::ServerLeft(
+void SM2SI::ServerLeft(
 		const std::string& endpoint,
 		const Ice::Current&)
 {

@@ -27,12 +27,12 @@ public:
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
 
-	virtual void Server_Put(
+	virtual void S2S_Put(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
 
-	virtual void Server_Append(
+	virtual void S2S_Append(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;

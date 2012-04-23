@@ -17,7 +17,7 @@ void SM2SI::Put(
 	static ContainerMgr& cm = ContainerMgr::GetInstance();
 	Container& c = cm.GetContainer(bucketID);
 
-	c.Server_Put(bucketID, objID, content);
+	c.S2S_Put(bucketID, objID, content);
 }
 
 
@@ -30,7 +30,7 @@ void SM2SI::Append(
 	static ContainerMgr& cm = ContainerMgr::GetInstance();
 	Container& c = cm.GetContainer(bucketID);
 
-	c.Server_Append(bucketID, objID, content);
+	c.S2S_Append(bucketID, objID, content);
 }
 
 

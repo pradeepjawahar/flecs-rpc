@@ -168,7 +168,7 @@ public:
 
 
 	// This function is called with a 'W' lock held.
-	void Server_Put(
+	void S2S_Put(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content)
@@ -180,7 +180,7 @@ public:
 	
 	
 	// This function is called with a 'W' lock held.
-	void Server_Append(
+	void S2S_Append(
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content)

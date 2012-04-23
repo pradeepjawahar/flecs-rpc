@@ -58,7 +58,7 @@ void MasterI::Join(
 		exit(EXIT_FAILURE);
 	}
 
-	string endpoint = string("server: ") + endpoint_ + " -h " + tcpInfo->remoteAddress;
+	string endpoint = string("sm2s: ") + endpoint_ + " -h " + tcpInfo->remoteAddress;
 
 	// check if the endpoint already exists.
 	map<string, FleCS::SM2SPrx*>::iterator i = _servers.find(endpoint);

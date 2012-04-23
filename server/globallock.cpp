@@ -1,4 +1,5 @@
 #include "globallock.h"
+#include "server.h"
 
 using namespace std;
 
@@ -34,6 +35,8 @@ int GlobalLockMgr::Acquire(
 {
 	// TODO: select a lock server
 	// TODO: acquire
+	
+	return 0;
 }
 
 
@@ -44,12 +47,12 @@ void GlobalLockMgr::Release(int lock_id)
 }
 
 
-void GlobalLockMgr::GlobalLockMgr()
+GlobalLockMgr::GlobalLockMgr()
 {
 	// get a list of lock servers from the master.  master needs a
 	// lock for the operation. and after serving the first request,
 	// the lock server list will remain unchanged.
-	FleCS::MasterPrx& mp = GetMasterProxy();
+	FleCS::MasterPrx& mp = FleCSServer::GetMasterProxy();
 	std::vector<std::string> lock_servers = mp->GetLockServers();
 
 	ostringstream oss;

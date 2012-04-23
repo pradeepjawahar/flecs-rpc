@@ -23,6 +23,8 @@ public:
 			const std::string& endpoint,
 			const Ice::CommunicatorPtr& comm);
 
+	static FleCS::MasterPrx& GetMasterProxy();
+
 	static const char* stg_root_dir;
 
 	static std::map<std::string, FleCS::SM2SPrx*> peer_servers;
@@ -31,8 +33,6 @@ private:
 	void AddServers(
 			const std::vector<std::string>& servers,
 			const Ice::CommunicatorPtr& comm);
-
-	FleCS::MasterPrx& GetMasterProxy();
 };
 
 

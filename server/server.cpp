@@ -67,7 +67,7 @@ int FleCSServer::run(int, char*[])
 		adapter->add(c2s, communicator()->stringToIdentity("c2s"));
 
 		FleCS::SM2SPtr sm2s = new SM2SI;
-		adapter->add(sm2s, communicator()->stringToIdentity("server"));
+		adapter->add(sm2s, communicator()->stringToIdentity("sm2s"));
 
 		adapter->activate();
 

@@ -25,7 +25,8 @@ public:
 	~GlobalLock();
 
 private:
-	LockID _lock_id;
+	const std::string _path;
+	const char _type;
 };
 
 
@@ -34,16 +35,20 @@ class GlobalLockMgr
 public:
 	static GlobalLockMgr& GetInstance();
 
-	LockID Acquire(
+	void Acquire(
 			const std::string& path,
 			const char type);
 
-	void Release(LockID lid);
+	void Release(
+			const std::string& path,
+			const char type);
 
 
 private:
 	GlobalLockMgr();
 	~GlobalLockMgr();
+
+	std::string _hostname;
 
 	std::map<std::string, IceUtil::Mutex*> _locks;
 

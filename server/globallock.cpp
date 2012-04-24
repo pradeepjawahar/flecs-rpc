@@ -2,6 +2,7 @@
 #include "server.h"
 
 #include <boost/functional/hash.hpp>
+#include <boost/asio/ip/host_name.hpp>
 
 using namespace std;
 
@@ -9,10 +10,11 @@ using namespace std;
 GlobalLock::GlobalLock(
 		const std::string& path,
 		const char type)
+: _path(path), _type(type)
 {
 	static GlobalLockMgr& glm = GlobalLockMgr::GetInstance();
 
-	_lock_id = glm.Acquire(path, type);
+	glm.Acquire(_path, _type);
 }
 
 
@@ -20,7 +22,7 @@ GlobalLock::~GlobalLock()
 {
 	static GlobalLockMgr& glm = GlobalLockMgr::GetInstance();
 
-	glm.Release(_lock_id);
+	glm.Release(_path, _type);
 }
 
 
@@ -31,31 +33,40 @@ GlobalLockMgr& GlobalLockMgr::GetInstance()
 }
 
 
-LockID GlobalLockMgr::Acquire(
+void GlobalLockMgr::Acquire(
 		const std::string& path,
 		const char type)
 {
-	LockID lid;
-
 	// select a lock server
 	boost::hash<string> string_hash;
-	lid.server = string_hash(path) % _lock_servers.size();
+	int s = string_hash(path) % _lock_servers.size();
 
 	// acquire a lock
-	lid.id = (*_lock_servers[lid.server])->AcquireLock(path, type);
-	
-	return lid;
+	IceUtil::ThreadControl self;
+	unsigned long tid = self.id();
+	(*_lock_servers[s])->AcquireLock(path, type, _hostname, tid);
 }
 
 
-void GlobalLockMgr::Release(LockID lid)
+void GlobalLockMgr::Release(
+		const std::string& path,
+		const char type)
 {
-	(*_lock_servers[lid.server])->ReleaseLock(lid.id);
+	// select the lock server
+	boost::hash<string> string_hash;
+	int s = string_hash(path) % _lock_servers.size();
+
+	// release the lock
+	IceUtil::ThreadControl self;
+	unsigned long tid = self.id();
+	(*_lock_servers[s])->ReleaseLock(path, type, _hostname, tid);
 }
 
 
 GlobalLockMgr::GlobalLockMgr()
 {
+	_hostname = boost::asio::ip::host_name();
+
 	// Get a list of lock servers from the master.  master needs a lock for the
 	// operation. and after serving the first request, the lock server list
 	// will remain unchanged.

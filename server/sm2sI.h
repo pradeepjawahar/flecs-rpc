@@ -27,14 +27,37 @@ public:
 			const std::string& endpoint,
 			const Ice::Current&);
 
-	virtual int AcquireLock(
+	virtual void AcquireLock(
 			const std::string& lockPath,
 			Ice::Byte type,
+			const std::string& hostname,
+			long tid,
 			const Ice::Current&);
 
 	virtual void ReleaseLock(
-			int lockID,
+			const std::string& lockPath,
+			Ice::Byte type,
+			const std::string& hostname,
+			long tid,
 			const Ice::Current&);
+
+private:
+
+	struct Mutex
+	{
+		Mutex()
+			: ref_cnt(0)
+		{
+		}
+
+		IceUtil::Mutex lock;
+		int ref_cnt;
+	};
+
+
+	IceUtil::Mutex _locks_lock;
+
+	std::map<std::string, Mutex*> _locks;
 };
 
 

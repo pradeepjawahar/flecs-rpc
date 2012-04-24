@@ -8,7 +8,7 @@ set -u
 USER=hyoon45
 #USER=hobin
 
-tar cf tmp.tar ../../* --exclude=.build --exclude=tags
+tar cf tmp.tar ../../* --exclude=.build --exclude=tags --exclude=.git
 
 
 for i in 1 2 5

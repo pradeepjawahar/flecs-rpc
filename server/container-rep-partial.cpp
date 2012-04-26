@@ -1,3 +1,6 @@
+#include <boost/tokenizer.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/asio/ip/host_name.hpp>
 #include "container.h"
 #include "util.h"
 #include "server.h"
@@ -61,7 +64,7 @@ private:
 };
 
 
-class rep_redis : public Container
+class rep_partial : public Container
 {
 public:
 	void Init()
@@ -88,7 +91,7 @@ public:
                 if (c->err) {
                         _LOG("Redis Connection error"<<c->errstr);
                         //exit(1);
-                 }
+		}
                 _LOG("Redis connected");
 
                 /* Set a key */
@@ -116,48 +119,74 @@ public:
 
 
 		/*Get Random server to write to */
-		/*
-		*0->flecs12
-		*1->flecs22
-		*2->REDIS_HOST 
-		*/
+	/*
+	*0->flecs12
+	*1->flecs22
+	*2->REDIS_HOST 
+	*/
 		int s1 = getRand();
 		int s2=s1;
 		while(s2!=s1)
 			s2=getRand();
 
-			
+	        string localhost = boost::asio::ip::host_name();
+		string server1 = getHostName(s1);
+		string server2 = getHostName(s2);
+		
+		int local = 0;
+		if(!server1.compare(localhost))
+			local=1;
+		else if(!server2.compare(localhost))
+			local=1;
+		/*Reis Implementation */
 		redisContext *c;
 		redisReply *reply;
 
 		struct timeval timeout = { 1, 500000 }; // 1.5 seconds
 		c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
 		if (c->err) {
-		        _LOG("Connection error"<<c->errstr);
-		        //exit(1);
-   		 }
+			_LOG("Connection error"<<c->errstr);
+			//exit(1);
+		 }
 		_LOG("Redis connected");
+		if(local)
+		{
+			/* Set a key */
+			reply = (redisReply*)redisCommand(
+					c, 
+					"SET %s %s",
+					(string(bucketID + ":" + objID + ":" + "hosts").c_str()),
+					localhost.c_str());
+			_LOG("SET:"<< reply->str);
+			freeReplyObject(reply);
 			
-		/* Set a key */
-		reply = (redisReply*)redisCommand(c, "SET %s %s",(string(bucketID + ":" + objID).c_str()),(string(FleCSServer::stg_root_dir)+ "/" + bucketID + "/" + objID).c_str());
-		_LOG("SET:"<< reply->str);
-		freeReplyObject(reply);
-		
-		reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
-                _LOG("GET:"<< reply->str);
+			reply = (redisReply*)redisCommand(
+                                        c,
+                                        "SET %s %s",
+                                        (string(bucketID + ":" + objID + ":" + "location").c_str()),
+                                        (string(FleCSServer::stg_root_dir)+ "/" + bucketID + "/" + objID).c_str());
+                        _LOG("SET:"<< reply->str);
+                        freeReplyObject(reply);
 
-		_writefile(reply->str, content);
-  		//_writefile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
-		freeReplyObject(reply);
-		// propagate update to the other servers.
+			
+			reply = (redisReply*)redisCommand(c, "GET %s",(string( bucketID + ":" + objID + ":" + "hosts").c_str()));
+			_LOG("GET:"<< reply->str);
 
+			//_writefile(reply->str, content);
+			_writefile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
+			freeReplyObject(reply);
+			// propagate update to the other servers.
+		}
 		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
 
 #ifdef _SERIAL_PROCESSING
 		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 		{
-			string endpoint = dynamic_cast<string>(*(i->first));
-			(*(i->second))->Put(bucketID, objID, content);
+			string endpoint = i->first;
+			string host = getHostFromEP(endpoint);
+			if((!host.compare(server1))||(!host.compare(server2))){
+				(*(i->second))->Put(bucketID, objID, content);
+			}
 		}
 
 #else	// Parallel processing (by default)
@@ -166,9 +195,14 @@ public:
 
 		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
 		{
-			IceUtil::ThreadPtr t = new PutThread(*(i->second), bucketID, objID, content);
-			tcv.push_back(t->start());
-			tpv.push_back(t);
+			string endpoint = i->first;
+                        string host = getHostFromEP(endpoint);
+                        if((!host.compare(server1))||(!host.compare(server2)))
+			{
+				IceUtil::ThreadPtr t = new PutThread(*(i->second), bucketID, objID, content);
+				tcv.push_back(t->start());
+				tpv.push_back(t);
+			}
 		}
 
 		for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
@@ -243,6 +277,45 @@ public:
 		const FleCS::ByteSeq& content)
 	{
 		_LOG(objID);
+		
+		redisContext *c;
+                redisReply *reply;
+
+                struct timeval timeout = { 1, 500000 }; // 1.5 seconds
+                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                if (c->err) {
+                        _LOG("Connection error"<<c->errstr);
+                        //exit(1);
+                 }
+                _LOG("Redis connected");
+
+		 /*Append to existing hosts*/
+		reply = (redisReply*)redisCommand(
+				c,
+				"GET %",
+				(string(bucketID + ":" + objID + ":" + "hosts").c_str()));
+		string hosts = reply->str;
+		string localhost = boost::asio::ip::host_name();
+		if(hosts!=NULL)	
+			hosts+=localhost;
+		else
+			hosts=localhost;
+		 /* Set a key */
+		reply = (redisReply*)redisCommand(
+				c,
+				"SET %s %s",
+				(string(bucketID + ":" + objID + ":" + "hosts").c_str()),
+				hosts.c_str());
+		_LOG("SET:"<< reply->str);
+		freeReplyObject(reply);
+
+		reply = (redisReply*)redisCommand(
+				c,
+				"SET %s %s",
+				(string(bucketID + ":" + objID + ":" + "location").c_str()),
+				(string(FleCSServer::stg_root_dir)+ "/" + bucketID + "/" + objID).c_str());
+		_LOG("SET:"<< reply->str);
+		freeReplyObject(reply);
 
 		_writefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
@@ -264,13 +337,43 @@ public:
 		srand(time(NULL));
 		return rand()%3;
 	}
-
+	
+	string getHostName(int host_id)
+	{
+		string host_name;
+		switch(host_id)
+		{
+			case 0:
+				host_name = "flecs12";
+			case 1:	
+				host_name = "flecs22";
+			case 2:
+				host_name = "flecs52";
+		}		
+		return host_name;
+	}
+	string getHostFromEP(string endpoint)
+	{
+		string host;
+		char *ep = new char [endpoint.size()+1]; 
+		strcpy(ep, endpoint.c_str());
+		char *pch;
+		int i = 0;
+		pch = strtok (ep," ");
+		while(pch!=NULL){
+			i++;
+			if(i==4)
+				host = pch;
+			pch = strtok(NULL," ");
+        	}   
+		return host;
+	}
 
 private:
 };
 
 
-extern "C" rep_redis* CreateInstance()
+extern "C" rep_partial* CreateInstance()
 {
-	return new rep_redis;
+	return new rep_partial;
 }

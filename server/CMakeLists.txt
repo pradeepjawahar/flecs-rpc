@@ -27,7 +27,8 @@ CONFIGURE_FILE (log4j.properties ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 FOREACH (CONTAINER_PLUGIN
 		rep-no-const
 		rep-strong-const
-		rep-redis)
+		rep-redis
+		rep-partial)
 
 ADD_LIBRARY (flecs-container-${CONTAINER_PLUGIN} MODULE container-${CONTAINER_PLUGIN}.cpp)
 

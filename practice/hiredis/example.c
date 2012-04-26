@@ -22,8 +22,8 @@ int main(void) {
     freeReplyObject(reply);
 
     /* Set a key */
-    reply = redisCommand(c,"SET %s %s", "foo", "hello world");
-    printf("SET: %s\n", reply->str);
+    reply = redisCommand(c,"GET %s", "janani");
+    printf("GET: %s\n", reply->str);
     freeReplyObject(reply);
 
     /* Set a key using binary safe API */
@@ -32,9 +32,9 @@ int main(void) {
     freeReplyObject(reply);
 
     /* Try a GET and two INCR */
-    reply = redisCommand(c,"GET foo");
+    /*reply = redisCommand(c,"GET ");
     printf("GET foo: %s\n", reply->str);
-    freeReplyObject(reply);
+    freeReplyObject(reply);*/
 
     reply = redisCommand(c,"INCR counter");
     printf("INCR counter: %lld\n", reply->integer);

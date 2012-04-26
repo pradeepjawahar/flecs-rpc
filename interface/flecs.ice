@@ -21,6 +21,7 @@ module FleCS
 	interface SM2S
 	{
 		// Server to server
+		void Get(string bucketID, string objID, out ByteSeq content);
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
 

@@ -1,0 +1,76 @@
+#!/usr/bin/perl
+
+# convert time into sec in floating point format.
+#
+# Input: manually-processed (using vim macro) client log. 
+#   example:
+#     append log:
+#       11:13:46.537 20125 136396
+#       11:13:46.544 5469 24241
+#       11:13:46.548 2759 20941
+#       11:13:46.566 10693 148291
+#       11:13:46.571 3422 33766
+#       11:13:46.587 8644 141016
+#       11:13:46.594 4179 50551
+#       11:13:46.604 6674 75166
+#       11:13:46.615 6157 107731
+#       11:13:46.644 13072 142621
+#       11:13:46.657 6007 59416
+#       11:13:46.665 4768 78856
+#       11:13:46.674 5090 77131
+#       11:13:46.690 11011 109411
+#
+#     get log:
+#       11:13:46.623 7133 370992
+#       11:13:46.648 3901 283895
+
+use strict;
+use warnings;
+
+
+sub do_it 
+{
+	(my $fn) = @_;
+
+	my $out_fn = $fn . "-sec";
+
+	open (my $fh, "<", $fn)
+		or die("Could not open file ", $fn, ", stopped");
+	open (my $out_fh, ">", $out_fn)
+		or die("Could not open file ", $out_fn, ", stopped");
+
+	while (my $line = <$fh>)
+	{
+		chomp $line;
+
+		my @tokens = split(/ +/, $line);
+		my $time = $tokens[0];
+
+		@tokens = split(/:/, $time);
+		my $h = $tokens[0];
+		my $m = $tokens[1];
+		my $s = $tokens[2];
+		my $sec = $h * 3600 + $m * 60 + $s;
+		# printf "%s %s %s %.3f\n", $h, $m, $s, $sec;
+
+		printf $out_fh "%s %.3f\n", $line, $sec;
+	}
+
+	close($fh);
+	close($out_fh);
+
+	rename $out_fn, $fn;
+}
+
+
+my $num_args = $#ARGV + 1;
+if ($num_args != 1)
+{
+	printf "Usage: %s filename\n", $0;
+	printf "  Example: %s ~/work/flecs-rpc-log/p1/client1A\n", $0;
+	exit 1;
+}
+
+do_it $ARGV[0];
+
+exit 0;

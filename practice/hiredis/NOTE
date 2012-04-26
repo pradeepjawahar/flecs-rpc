@@ -1,0 +1,3 @@
+Tested on Ubuntu 11.10 with the packages:
+  libhiredis-dev
+  redis-server

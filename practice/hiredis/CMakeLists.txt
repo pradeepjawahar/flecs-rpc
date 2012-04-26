@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED (VERSION 2.6 FATAL_ERROR)
+
+LIST (APPEND CMAKE_C_FLAGS "-Wall -Werror")
+
+ADD_EXECUTABLE ( example example.c )
+TARGET_LINK_LIBRARIES ( example hiredis )

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pjawahar/flecs-rpc/practice/hiredis/example.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+hiredis/hiredis.h
+/home/pjawahar/flecs-rpc/practice/hiredis/hiredis/hiredis.h
+

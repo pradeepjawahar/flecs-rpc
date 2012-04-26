@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+set -u
+
+gnuplot plot-perf-by-num-servers.gnuplot
+
+SCP_DEST=hobin@localhost:
+
+scp -P 20022 *.png *.pdf $SCP_DEST

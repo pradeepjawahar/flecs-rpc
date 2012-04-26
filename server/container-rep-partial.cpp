@@ -7,6 +7,7 @@
 #include "globallock.h"
 #include "hiredis/hiredis.h"
 #include <cstdlib>
+#include <cmath>
 #include <ctime>
 #define REDIS_HOST flecs52 
 using namespace std;
@@ -83,11 +84,15 @@ public:
 		string boID = bucketID + "/" + objID;
 
 		GlobalLock lock(boID, 'R');
+
+		/*Get from nearest location*/
+		string localhost = boost::asio::ip::host_name();
+		
 		redisContext *c;
                 redisReply *reply;
 
                 struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                c = redisConnectWithTimeout((char*)"flecs52", 6379, timeout);
                 if (c->err) {
                         _LOG("Redis Connection error"<<c->errstr);
                         //exit(1);
@@ -95,11 +100,44 @@ public:
                 _LOG("Redis connected");
 
                 /* Set a key */
-                reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
+                reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID+ ":hosts").c_str()));
                 _LOG("GET:"<< reply->str);
-		
-		_readfile(reply->str, content);
+		string hosts = reply->str;
                 freeReplyObject(reply);
+		
+		string nearest_host;
+		if(!hosts.empty())
+			nearest_host = getNearestHost(localhost,hosts);
+		else
+			_LOG("Redis: Key not found for object");
+		if(!nearest_host.compare(localhost)){
+			reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID+ ":location").c_str()));
+			_LOG("GET:"<< reply->str);
+			string path = reply->str;
+			_readfile(reply->str, content);
+			freeReplyObject(reply);
+		}
+		else{
+			/*Get from other host*/
+			map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
+			vector<IceUtil::ThreadPtr> tpv;
+			vector<IceUtil::ThreadControl> tcv;
+
+			for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+			{
+				string endpoint = i->first;
+				string host = getHostFromEP(endpoint);
+				if(!host.compare(nearest_host))
+				{
+					//IceUtil::ThreadPtr t = new PutThread(*(i->second), bucketID, objID, content);
+					//tcv.push_back(t->start());
+					//tpv.push_back(t);
+				}
+			}
+
+			for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
+				j->join();
+		}
 
 		//_readfile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
 		_LOG("Get done");
@@ -143,7 +181,7 @@ public:
 		redisReply *reply;
 
 		struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-		c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+		c = redisConnectWithTimeout((char*)"flecs52", 6379, timeout);
 		if (c->err) {
 			_LOG("Connection error"<<c->errstr);
 			//exit(1);
@@ -151,12 +189,19 @@ public:
 		_LOG("Redis connected");
 		if(local)
 		{
-			/* Set a key */
 			reply = (redisReply*)redisCommand(
-					c, 
-					"SET %s %s",
-					(string(bucketID + ":" + objID + ":" + "hosts").c_str()),
-					localhost.c_str());
+                                c,
+                                "GET %",
+                                (string(bucketID + ":" + objID + ":" + "hosts").c_str()));
+	                string hosts = reply->str;
+			freeReplyObject(reply);
+
+			if(!hosts.empty())
+				hosts+=","+localhost;
+			else 
+				hosts = localhost;
+			/* Set a key */
+			reply = (redisReply*)redisCommand(c, "GET %s",(string( bucketID + ":" + objID + ":" + "hosts").c_str()));
 			_LOG("SET:"<< reply->str);
 			freeReplyObject(reply);
 			
@@ -225,7 +270,7 @@ public:
                 redisReply *reply;
 
                 struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                c = redisConnectWithTimeout((char*)"flecs52", 6379, timeout);
                 if (c->err) {
                         _LOG("Connection error"<<c->errstr);
                         //exit(1);
@@ -282,7 +327,7 @@ public:
                 redisReply *reply;
 
                 struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                c = redisConnectWithTimeout((char*)"flecs52", 6379, timeout);
                 if (c->err) {
                         _LOG("Connection error"<<c->errstr);
                         //exit(1);
@@ -293,11 +338,13 @@ public:
 		reply = (redisReply*)redisCommand(
 				c,
 				"GET %",
-				(string(bucketID + ":" + objID + ":" + "hosts").c_str()));
+				(string(bucketID + ":" + objID + ":hosts").c_str()));
 		string hosts = reply->str;
+		freeReplyObject(reply);
+
 		string localhost = boost::asio::ip::host_name();
-		if(hosts!=NULL)	
-			hosts+=localhost;
+		if(!hosts.empty())	
+			hosts+=","+localhost;
 		else
 			hosts=localhost;
 		 /* Set a key */
@@ -352,6 +399,20 @@ public:
 		}		
 		return host_name;
 	}
+	int getHostID(string hostname)
+	{
+		int id = 0;
+		
+		if(!hostname.compare("flecs12"))
+			id = 0;
+
+		else if(!hostname.compare("flecs22"))
+			id = 1;
+
+		else if(!hostname.compare("flecs52"))
+			id = 2;
+		return id;
+	}
 	string getHostFromEP(string endpoint)
 	{
 		string host;
@@ -367,6 +428,29 @@ public:
 			pch = strtok(NULL," ");
         	}   
 		return host;
+	}
+	string getNearestHost(string localhost, string hosts)
+	{
+		/*
+		*Distances
+		*flecs12<->flecs22 = 1
+		*flecs12<->flecs52 = 2
+		*flecs22<->flecs52 = 1
+		*flecs22<->flec
+		*/
+		string server1, server2;
+		char* hnames = new char [hosts.size()+1];
+		strcpy(hnames, hosts.c_str());
+		char *pch;
+		pch = strtok(hnames,",");
+		server1 = pch;
+		pch = strtok(NULL,",");
+		server2 = pch;
+		int distance1 = abs(getHostID(localhost)-getHostID(server1));
+		int distance2 = abs(getHostID(localhost)-getHostID(server2));
+		if(distance1<distance2)
+			return server1;
+		return server2;
 	}
 
 private:

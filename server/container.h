@@ -27,6 +27,12 @@ public:
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
 
+	virtual void S2S_Get(
+                const std::string& bucketID,
+                const std::string& objID,
+                FleCS::ByteSeq& content) = 0;
+
+
 	virtual void S2S_Put(
 		const std::string& bucketID,
 		const std::string& objID,

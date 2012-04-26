@@ -7,6 +7,12 @@
 class SM2SI : public FleCS::SM2S
 {
 public:
+	virtual void Get(  
+                        const std::string& bucketID,
+                        const std::string& objID,
+                        FleCS::ByteSeq& content,
+                        const Ice::Current&);
+
 	virtual void Put(
 			const std::string& bucketID,
 			const std::string& objID,

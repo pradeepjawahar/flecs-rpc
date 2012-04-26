@@ -57,6 +57,30 @@ private:
 };
 
 
+class DeleteThread : public IceUtil::Thread
+{
+public:
+	DeleteThread(
+			const FleCS::SM2SPrx& s,
+			const string& bucketID,
+			const string& objID)
+		: _s(s), _bucketID(bucketID), _objID(objID)
+	{
+	}
+
+	virtual void run()
+	{
+		_s->Delete(_bucketID, _objID);
+	}
+
+
+private:
+	const FleCS::SM2SPrx& _s;
+	const string& _bucketID;
+	const string& _objID;
+};
+
+
 class rep_no_const : public Container
 {
 public:
@@ -154,6 +178,31 @@ public:
 	}
 
 
+	void C2S_Delete(
+		const std::string& bucketID,
+		const std::string& objID)
+	{
+		_LOG(objID);
+
+		_deletefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str());
+
+		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
+
+		vector<IceUtil::ThreadPtr> tpv;
+		vector<IceUtil::ThreadControl> tcv;
+
+		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		{
+			IceUtil::ThreadPtr t = new DeleteThread(*(i->second), bucketID, objID);
+			tcv.push_back(t->start());
+			tpv.push_back(t);
+		}
+
+		for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
+			j->join();
+	}
+
+
 	void S2S_Put(
 		const std::string& bucketID,
 		const std::string& objID,
@@ -173,6 +222,16 @@ public:
 		_LOG(objID);
 
 		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+	}
+
+
+	void S2S_Delete(
+		const std::string& bucketID,
+		const std::string& objID)
+	{
+		_LOG(objID);
+
+		_deletefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str());
 	}
 
 

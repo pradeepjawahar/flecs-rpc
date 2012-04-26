@@ -19,6 +19,11 @@ public:
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);
 
+	virtual void Delete(
+			const std::string& bucketID,
+			const std::string& objID,
+			const Ice::Current&);
+
 	virtual void ServerJoined(
 			const std::string& endpoint,
 			const Ice::Current&);

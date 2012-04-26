@@ -91,6 +91,15 @@ void _appendfile(
 }
 
 
+void _deletefile(const char* filename)
+{
+	boost::system::error_code ec;
+	bool r = boost::filesystem::remove(filename, ec);
+	if (!r && ec != boost::system::errc::success)
+		throw runtime_error(string("Unable to remove file ") + filename + " ec=" + ec.message());
+}
+
+
 void _create_parent_directories(const char* filename)
 {
 	char filename_[PATH_MAX];

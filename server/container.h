@@ -22,6 +22,10 @@ public:
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
 
+	virtual void C2S_Delete(
+		const std::string& bucketID,
+		const std::string& objID) = 0;
+
 	virtual void C2S_Append(
 		const std::string& bucketID,
 		const std::string& objID,
@@ -36,6 +40,10 @@ public:
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
+
+	virtual void S2S_Delete(
+		const std::string& bucketID,
+		const std::string& objID) = 0;
 };
 
 

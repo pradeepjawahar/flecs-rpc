@@ -34,6 +34,18 @@ void SM2SI::Append(
 }
 
 
+void SM2SI::Delete(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	c.S2S_Delete(bucketID, objID);
+}
+
+
 void SM2SI::ServerJoined(
 		const std::string& endpoint,
 		const Ice::Current& cur)

@@ -24,6 +24,9 @@ void _appendfile(
 		const char* filename,
 		const std::vector<unsigned char>& content);
 
+void _deletefile(
+		const char* filename);
+
 void _create_parent_directories(const char* filename);
 void _create_directories(const std::string& dir);
 

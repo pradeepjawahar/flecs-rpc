@@ -14,6 +14,7 @@ module FleCS
 		void Get(string bucketID, string objID, out ByteSeq content);
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
+		void Delete(string bucketID, string objID);
 	};
 
 
@@ -23,6 +24,7 @@ module FleCS
 		// Server to server
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
+		void Delete(string bucketID, string objID);
 
 		// Global lock
 		void AcquireLock(string lockPath, byte type, string hostname, long tid);

@@ -48,3 +48,15 @@ void C2SI::Append(
 
 	c.C2S_Append(bucketID, objID, content);
 }
+
+
+void C2SI::Delete(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	c.C2S_Delete(bucketID, objID);
+}

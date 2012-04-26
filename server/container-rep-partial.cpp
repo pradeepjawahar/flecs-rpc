@@ -12,6 +12,30 @@
 #define REDIS_HOST flecs52 
 using namespace std;
 
+class GetThread : public IceUtil::Thread
+{
+public:
+        GetThread(
+                        const FleCS::SM2SPrx& s,
+                        const string& bucketID,
+                        const string& objID,
+                        FleCS::ByteSeq& serv_content)
+                : _s(s), _bucketID(bucketID), _objID(objID), _serv_content(serv_content)
+        {
+        }
+
+        virtual void run()
+        {
+                _s->Get(_bucketID, _objID, _serv_content);
+        }
+
+
+private:
+        const FleCS::SM2SPrx& _s;
+        const string& _bucketID;
+        const string& _objID;
+	FleCS::ByteSeq& _serv_content;
+};
 
 class PutThread : public IceUtil::Thread
 {
@@ -129,9 +153,9 @@ public:
 				string host = getHostFromEP(endpoint);
 				if(!host.compare(nearest_host))
 				{
-					//IceUtil::ThreadPtr t = new PutThread(*(i->second), bucketID, objID, content);
-					//tcv.push_back(t->start());
-					//tpv.push_back(t);
+					IceUtil::ThreadPtr t = new GetThread(*(i->second), bucketID, objID, content);
+					tcv.push_back(t->start());
+					tpv.push_back(t);
 				}
 			}
 
@@ -266,6 +290,8 @@ public:
 		string boID = bucketID + "/" + objID;
 
 		GlobalLock lock(boID, 'W');
+
+		string localhost = boost::asio::ip::host_name();
          	redisContext *c;
                 redisReply *reply;
 
@@ -277,9 +303,48 @@ public:
                  }
                 _LOG("Redis connected");
 
-		reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
-                _LOG("GET:"<< reply->str);
-		_appendfile(reply->str, content);
+		reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID + ":hosts").c_str()));
+		string hosts = reply->str;
+	        _LOG("GET:"<< reply->str);
+		freeReplyObject(reply);
+
+		string nearest_host;
+                if(!hosts.empty())  
+                        nearest_host = getNearestHost(localhost,hosts);
+                else
+                        _LOG("Redis: Key not found for object");
+                if(!nearest_host.compare(localhost)){
+                        reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID+ ":location").c_str()));
+                        _LOG("GET:"<< reply->str);
+                        string path = reply->str;
+                        _appendfile(reply->str, content);
+                        freeReplyObject(reply);
+                }
+		 else{
+                        /*Get from other host*/
+                        map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
+                        vector<IceUtil::ThreadPtr> tpv;
+                        vector<IceUtil::ThreadControl> tcv;
+
+                        for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+                        {
+                                string endpoint = i->first;
+                                string host = getHostFromEP(endpoint);
+				if(hosts.find(host)!=string::npos)
+				{
+                                	IceUtil::ThreadPtr t = new AppendThread(*(i->second), bucketID, objID, content);
+	 	                        tcv.push_back(t->start());
+                	                tpv.push_back(t);
+				}
+                        }
+
+                        for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
+                                j->join();
+                }
+
+
+
+		//_appendfile(reply->str, content);
 
 		// propagate update to the other servers.
 		//
@@ -292,26 +357,6 @@ public:
 		// of local clients) * (number of servers).
 		//
 		// It applies the same to the Put().
-		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
-
-#ifdef _SERIAL_PROCESSING
-		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
-			(*(i->second))->Append(bucketID, objID, content);
-
-#else	// Parallel processing (by default)
-		vector<IceUtil::ThreadPtr> tpv;
-		vector<IceUtil::ThreadControl> tcv;
-
-		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
-		{
-			IceUtil::ThreadPtr t = new AppendThread(*(i->second), bucketID, objID, content);
-			tcv.push_back(t->start());
-			tpv.push_back(t);
-		}
-
-		for (vector<IceUtil::ThreadControl>::iterator j = tcv.begin(); j != tcv.end(); ++ j)
-			j->join();
-#endif
 	}
 
 
@@ -378,7 +423,17 @@ public:
 
 		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
-	
+
+	//This function is called with a 'R' lock held.
+	void S2S_Get(
+                const std::string& bucketID,
+                const std::string& objID,
+                FleCS::ByteSeq& content)
+        {
+                _LOG(objID);
+		_readfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+	}
+
 	int getRand()
 	{
 		srand(time(NULL));

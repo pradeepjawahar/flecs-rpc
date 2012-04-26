@@ -26,11 +26,11 @@ public:
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
-
+	//Not made pure virtual since every container need not implement it;
 	virtual void S2S_Get(
                 const std::string& bucketID,
                 const std::string& objID,
-                FleCS::ByteSeq& content) = 0;
+                FleCS::ByteSeq& content);
 
 
 	virtual void S2S_Put(

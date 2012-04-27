@@ -7,6 +7,12 @@
 class SM2SI : public FleCS::SM2S
 {
 public:
+    virtual void Get(
+			const std::string& bucketID,
+			const std::string& objID,
+			FleCS::ByteSeq& content,
+			const Ice::Current&);
+
 	virtual void Put(
 			const std::string& bucketID,
 			const std::string& objID,
@@ -24,6 +30,13 @@ public:
 			const std::string& objID,
 			const Ice::Current&);
 
+	virtual void Process(
+			const std::string& bucketID,
+			const std::string& objID,
+			const Ice::Current&);
+
+	// Master to server
+
 	virtual void ServerJoined(
 			const std::string& endpoint,
 			const Ice::Current&);
@@ -31,6 +44,8 @@ public:
 	virtual void ServerLeft(
 			const std::string& endpoint,
 			const Ice::Current&);
+
+	// Global lock
 
 	virtual void AcquireLock(
 			const std::string& lockPath,
@@ -47,7 +62,6 @@ public:
 			const Ice::Current&);
 
 private:
-
 	struct Mutex
 	{
 		Mutex()

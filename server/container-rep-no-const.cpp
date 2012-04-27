@@ -203,6 +203,23 @@ public:
 	}
 
 
+	void C2S_Process(
+		const std::string& bucketID,
+		const std::string& objID)
+	{
+		_LOG(objID);
+	}
+
+
+	void S2S_Get(
+		const std::string& bucketID,
+		const std::string& objID,
+		FleCS::ByteSeq& content)
+	{
+		_LOG(objID);
+	}
+	
+	
 	void S2S_Put(
 		const std::string& bucketID,
 		const std::string& objID,
@@ -232,6 +249,14 @@ public:
 		_LOG(objID);
 
 		_deletefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str());
+	}
+
+
+	void S2S_Process(
+		const std::string& bucketID,
+		const std::string& objID)
+	{
+		_LOG(objID);
 	}
 
 

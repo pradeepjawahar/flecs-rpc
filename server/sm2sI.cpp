@@ -8,6 +8,19 @@
 using namespace std;
 
 
+void SM2SI::Get(
+		const std::string& bucketID,
+		const std::string& objID,
+		FleCS::ByteSeq& content,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	c.S2S_Get(bucketID, objID, content);
+}
+
+
 void SM2SI::Put(
 		const std::string& bucketID,
 		const std::string& objID,
@@ -43,6 +56,18 @@ void SM2SI::Delete(
 	Container& c = cm.GetContainer(bucketID);
 
 	c.S2S_Delete(bucketID, objID);
+}
+
+
+void SM2SI::Process(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	c.S2S_Process(bucketID, objID);
 }
 
 

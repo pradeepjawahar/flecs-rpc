@@ -60,3 +60,15 @@ void C2SI::Delete(
 
 	c.C2S_Delete(bucketID, objID);
 }
+
+
+void C2SI::Process(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	c.C2S_Process(bucketID, objID);
+}

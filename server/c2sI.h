@@ -28,6 +28,11 @@ public:
 			const std::string& bucketID,
 			const std::string& objID,
 			const Ice::Current&);
+
+    virtual void Process(
+			const std::string& bucketID,
+			const std::string& objID,
+			const Ice::Current&);
 };
 
 

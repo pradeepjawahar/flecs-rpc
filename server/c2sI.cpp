@@ -62,6 +62,18 @@ void C2SI::Delete(
 }
 
 
+long C2SI::Size(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	return c.C2S_Size(bucketID, objID);
+}
+
+
 void C2SI::Process(
 		const std::string& bucketID,
 		const std::string& objID,

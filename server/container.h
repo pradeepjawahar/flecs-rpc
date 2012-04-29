@@ -31,6 +31,10 @@ public:
 		const std::string& bucketID,
 		const std::string& objID) = 0;
 
+	virtual long C2S_Size(
+		const std::string& bucketID,
+		const std::string& objID);
+
 	virtual void C2S_Process(
 		const std::string& bucketID,
 		const std::string& objID) = 0;
@@ -53,6 +57,10 @@ public:
 	virtual void S2S_Delete(
 		const std::string& bucketID,
 		const std::string& objID) = 0;
+
+	virtual long S2S_Size(
+		const std::string& bucketID,
+		const std::string& objID);
 
 	virtual void S2S_Process(
 		const std::string& bucketID,

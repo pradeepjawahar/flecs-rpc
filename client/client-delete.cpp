@@ -47,6 +47,9 @@ public:
 				_c2s_prx->Put(*b, obj_name, content);
 				_LOG(" Put succeeded.");
 
+				long size = _c2s_prx->Size(*b, obj_name);
+				_LOG(" Size: " << size);
+
 				_c2s_prx->Get(*b, obj_name, content);
 				_LOG(" Get succeeded.");
 

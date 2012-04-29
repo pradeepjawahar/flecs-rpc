@@ -15,6 +15,7 @@ module FleCS
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
 		void Delete(string bucketID, string objID);
+		long Size(string bucketID, string objID);
 		void Process(string bucketID, string objID);
 	};
 
@@ -27,6 +28,7 @@ module FleCS
 		void Put(string bucketID, string objID, ByteSeq content);
 		void Append(string bucketID, string objID, ByteSeq content);
 		void Delete(string bucketID, string objID);
+		long Size(string bucketID, string objID);
 		void Process(string bucketID, string objID);
 
 		// Global lock

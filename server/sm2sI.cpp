@@ -59,6 +59,18 @@ void SM2SI::Delete(
 }
 
 
+long SM2SI::Size(
+		const std::string& bucketID,
+		const std::string& objID,
+		const Ice::Current&)
+{
+	static ContainerMgr& cm = ContainerMgr::GetInstance();
+	Container& c = cm.GetContainer(bucketID);
+
+	return c.S2S_Size(bucketID, objID);
+}
+
+
 void SM2SI::Process(
 		const std::string& bucketID,
 		const std::string& objID,

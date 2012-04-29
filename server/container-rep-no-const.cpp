@@ -97,7 +97,7 @@ public:
 	{
 		_LOG(objID);
 
-		_readfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_readfile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 	
 
@@ -108,7 +108,7 @@ public:
 	{
 		_LOG(objID);
 
-		_writefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_writefile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str(), content);
 
 		// propagate update to the other servers.
 
@@ -142,7 +142,7 @@ public:
 	{
 		_LOG(objID);
 
-		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_appendfile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str(), content);
 
 		// propagate update to the other servers.
 		//
@@ -184,7 +184,7 @@ public:
 	{
 		_LOG(objID);
 
-		_deletefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str());
+		_deletefile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str());
 
 		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
 
@@ -227,7 +227,7 @@ public:
 	{
 		_LOG(objID);
 
-		_writefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_writefile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 	
 	
@@ -238,7 +238,7 @@ public:
 	{
 		_LOG(objID);
 
-		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+		_appendfile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str(), content);
 	}
 
 
@@ -248,7 +248,7 @@ public:
 	{
 		_LOG(objID);
 
-		_deletefile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str());
+		_deletefile((FleCSServer::stg_root_dir + "/" + bucketID + "/" + objID).c_str());
 	}
 
 

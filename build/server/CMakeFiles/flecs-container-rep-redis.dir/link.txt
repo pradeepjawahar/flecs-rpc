@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -O3 -DNDEBUG   -shared -Wl,-soname,libflecs-container-rep-redis.so -o libflecs-container-rep-redis.so CMakeFiles/flecs-container-rep-redis.dir/container-rep-redis.cpp.o -lhiredis 

@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -O3 -DNDEBUG   -shared -Wl,-soname,libflecs-container-rep-no-const.so -o libflecs-container-rep-no-const.so CMakeFiles/flecs-container-rep-no-const.dir/container-rep-no-const.cpp.o -lhiredis 

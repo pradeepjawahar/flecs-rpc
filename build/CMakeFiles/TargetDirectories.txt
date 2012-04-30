@@ -1,0 +1,16 @@
+/home/pjawahar/flecs-rpc/build/data/check-consistency/CMakeFiles/ccheck.dir
+/home/pjawahar/flecs-rpc/build/agent/CMakeFiles/flecs-agent-client.dir
+/home/pjawahar/flecs-rpc/build/agent/CMakeFiles/flecs-agent-server.dir
+/home/pjawahar/flecs-rpc/build/client/CMakeFiles/flecs-client-get.dir
+/home/pjawahar/flecs-rpc/build/client/CMakeFiles/flecs-client-put.dir
+/home/pjawahar/flecs-rpc/build/client/CMakeFiles/flecs-client-rand-get-append.dir
+/home/pjawahar/flecs-rpc/build/server/CMakeFiles/flecs-container-rep-no-const.dir
+/home/pjawahar/flecs-rpc/build/server/CMakeFiles/flecs-container-rep-partial.dir
+/home/pjawahar/flecs-rpc/build/server/CMakeFiles/flecs-container-rep-redis.dir
+/home/pjawahar/flecs-rpc/build/server/CMakeFiles/flecs-container-rep-strong-const.dir
+/home/pjawahar/flecs-rpc/build/launcher/CMakeFiles/flecs-launcher.dir
+/home/pjawahar/flecs-rpc/build/master/CMakeFiles/flecs-master.dir
+/home/pjawahar/flecs-rpc/build/server/CMakeFiles/flecs-server.dir
+/home/pjawahar/flecs-rpc/build/data/gen-fileset/CMakeFiles/gen-fileset.dir
+/home/pjawahar/flecs-rpc/build/agent/CMakeFiles/gen_agent_interface.dir
+/home/pjawahar/flecs-rpc/build/interface/CMakeFiles/gen_rpc_interface.dir

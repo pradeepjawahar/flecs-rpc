@@ -26,23 +26,12 @@ public:
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
-
-	virtual void C2S_Delete(
-		const std::string& bucketID,
-		const std::string& objID) = 0;
-
-	virtual long C2S_Size(
-		const std::string& bucketID,
-		const std::string& objID);
-
-	virtual void C2S_Process(
-		const std::string& bucketID,
-		const std::string& objID) = 0;
-
+	//Not made pure virtual since every container need not implement it;
 	virtual void S2S_Get(
-		const std::string& bucketID,
-		const std::string& objID,
-		FleCS::ByteSeq& content) = 0;
+                const std::string& bucketID,
+                const std::string& objID,
+                FleCS::ByteSeq& content);
+
 
 	virtual void S2S_Put(
 		const std::string& bucketID,
@@ -53,18 +42,6 @@ public:
 		const std::string& bucketID,
 		const std::string& objID,
 		const FleCS::ByteSeq& content) = 0;
-
-	virtual void S2S_Delete(
-		const std::string& bucketID,
-		const std::string& objID) = 0;
-
-	virtual long S2S_Size(
-		const std::string& bucketID,
-		const std::string& objID);
-
-	virtual void S2S_Process(
-		const std::string& bucketID,
-		const std::string& objID) = 0;
 };
 
 

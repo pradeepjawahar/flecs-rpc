@@ -7,19 +7,23 @@
 
 using namespace std;
 
-
 void SM2SI::Get(
-		const std::string& bucketID,
-		const std::string& objID,
-		FleCS::ByteSeq& content,
-		const Ice::Current&)
+                const std::string& bucketID,
+                const std::string& objID,
+                FleCS::ByteSeq& content,
+                const Ice::Current&)
 {
-	static ContainerMgr& cm = ContainerMgr::GetInstance();
-	Container& c = cm.GetContainer(bucketID);
+        // Depending on the bucketID, a proper container code needs to be
+        // invoked.  For quick prototyping, for now, there is only one bucket
+        // (instance of a container) per container. It can be easily extended
+        // to allow multiple buckets per container with like this:
+        // /storage_root/container_type/bucket_name/obj_path/...
 
-	c.S2S_Get(bucketID, objID, content);
+        static ContainerMgr& cm = ContainerMgr::GetInstance();
+        Container& c = cm.GetContainer(bucketID);
+
+        c.S2S_Get(bucketID, objID, content);
 }
-
 
 void SM2SI::Put(
 		const std::string& bucketID,
@@ -44,42 +48,6 @@ void SM2SI::Append(
 	Container& c = cm.GetContainer(bucketID);
 
 	c.S2S_Append(bucketID, objID, content);
-}
-
-
-void SM2SI::Delete(
-		const std::string& bucketID,
-		const std::string& objID,
-		const Ice::Current&)
-{
-	static ContainerMgr& cm = ContainerMgr::GetInstance();
-	Container& c = cm.GetContainer(bucketID);
-
-	c.S2S_Delete(bucketID, objID);
-}
-
-
-long SM2SI::Size(
-		const std::string& bucketID,
-		const std::string& objID,
-		const Ice::Current&)
-{
-	static ContainerMgr& cm = ContainerMgr::GetInstance();
-	Container& c = cm.GetContainer(bucketID);
-
-	return c.S2S_Size(bucketID, objID);
-}
-
-
-void SM2SI::Process(
-		const std::string& bucketID,
-		const std::string& objID,
-		const Ice::Current&)
-{
-	static ContainerMgr& cm = ContainerMgr::GetInstance();
-	Container& c = cm.GetContainer(bucketID);
-
-	c.S2S_Process(bucketID, objID);
 }
 
 

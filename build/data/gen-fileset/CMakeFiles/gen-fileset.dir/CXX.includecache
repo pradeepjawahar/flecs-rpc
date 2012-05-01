@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pjawahar/flecs-rpc/data/gen-fileset/gen-fileset.cpp
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+libgen.h
+-
+linux/limits.h
+-
+fstream
+-
+iostream
+-
+vector
+-
+string
+-
+boost/tokenizer.hpp
+-
+boost/filesystem.hpp
+-
+boost/program_options.hpp
+-
+

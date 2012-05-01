@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Werror -O3 -DNDEBUG    CMakeFiles/flecs-launcher.dir/launcher.cpp.o CMakeFiles/flecs-launcher.dir/__/common/util.cpp.o  -o flecs-launcher -rdynamic -llog4cxx -lboost_filesystem-mt -lboost_system-mt -lboost_program_options-mt 

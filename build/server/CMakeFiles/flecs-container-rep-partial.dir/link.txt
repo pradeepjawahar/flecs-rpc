@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -O3 -DNDEBUG   -shared -Wl,-soname,libflecs-container-rep-partial.so -o libflecs-container-rep-partial.so CMakeFiles/flecs-container-rep-partial.dir/container-rep-partial.cpp.o -lhiredis 

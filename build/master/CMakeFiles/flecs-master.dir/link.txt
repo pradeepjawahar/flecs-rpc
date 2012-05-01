@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Werror -O3 -DNDEBUG    CMakeFiles/flecs-master.dir/__/interface/flecs.cpp.o CMakeFiles/flecs-master.dir/main.cpp.o CMakeFiles/flecs-master.dir/masterI.cpp.o  -o flecs-master -rdynamic -lIce -lIceUtil -llog4cxx 

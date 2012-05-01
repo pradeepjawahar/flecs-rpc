@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../launcher/../common/util.h
-sys/time.h
--
-vector
--
-string
--
-stdexcept
--
-
 /home/pjawahar/flecs-rpc/common/util.cpp
 stdlib.h
 -
@@ -27,6 +17,14 @@ fstream
 -
 boost/filesystem.hpp
 -
+iostream
+-
+string
+-
+string.h
+-
+sstream
+-
 util.h
 /home/pjawahar/flecs-rpc/common/util.h
 
@@ -39,28 +37,4 @@ string
 -
 stdexcept
 -
-
-/home/pjawahar/flecs-rpc/launcher/launcher.cpp
-stdio.h
--
-stdlib.h
--
-unistd.h
--
-sys/inotify.h
--
-sys/select.h
--
-iostream
--
-vector
--
-map
--
-string
--
-log4cxx/logger.h
--
-util.h
-/home/pjawahar/flecs-rpc/launcher/util.h
 

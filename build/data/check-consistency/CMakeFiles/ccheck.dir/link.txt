@@ -1,1 +1,1 @@
-/usr/bin/c++   -Wall -Werror -O3 -DNDEBUG    CMakeFiles/ccheck.dir/ccheck.cpp.o  -o ccheck -rdynamic -lboost_filesystem-mt -lboost_system-mt -lboost_program_options-mt 
+/usr/bin/c++   -Wall -Werror -O3 -DNDEBUG    CMakeFiles/ccheck.dir/ccheck.cpp.o  -o ccheck -rdynamic -lboost_filesystem-mt -lboost_system-mt -lboost_program_options-mt -lboost_thread-mt -lpthread 

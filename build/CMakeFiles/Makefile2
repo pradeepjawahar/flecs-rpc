@@ -71,7 +71,7 @@ interface/preinstall:
 interface/CMakeFiles/gen_rpc_interface.dir/all:
 	$(MAKE) -f interface/CMakeFiles/gen_rpc_interface.dir/build.make interface/CMakeFiles/gen_rpc_interface.dir/depend
 	$(MAKE) -f interface/CMakeFiles/gen_rpc_interface.dir/build.make interface/CMakeFiles/gen_rpc_interface.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  37
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  44
 	@echo "Built target gen_rpc_interface"
 .PHONY : interface/CMakeFiles/gen_rpc_interface.dir/all
 
@@ -139,7 +139,7 @@ data/gen-fileset/preinstall:
 data/gen-fileset/CMakeFiles/gen-fileset.dir/all:
 	$(MAKE) -f data/gen-fileset/CMakeFiles/gen-fileset.dir/build.make data/gen-fileset/CMakeFiles/gen-fileset.dir/depend
 	$(MAKE) -f data/gen-fileset/CMakeFiles/gen-fileset.dir/build.make data/gen-fileset/CMakeFiles/gen-fileset.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  35
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  42
 	@echo "Built target gen-fileset"
 .PHONY : data/gen-fileset/CMakeFiles/gen-fileset.dir/all
 
@@ -239,7 +239,7 @@ master/preinstall:
 master/CMakeFiles/flecs-master.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f master/CMakeFiles/flecs-master.dir/build.make master/CMakeFiles/flecs-master.dir/depend
 	$(MAKE) -f master/CMakeFiles/flecs-master.dir/build.make master/CMakeFiles/flecs-master.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  24 25 26
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  31 32 33
 	@echo "Built target flecs-master"
 .PHONY : master/CMakeFiles/flecs-master.dir/all
 
@@ -271,6 +271,7 @@ clean: master/CMakeFiles/flecs-master.dir/clean
 # Directory level rules for directory server
 
 # Convenience name for "all" pass in the directory.
+server/all: server/CMakeFiles/flecs-container-rep-big-data.dir/all
 server/all: server/CMakeFiles/flecs-container-rep-no-const.dir/all
 server/all: server/CMakeFiles/flecs-container-rep-partial.dir/all
 server/all: server/CMakeFiles/flecs-container-rep-redis.dir/all
@@ -279,6 +280,7 @@ server/all: server/CMakeFiles/flecs-server.dir/all
 .PHONY : server/all
 
 # Convenience name for "clean" pass in the directory.
+server/clean: server/CMakeFiles/flecs-container-rep-big-data.dir/clean
 server/clean: server/CMakeFiles/flecs-container-rep-no-const.dir/clean
 server/clean: server/CMakeFiles/flecs-container-rep-partial.dir/clean
 server/clean: server/CMakeFiles/flecs-container-rep-redis.dir/clean
@@ -291,13 +293,48 @@ server/preinstall:
 .PHONY : server/preinstall
 
 #=============================================================================
+# Target rules for target server/CMakeFiles/flecs-container-rep-big-data.dir
+
+# All Build rule for target.
+server/CMakeFiles/flecs-container-rep-big-data.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
+	$(MAKE) -f server/CMakeFiles/flecs-container-rep-big-data.dir/build.make server/CMakeFiles/flecs-container-rep-big-data.dir/depend
+	$(MAKE) -f server/CMakeFiles/flecs-container-rep-big-data.dir/build.make server/CMakeFiles/flecs-container-rep-big-data.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  24
+	@echo "Built target flecs-container-rep-big-data"
+.PHONY : server/CMakeFiles/flecs-container-rep-big-data.dir/all
+
+# Include target in all.
+all: server/CMakeFiles/flecs-container-rep-big-data.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+server/CMakeFiles/flecs-container-rep-big-data.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 server/CMakeFiles/flecs-container-rep-big-data.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 0
+.PHONY : server/CMakeFiles/flecs-container-rep-big-data.dir/rule
+
+# Convenience name for target.
+flecs-container-rep-big-data: server/CMakeFiles/flecs-container-rep-big-data.dir/rule
+.PHONY : flecs-container-rep-big-data
+
+# clean rule for target.
+server/CMakeFiles/flecs-container-rep-big-data.dir/clean:
+	$(MAKE) -f server/CMakeFiles/flecs-container-rep-big-data.dir/build.make server/CMakeFiles/flecs-container-rep-big-data.dir/clean
+.PHONY : server/CMakeFiles/flecs-container-rep-big-data.dir/clean
+
+# clean rule for target.
+clean: server/CMakeFiles/flecs-container-rep-big-data.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target server/CMakeFiles/flecs-container-rep-no-const.dir
 
 # All Build rule for target.
 server/CMakeFiles/flecs-container-rep-no-const.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-no-const.dir/build.make server/CMakeFiles/flecs-container-rep-no-const.dir/depend
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-no-const.dir/build.make server/CMakeFiles/flecs-container-rep-no-const.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  18
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  25
 	@echo "Built target flecs-container-rep-no-const"
 .PHONY : server/CMakeFiles/flecs-container-rep-no-const.dir/all
 
@@ -332,7 +369,7 @@ clean: server/CMakeFiles/flecs-container-rep-no-const.dir/clean
 server/CMakeFiles/flecs-container-rep-partial.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-partial.dir/build.make server/CMakeFiles/flecs-container-rep-partial.dir/depend
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-partial.dir/build.make server/CMakeFiles/flecs-container-rep-partial.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  19
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  26
 	@echo "Built target flecs-container-rep-partial"
 .PHONY : server/CMakeFiles/flecs-container-rep-partial.dir/all
 
@@ -367,7 +404,7 @@ clean: server/CMakeFiles/flecs-container-rep-partial.dir/clean
 server/CMakeFiles/flecs-container-rep-redis.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-redis.dir/build.make server/CMakeFiles/flecs-container-rep-redis.dir/depend
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-redis.dir/build.make server/CMakeFiles/flecs-container-rep-redis.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  20
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  27
 	@echo "Built target flecs-container-rep-redis"
 .PHONY : server/CMakeFiles/flecs-container-rep-redis.dir/all
 
@@ -402,7 +439,7 @@ clean: server/CMakeFiles/flecs-container-rep-redis.dir/clean
 server/CMakeFiles/flecs-container-rep-strong-const.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-strong-const.dir/build.make server/CMakeFiles/flecs-container-rep-strong-const.dir/depend
 	$(MAKE) -f server/CMakeFiles/flecs-container-rep-strong-const.dir/build.make server/CMakeFiles/flecs-container-rep-strong-const.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  21
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  28
 	@echo "Built target flecs-container-rep-strong-const"
 .PHONY : server/CMakeFiles/flecs-container-rep-strong-const.dir/all
 
@@ -437,7 +474,7 @@ clean: server/CMakeFiles/flecs-container-rep-strong-const.dir/clean
 server/CMakeFiles/flecs-server.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f server/CMakeFiles/flecs-server.dir/build.make server/CMakeFiles/flecs-server.dir/depend
 	$(MAKE) -f server/CMakeFiles/flecs-server.dir/build.make server/CMakeFiles/flecs-server.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  27 28 29 30 31 32 33 34
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  34 35 36 37 38 39 40 41
 	@echo "Built target flecs-server"
 .PHONY : server/CMakeFiles/flecs-server.dir/all
 
@@ -469,13 +506,17 @@ clean: server/CMakeFiles/flecs-server.dir/clean
 # Directory level rules for directory client
 
 # Convenience name for "all" pass in the directory.
+client/all: client/CMakeFiles/flecs-client-big-data.dir/all
 client/all: client/CMakeFiles/flecs-client-get.dir/all
+client/all: client/CMakeFiles/flecs-client-local.dir/all
 client/all: client/CMakeFiles/flecs-client-put.dir/all
 client/all: client/CMakeFiles/flecs-client-rand-get-append.dir/all
 .PHONY : client/all
 
 # Convenience name for "clean" pass in the directory.
+client/clean: client/CMakeFiles/flecs-client-big-data.dir/clean
 client/clean: client/CMakeFiles/flecs-client-get.dir/clean
+client/clean: client/CMakeFiles/flecs-client-local.dir/clean
 client/clean: client/CMakeFiles/flecs-client-put.dir/clean
 client/clean: client/CMakeFiles/flecs-client-rand-get-append.dir/clean
 .PHONY : client/clean
@@ -485,13 +526,48 @@ client/preinstall:
 .PHONY : client/preinstall
 
 #=============================================================================
+# Target rules for target client/CMakeFiles/flecs-client-big-data.dir
+
+# All Build rule for target.
+client/CMakeFiles/flecs-client-big-data.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
+	$(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/depend
+	$(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  9 10 11
+	@echo "Built target flecs-client-big-data"
+.PHONY : client/CMakeFiles/flecs-client-big-data.dir/all
+
+# Include target in all.
+all: client/CMakeFiles/flecs-client-big-data.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+client/CMakeFiles/flecs-client-big-data.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/flecs-client-big-data.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 0
+.PHONY : client/CMakeFiles/flecs-client-big-data.dir/rule
+
+# Convenience name for target.
+flecs-client-big-data: client/CMakeFiles/flecs-client-big-data.dir/rule
+.PHONY : flecs-client-big-data
+
+# clean rule for target.
+client/CMakeFiles/flecs-client-big-data.dir/clean:
+	$(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/clean
+.PHONY : client/CMakeFiles/flecs-client-big-data.dir/clean
+
+# clean rule for target.
+clean: client/CMakeFiles/flecs-client-big-data.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target client/CMakeFiles/flecs-client-get.dir
 
 # All Build rule for target.
 client/CMakeFiles/flecs-client-get.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/depend
 	$(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  9 10 11
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  12 13 14
 	@echo "Built target flecs-client-get"
 .PHONY : client/CMakeFiles/flecs-client-get.dir/all
 
@@ -520,13 +596,48 @@ clean: client/CMakeFiles/flecs-client-get.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target client/CMakeFiles/flecs-client-local.dir
+
+# All Build rule for target.
+client/CMakeFiles/flecs-client-local.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
+	$(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/depend
+	$(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  15 16 17
+	@echo "Built target flecs-client-local"
+.PHONY : client/CMakeFiles/flecs-client-local.dir/all
+
+# Include target in all.
+all: client/CMakeFiles/flecs-client-local.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+client/CMakeFiles/flecs-client-local.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/flecs-client-local.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pjawahar/flecs-rpc/build/CMakeFiles 0
+.PHONY : client/CMakeFiles/flecs-client-local.dir/rule
+
+# Convenience name for target.
+flecs-client-local: client/CMakeFiles/flecs-client-local.dir/rule
+.PHONY : flecs-client-local
+
+# clean rule for target.
+client/CMakeFiles/flecs-client-local.dir/clean:
+	$(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/clean
+.PHONY : client/CMakeFiles/flecs-client-local.dir/clean
+
+# clean rule for target.
+clean: client/CMakeFiles/flecs-client-local.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target client/CMakeFiles/flecs-client-put.dir
 
 # All Build rule for target.
 client/CMakeFiles/flecs-client-put.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/depend
 	$(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  12 13 14
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  18 19 20
 	@echo "Built target flecs-client-put"
 .PHONY : client/CMakeFiles/flecs-client-put.dir/all
 
@@ -561,7 +672,7 @@ clean: client/CMakeFiles/flecs-client-put.dir/clean
 client/CMakeFiles/flecs-client-rand-get-append.dir/all: interface/CMakeFiles/gen_rpc_interface.dir/all
 	$(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/depend
 	$(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  15 16 17
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  21 22 23
 	@echo "Built target flecs-client-rand-get-append"
 .PHONY : client/CMakeFiles/flecs-client-rand-get-append.dir/all
 
@@ -685,7 +796,7 @@ clean: agent/CMakeFiles/flecs-agent-server.dir/clean
 agent/CMakeFiles/gen_agent_interface.dir/all:
 	$(MAKE) -f agent/CMakeFiles/gen_agent_interface.dir/build.make agent/CMakeFiles/gen_agent_interface.dir/depend
 	$(MAKE) -f agent/CMakeFiles/gen_agent_interface.dir/build.make agent/CMakeFiles/gen_agent_interface.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  36
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  43
 	@echo "Built target gen_agent_interface"
 .PHONY : agent/CMakeFiles/gen_agent_interface.dir/all
 
@@ -735,7 +846,7 @@ launcher/preinstall:
 launcher/CMakeFiles/flecs-launcher.dir/all:
 	$(MAKE) -f launcher/CMakeFiles/flecs-launcher.dir/build.make launcher/CMakeFiles/flecs-launcher.dir/depend
 	$(MAKE) -f launcher/CMakeFiles/flecs-launcher.dir/build.make launcher/CMakeFiles/flecs-launcher.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  22 23
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pjawahar/flecs-rpc/build/CMakeFiles  29 30
 	@echo "Built target flecs-launcher"
 .PHONY : launcher/CMakeFiles/flecs-launcher.dir/all
 

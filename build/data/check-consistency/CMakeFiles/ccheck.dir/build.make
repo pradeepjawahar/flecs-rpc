@@ -80,6 +80,7 @@ data/check-consistency/ccheck: data/check-consistency/CMakeFiles/ccheck.dir/cche
 data/check-consistency/ccheck: /usr/lib/libboost_filesystem-mt.so
 data/check-consistency/ccheck: /usr/lib/libboost_system-mt.so
 data/check-consistency/ccheck: /usr/lib/libboost_program_options-mt.so
+data/check-consistency/ccheck: /usr/lib/libboost_thread-mt.so
 data/check-consistency/ccheck: data/check-consistency/CMakeFiles/ccheck.dir/build.make
 data/check-consistency/ccheck: data/check-consistency/CMakeFiles/ccheck.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ccheck"

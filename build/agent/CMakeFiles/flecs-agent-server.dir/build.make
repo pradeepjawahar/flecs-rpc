@@ -137,6 +137,7 @@ agent/flecs-agent-server: agent/CMakeFiles/flecs-agent-server.dir/agentI.cpp.o
 agent/flecs-agent-server: /usr/lib/libboost_filesystem-mt.so
 agent/flecs-agent-server: /usr/lib/libboost_system-mt.so
 agent/flecs-agent-server: /usr/lib/libboost_program_options-mt.so
+agent/flecs-agent-server: /usr/lib/libboost_thread-mt.so
 agent/flecs-agent-server: agent/CMakeFiles/flecs-agent-server.dir/build.make
 agent/flecs-agent-server: agent/CMakeFiles/flecs-agent-server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-agent-server"

@@ -5,7 +5,10 @@
 #include <fstream>
 
 #include <boost/filesystem.hpp>
-
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <sstream>
 #include "util.h"
 
 using namespace std;
@@ -110,7 +113,9 @@ void _create_directories(const string& dir)
 		throw runtime_error(string("create_directories. ec=") + ec.message());
 }
 
-
+void _splitfile(const char * filename, int nChunkSize, int &parts)
+{
+}
 int _random(
 		const long min,
 		const long max)

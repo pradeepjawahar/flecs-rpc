@@ -130,6 +130,7 @@ client/flecs-client-get: client/CMakeFiles/flecs-client-get.dir/client-get.cpp.o
 client/flecs-client-get: /usr/lib/libboost_filesystem-mt.so
 client/flecs-client-get: /usr/lib/libboost_system-mt.so
 client/flecs-client-get: /usr/lib/libboost_program_options-mt.so
+client/flecs-client-get: /usr/lib/libboost_thread-mt.so
 client/flecs-client-get: client/CMakeFiles/flecs-client-get.dir/build.make
 client/flecs-client-get: client/CMakeFiles/flecs-client-get.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-client-get"

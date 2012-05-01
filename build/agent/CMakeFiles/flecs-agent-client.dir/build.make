@@ -112,6 +112,7 @@ agent/flecs-agent-client: agent/CMakeFiles/flecs-agent-client.dir/client.cpp.o
 agent/flecs-agent-client: /usr/lib/libboost_filesystem-mt.so
 agent/flecs-agent-client: /usr/lib/libboost_system-mt.so
 agent/flecs-agent-client: /usr/lib/libboost_program_options-mt.so
+agent/flecs-agent-client: /usr/lib/libboost_thread-mt.so
 agent/flecs-agent-client: agent/CMakeFiles/flecs-agent-client.dir/build.make
 agent/flecs-agent-client: agent/CMakeFiles/flecs-agent-client.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-agent-client"

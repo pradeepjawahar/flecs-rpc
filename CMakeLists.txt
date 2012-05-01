@@ -9,7 +9,7 @@ SET (CMAKE_BUILD_TYPE Release)
 #SET (CMAKE_BUILD_TYPE Debug)
 
 FIND_PACKAGE(Boost
-		COMPONENTS filesystem system program_options
+		COMPONENTS filesystem system program_options thread
 		REQUIRED)
 
 ADD_SUBDIRECTORY (interface)

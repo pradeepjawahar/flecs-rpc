@@ -105,6 +105,7 @@ launcher/flecs-launcher: launcher/CMakeFiles/flecs-launcher.dir/__/common/util.c
 launcher/flecs-launcher: /usr/lib/libboost_filesystem-mt.so
 launcher/flecs-launcher: /usr/lib/libboost_system-mt.so
 launcher/flecs-launcher: /usr/lib/libboost_program_options-mt.so
+launcher/flecs-launcher: /usr/lib/libboost_thread-mt.so
 launcher/flecs-launcher: launcher/CMakeFiles/flecs-launcher.dir/build.make
 launcher/flecs-launcher: launcher/CMakeFiles/flecs-launcher.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-launcher"

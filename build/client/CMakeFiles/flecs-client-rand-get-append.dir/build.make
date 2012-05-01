@@ -130,6 +130,7 @@ client/flecs-client-rand-get-append: client/CMakeFiles/flecs-client-rand-get-app
 client/flecs-client-rand-get-append: /usr/lib/libboost_filesystem-mt.so
 client/flecs-client-rand-get-append: /usr/lib/libboost_system-mt.so
 client/flecs-client-rand-get-append: /usr/lib/libboost_program_options-mt.so
+client/flecs-client-rand-get-append: /usr/lib/libboost_thread-mt.so
 client/flecs-client-rand-get-append: client/CMakeFiles/flecs-client-rand-get-append.dir/build.make
 client/flecs-client-rand-get-append: client/CMakeFiles/flecs-client-rand-get-append.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-client-rand-get-append"

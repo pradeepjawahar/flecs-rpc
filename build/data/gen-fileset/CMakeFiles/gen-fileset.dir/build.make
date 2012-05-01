@@ -80,6 +80,7 @@ data/gen-fileset/gen-fileset: data/gen-fileset/CMakeFiles/gen-fileset.dir/gen-fi
 data/gen-fileset/gen-fileset: /usr/lib/libboost_filesystem-mt.so
 data/gen-fileset/gen-fileset: /usr/lib/libboost_system-mt.so
 data/gen-fileset/gen-fileset: /usr/lib/libboost_program_options-mt.so
+data/gen-fileset/gen-fileset: /usr/lib/libboost_thread-mt.so
 data/gen-fileset/gen-fileset: data/gen-fileset/CMakeFiles/gen-fileset.dir/build.make
 data/gen-fileset/gen-fileset: data/gen-fileset/CMakeFiles/gen-fileset.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable gen-fileset"

@@ -148,6 +148,19 @@ flecs-master/fast:
 .PHONY : flecs-master/fast
 
 #=============================================================================
+# Target rules for targets named flecs-container-rep-big-data
+
+# Build rule for target.
+flecs-container-rep-big-data: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 flecs-container-rep-big-data
+.PHONY : flecs-container-rep-big-data
+
+# fast build rule for target.
+flecs-container-rep-big-data/fast:
+	$(MAKE) -f server/CMakeFiles/flecs-container-rep-big-data.dir/build.make server/CMakeFiles/flecs-container-rep-big-data.dir/build
+.PHONY : flecs-container-rep-big-data/fast
+
+#=============================================================================
 # Target rules for targets named flecs-container-rep-no-const
 
 # Build rule for target.
@@ -213,6 +226,19 @@ flecs-server/fast:
 .PHONY : flecs-server/fast
 
 #=============================================================================
+# Target rules for targets named flecs-client-big-data
+
+# Build rule for target.
+flecs-client-big-data: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 flecs-client-big-data
+.PHONY : flecs-client-big-data
+
+# fast build rule for target.
+flecs-client-big-data/fast:
+	$(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/build
+.PHONY : flecs-client-big-data/fast
+
+#=============================================================================
 # Target rules for targets named flecs-client-get
 
 # Build rule for target.
@@ -224,6 +250,19 @@ flecs-client-get: cmake_check_build_system
 flecs-client-get/fast:
 	$(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/build
 .PHONY : flecs-client-get/fast
+
+#=============================================================================
+# Target rules for targets named flecs-client-local
+
+# Build rule for target.
+flecs-client-local: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 flecs-client-local
+.PHONY : flecs-client-local
+
+# fast build rule for target.
+flecs-client-local/fast:
+	$(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/build
+.PHONY : flecs-client-local/fast
 
 #=============================================================================
 # Target rules for targets named flecs-client-put
@@ -315,12 +354,15 @@ help:
 	@echo "... gen-fileset"
 	@echo "... ccheck"
 	@echo "... flecs-master"
+	@echo "... flecs-container-rep-big-data"
 	@echo "... flecs-container-rep-no-const"
 	@echo "... flecs-container-rep-partial"
 	@echo "... flecs-container-rep-redis"
 	@echo "... flecs-container-rep-strong-const"
 	@echo "... flecs-server"
+	@echo "... flecs-client-big-data"
 	@echo "... flecs-client-get"
+	@echo "... flecs-client-local"
 	@echo "... flecs-client-put"
 	@echo "... flecs-client-rand-get-append"
 	@echo "... flecs-agent-client"

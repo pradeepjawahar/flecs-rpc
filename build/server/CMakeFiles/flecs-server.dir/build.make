@@ -255,6 +255,7 @@ server/flecs-server: server/CMakeFiles/flecs-server.dir/globallock.cpp.o
 server/flecs-server: /usr/lib/libboost_filesystem-mt.so
 server/flecs-server: /usr/lib/libboost_system-mt.so
 server/flecs-server: /usr/lib/libboost_program_options-mt.so
+server/flecs-server: /usr/lib/libboost_thread-mt.so
 server/flecs-server: server/CMakeFiles/flecs-server.dir/build.make
 server/flecs-server: server/CMakeFiles/flecs-server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-server"

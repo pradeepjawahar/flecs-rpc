@@ -47,6 +47,15 @@ Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH=/usr/lib/libboost_system-mt.so
 //Boost system library (release)
 Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH=/usr/lib/libboost_system-mt.so
 
+//The Boost THREAD library
+Boost_THREAD_LIBRARY:FILEPATH=/usr/lib/libboost_thread-mt.so
+
+//Boost thread library (debug)
+Boost_THREAD_LIBRARY_DEBUG:FILEPATH=/usr/lib/libboost_thread-mt.so
+
+//Boost thread library (release)
+Boost_THREAD_LIBRARY_RELEASE:FILEPATH=/usr/lib/libboost_thread-mt.so
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
@@ -191,6 +200,9 @@ FleCS_BINARY_DIR:STATIC=/home/pjawahar/flecs-rpc/build
 FleCS_SOURCE_DIR:STATIC=/home/pjawahar/flecs-rpc
 
 //Dependencies for the target
+flecs-container-rep-big-data_LIB_DEPENDS:STATIC=general;hiredis;
+
+//Dependencies for the target
 flecs-container-rep-no-const_LIB_DEPENDS:STATIC=general;hiredis;
 
 //Dependencies for the target
@@ -237,6 +249,14 @@ Boost_SYSTEM_LIBRARY-ADVANCED:INTERNAL=1
 Boost_SYSTEM_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Boost_SYSTEM_LIBRARY_RELEASE
 Boost_SYSTEM_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//Whether the Boost THREAD library found
+Boost_THREAD_FOUND:INTERNAL=ON
+//ADVANCED property for variable: Boost_THREAD_LIBRARY
+Boost_THREAD_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_THREAD_LIBRARY_DEBUG
+Boost_THREAD_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_THREAD_LIBRARY_RELEASE
+Boost_THREAD_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //The version number for boost libraries
 Boost_VERSION:INTERNAL=104601
 //ADVANCED property for variable: CMAKE_AR

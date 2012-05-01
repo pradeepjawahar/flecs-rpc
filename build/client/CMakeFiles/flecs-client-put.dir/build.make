@@ -130,6 +130,7 @@ client/flecs-client-put: client/CMakeFiles/flecs-client-put.dir/client-put.cpp.o
 client/flecs-client-put: /usr/lib/libboost_filesystem-mt.so
 client/flecs-client-put: /usr/lib/libboost_system-mt.so
 client/flecs-client-put: /usr/lib/libboost_program_options-mt.so
+client/flecs-client-put: /usr/lib/libboost_thread-mt.so
 client/flecs-client-put: client/CMakeFiles/flecs-client-put.dir/build.make
 client/flecs-client-put: client/CMakeFiles/flecs-client-put.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable flecs-client-put"

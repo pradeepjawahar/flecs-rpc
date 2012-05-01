@@ -96,6 +96,20 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+client/CMakeFiles/flecs-client-big-data.dir/rule:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/flecs-client-big-data.dir/rule
+.PHONY : client/CMakeFiles/flecs-client-big-data.dir/rule
+
+# Convenience name for target.
+flecs-client-big-data: client/CMakeFiles/flecs-client-big-data.dir/rule
+.PHONY : flecs-client-big-data
+
+# fast build rule for target.
+flecs-client-big-data/fast:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/build
+.PHONY : flecs-client-big-data/fast
+
+# Convenience name for target.
 client/CMakeFiles/flecs-client-get.dir/rule:
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/flecs-client-get.dir/rule
 .PHONY : client/CMakeFiles/flecs-client-get.dir/rule
@@ -108,6 +122,20 @@ flecs-client-get: client/CMakeFiles/flecs-client-get.dir/rule
 flecs-client-get/fast:
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/build
 .PHONY : flecs-client-get/fast
+
+# Convenience name for target.
+client/CMakeFiles/flecs-client-local.dir/rule:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/flecs-client-local.dir/rule
+.PHONY : client/CMakeFiles/flecs-client-local.dir/rule
+
+# Convenience name for target.
+flecs-client-local: client/CMakeFiles/flecs-client-local.dir/rule
+.PHONY : flecs-client-local
+
+# fast build rule for target.
+flecs-client-local/fast:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/build
+.PHONY : flecs-client-local/fast
 
 # Convenience name for target.
 client/CMakeFiles/flecs-client-put.dir/rule:
@@ -142,7 +170,9 @@ __/common/util.o: __/common/util.cpp.o
 
 # target to build an object file
 __/common/util.cpp.o:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/common/util.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/common/util.cpp.o
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/common/util.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/common/util.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/common/util.cpp.o
 .PHONY : __/common/util.cpp.o
@@ -152,7 +182,9 @@ __/common/util.i: __/common/util.cpp.i
 
 # target to preprocess a source file
 __/common/util.cpp.i:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/common/util.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/common/util.cpp.i
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/common/util.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/common/util.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/common/util.cpp.i
 .PHONY : __/common/util.cpp.i
@@ -162,7 +194,9 @@ __/common/util.s: __/common/util.cpp.s
 
 # target to generate assembly for a file
 __/common/util.cpp.s:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/common/util.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/common/util.cpp.s
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/common/util.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/common/util.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/common/util.cpp.s
 .PHONY : __/common/util.cpp.s
@@ -172,7 +206,9 @@ __/interface/flecs.o: __/interface/flecs.cpp.o
 
 # target to build an object file
 __/interface/flecs.cpp.o:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/interface/flecs.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/interface/flecs.cpp.o
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/interface/flecs.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/interface/flecs.cpp.o
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/interface/flecs.cpp.o
 .PHONY : __/interface/flecs.cpp.o
@@ -182,7 +218,9 @@ __/interface/flecs.i: __/interface/flecs.cpp.i
 
 # target to preprocess a source file
 __/interface/flecs.cpp.i:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/interface/flecs.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/interface/flecs.cpp.i
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/interface/flecs.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/interface/flecs.cpp.i
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/interface/flecs.cpp.i
 .PHONY : __/interface/flecs.cpp.i
@@ -192,10 +230,36 @@ __/interface/flecs.s: __/interface/flecs.cpp.s
 
 # target to generate assembly for a file
 __/interface/flecs.cpp.s:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/__/interface/flecs.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/__/interface/flecs.cpp.s
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/__/interface/flecs.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-put.dir/build.make client/CMakeFiles/flecs-client-put.dir/__/interface/flecs.cpp.s
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-rand-get-append.dir/build.make client/CMakeFiles/flecs-client-rand-get-append.dir/__/interface/flecs.cpp.s
 .PHONY : __/interface/flecs.cpp.s
+
+client-big-data.o: client-big-data.cpp.o
+.PHONY : client-big-data.o
+
+# target to build an object file
+client-big-data.cpp.o:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/client-big-data.cpp.o
+.PHONY : client-big-data.cpp.o
+
+client-big-data.i: client-big-data.cpp.i
+.PHONY : client-big-data.i
+
+# target to preprocess a source file
+client-big-data.cpp.i:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/client-big-data.cpp.i
+.PHONY : client-big-data.cpp.i
+
+client-big-data.s: client-big-data.cpp.s
+.PHONY : client-big-data.s
+
+# target to generate assembly for a file
+client-big-data.cpp.s:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-big-data.dir/build.make client/CMakeFiles/flecs-client-big-data.dir/client-big-data.cpp.s
+.PHONY : client-big-data.cpp.s
 
 client-get.o: client-get.cpp.o
 .PHONY : client-get.o
@@ -220,6 +284,30 @@ client-get.s: client-get.cpp.s
 client-get.cpp.s:
 	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-get.dir/build.make client/CMakeFiles/flecs-client-get.dir/client-get.cpp.s
 .PHONY : client-get.cpp.s
+
+client-local.o: client-local.cpp.o
+.PHONY : client-local.o
+
+# target to build an object file
+client-local.cpp.o:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/client-local.cpp.o
+.PHONY : client-local.cpp.o
+
+client-local.i: client-local.cpp.i
+.PHONY : client-local.i
+
+# target to preprocess a source file
+client-local.cpp.i:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/client-local.cpp.i
+.PHONY : client-local.cpp.i
+
+client-local.s: client-local.cpp.s
+.PHONY : client-local.s
+
+# target to generate assembly for a file
+client-local.cpp.s:
+	cd /home/pjawahar/flecs-rpc/build && $(MAKE) -f client/CMakeFiles/flecs-client-local.dir/build.make client/CMakeFiles/flecs-client-local.dir/client-local.cpp.s
+.PHONY : client-local.cpp.s
 
 client-put.o: client-put.cpp.o
 .PHONY : client-put.o
@@ -276,7 +364,9 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... flecs-client-big-data"
 	@echo "... flecs-client-get"
+	@echo "... flecs-client-local"
 	@echo "... flecs-client-put"
 	@echo "... flecs-client-rand-get-append"
 	@echo "... rebuild_cache"
@@ -286,9 +376,15 @@ help:
 	@echo "... __/interface/flecs.o"
 	@echo "... __/interface/flecs.i"
 	@echo "... __/interface/flecs.s"
+	@echo "... client-big-data.o"
+	@echo "... client-big-data.i"
+	@echo "... client-big-data.s"
 	@echo "... client-get.o"
 	@echo "... client-get.i"
 	@echo "... client-get.s"
+	@echo "... client-local.o"
+	@echo "... client-local.i"
+	@echo "... client-local.s"
 	@echo "... client-put.o"
 	@echo "... client-put.i"
 	@echo "... client-put.s"

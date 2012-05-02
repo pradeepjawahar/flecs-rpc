@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pjawahar/flecs-rpc/common/util.cpp
+stdlib.h
+-
+libgen.h
+-
+linux/limits.h
+-
+fstream
+-
+boost/filesystem.hpp
+-
+iostream
+-
+string
+-
+string.h
+-
+sstream
+-
+util.h
+/home/pjawahar/flecs-rpc/common/util.h
+
+/home/pjawahar/flecs-rpc/common/util.h
+sys/time.h
+-
+vector
+-
+string
+-
+stdexcept
+-
+

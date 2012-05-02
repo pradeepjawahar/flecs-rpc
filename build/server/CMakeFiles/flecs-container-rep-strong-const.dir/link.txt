@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -O3 -DNDEBUG   -shared -Wl,-soname,libflecs-container-rep-strong-const.so -o libflecs-container-rep-strong-const.so CMakeFiles/flecs-container-rep-strong-const.dir/container-rep-strong-const.cpp.o -lhiredis 

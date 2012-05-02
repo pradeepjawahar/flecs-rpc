@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pjawahar/flecs-rpc/data/check-consistency/ccheck.cpp
+dirent.h
+-
+errno.h
+-
+unistd.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+iostream
+-
+fstream
+-
+vector
+-
+string
+-
+stdexcept
+-
+boost/foreach.hpp
+-
+boost/tokenizer.hpp
+-
+boost/program_options.hpp
+-
+

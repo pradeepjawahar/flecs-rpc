@@ -12,7 +12,10 @@ SET_SOURCE_FILES_PROPERTIES(
 FOREACH (CLIENTS
 		client-get
 		client-put
-		client-rand-get-append)
+		client-rand-get-append
+		client-big-data
+		client-local)
+
 
 SET (CLIENT_EXE_NAME flecs-${CLIENTS})
 

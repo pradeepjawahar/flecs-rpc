@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -O3 -DNDEBUG   -shared -Wl,-soname,libflecs-container-rep-big-data.so -o libflecs-container-rep-big-data.so CMakeFiles/flecs-container-rep-big-data.dir/container-rep-big-data.cpp.o -lhiredis 

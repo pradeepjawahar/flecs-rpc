@@ -28,7 +28,8 @@ FOREACH (CONTAINER_PLUGIN
 		rep-no-const
 		rep-strong-const
 		rep-redis
-		rep-partial)
+		rep-partial
+		rep-big-data)
 
 ADD_LIBRARY (flecs-container-${CONTAINER_PLUGIN} MODULE container-${CONTAINER_PLUGIN}.cpp)
 

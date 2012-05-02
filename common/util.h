@@ -31,6 +31,7 @@ int _random(
 		const long min,
 		const long max);
 
+void _splitfile(const char* filename, int chunksize,int& parts);
 
 class StopWatch
 {

@@ -23,21 +23,6 @@ public:
 			const std::string& objID,
 			const FleCS::ByteSeq& content,
 			const Ice::Current&);
-
-    virtual void Delete(
-			const std::string& bucketID,
-			const std::string& objID,
-			const Ice::Current&);
-
-    virtual long Size(
-			const std::string& bucketID,
-			const std::string& objID,
-			const Ice::Current&);
-
-    virtual void Process(
-			const std::string& bucketID,
-			const std::string& objID,
-			const Ice::Current&);
 };
 
 

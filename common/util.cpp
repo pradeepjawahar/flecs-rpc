@@ -91,13 +91,6 @@ void _appendfile(
 }
 
 
-void _deletefile(const char* filename)
-{
-	if (! boost::filesystem::remove(filename))
-		throw runtime_error(string("Unable to remove file ") + filename);
-}
-
-
 void _create_parent_directories(const char* filename)
 {
 	char filename_[PATH_MAX];
@@ -114,18 +107,7 @@ void _create_directories(const string& dir)
 	boost::system::error_code ec;
 	bool r = boost::filesystem::create_directories(dir, ec);
 	if (!r && ec != boost::system::errc::success)
-		throw runtime_error(string("Unable to create_directories ") + dir + ". ec=" + ec.message());
-}
-
-
-uintmax_t _file_size(const string& filename)
-{
-	uintmax_t s = boost::filesystem::file_size(filename);
-
-	if (s == static_cast<uintmax_t>(-1))
-		throw runtime_error(string("Unable to get size of ") + filename);
-
-	return s;
+		throw runtime_error(string("create_directories. ec=") + ec.message());
 }
 
 

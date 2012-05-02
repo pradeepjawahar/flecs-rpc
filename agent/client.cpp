@@ -101,14 +101,11 @@ public:
 private:
 	void _init()
 	{
-		if (povm["cluster"].as<string>() == "polymoa")
+		if (povm["cluster"].as<string>() == "polynesia")
 		{
 			_servers.push_back(ServerPrx("polynesia1.cc.gatech.edu"));
 			_servers.push_back(ServerPrx("polynesia2.cc.gatech.edu"));
 			_servers.push_back(ServerPrx("polynesia5.cc.gatech.edu"));
-			_servers.push_back(ServerPrx("samoa5.cc.gatech.edu"));
-			_servers.push_back(ServerPrx("samoa6.cc.gatech.edu"));
-			_servers.push_back(ServerPrx("samoa7.cc.gatech.edu"));
 		}
 		else if (povm["cluster"].as<string>() == "flecsx0")
 		{
@@ -140,7 +137,7 @@ private:
 
 		for (vector<ServerPrx>::iterator i = _servers.begin(); i != _servers.end(); ++ i)
 		{
-			if ((povm["cluster"].as<string>() == "polymoa"
+			if ((povm["cluster"].as<string>() == "polynesia"
 					&& i->_hostname == "polynesia1.cc.gatech.edu")
 					|| (povm["cluster"].as<string>() == "flecsx0"
 					&& i->_hostname == "flecs10"))
@@ -201,7 +198,7 @@ void parse_args(int argc, char* argv[])
 
 	po_::options_description visible("Options");
 	visible.add_options()
-		("cluster", po_::value<string>(), "e.g., polymoa or flecsx0")
+		("cluster", po_::value<string>(), "e.g., polynesia or flecsx0")
 		("client_on", po_::value<string>()->default_value("all"), "all (run client on every node) or first (only on the first node)")
 		("help", "produce help message")
 		;

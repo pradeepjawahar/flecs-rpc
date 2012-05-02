@@ -2,7 +2,10 @@
 #include "util.h"
 #include "server.h"
 #include "globallock.h"
-
+#include "hiredis/hiredis.h"
+#include <cstdlib>
+#include <ctime>
+#define REDIS_HOST flecs52 
 using namespace std;
 
 
@@ -58,7 +61,7 @@ private:
 };
 
 
-class rep_strong_const : public Container
+class rep_redis : public Container
 {
 public:
 	void Init()
@@ -77,8 +80,26 @@ public:
 		string boID = bucketID + "/" + objID;
 
 		GlobalLock lock(boID, 'R');
+		redisContext *c;
+                redisReply *reply;
 
-		_readfile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
+                struct timeval timeout = { 1, 500000 }; // 1.5 seconds
+                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                if (c->err) {
+                        _LOG("Redis Connection error"<<c->errstr);
+                        //exit(1);
+                 }
+                _LOG("Redis connected");
+
+                /* Set a key */
+                reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
+                _LOG("GET:"<< reply->str);
+		
+		_readfile(reply->str, content);
+                freeReplyObject(reply);
+
+		//_readfile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
+		_LOG("Get done");
 	}
 	
 
@@ -93,15 +114,51 @@ public:
 
 		GlobalLock lock(boID, 'W');
 
-		_writefile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
 
+		/*Get Random server to write to */
+		/*
+		*0->flecs12
+		*1->flecs22
+		*2->REDIS_HOST 
+		*/
+		int s1 = getRand();
+		int s2=s1;
+		while(s2!=s1)
+			s2=getRand();
+
+			
+		redisContext *c;
+		redisReply *reply;
+
+		struct timeval timeout = { 1, 500000 }; // 1.5 seconds
+		c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+		if (c->err) {
+		        _LOG("Connection error"<<c->errstr);
+		        //exit(1);
+   		 }
+		_LOG("Redis connected");
+			
+		/* Set a key */
+		reply = (redisReply*)redisCommand(c, "SET %s %s",(string(bucketID + ":" + objID).c_str()),(string(FleCSServer::stg_root_dir)+ "/" + bucketID + "/" + objID).c_str());
+		_LOG("SET:"<< reply->str);
+		freeReplyObject(reply);
+		
+		reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
+                _LOG("GET:"<< reply->str);
+
+		_writefile(reply->str, content);
+  		//_writefile((string(FleCSServer::stg_root_dir) + "/" + boID).c_str(), content);
+		freeReplyObject(reply);
 		// propagate update to the other servers.
 
 		map<string, FleCS::SM2SPrx*>& s = FleCSServer::peer_servers;
 
 #ifdef _SERIAL_PROCESSING
 		for (map<string, FleCS::SM2SPrx*>::const_iterator i = s.begin(); i != s.end(); ++ i)
+		{
+			string endpoint = dynamic_cast<string>(*(i->first));
 			(*(i->second))->Put(bucketID, objID, content);
+		}
 
 #else	// Parallel processing (by default)
 		vector<IceUtil::ThreadPtr> tpv;
@@ -130,8 +187,20 @@ public:
 		string boID = bucketID + "/" + objID;
 
 		GlobalLock lock(boID, 'W');
+         	redisContext *c;
+                redisReply *reply;
 
-		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
+                struct timeval timeout = { 1, 500000 }; // 1.5 seconds
+                c = redisConnectWithTimeout((char*)"REDIS_HOST ", 6379, timeout);
+                if (c->err) {
+                        _LOG("Connection error"<<c->errstr);
+                        //exit(1);
+                 }
+                _LOG("Redis connected");
+
+		reply = (redisReply*)redisCommand(c, "GET %s",(string(bucketID + ":" + objID).c_str()));
+                _LOG("GET:"<< reply->str);
+		_appendfile(reply->str, content);
 
 		// propagate update to the other servers.
 		//
@@ -189,13 +258,19 @@ public:
 
 		_appendfile((string(FleCSServer::stg_root_dir) + "/" + bucketID + "/" + objID).c_str(), content);
 	}
+	
+	int getRand()
+	{
+		srand(time(NULL));
+		return rand()%3;
+	}
 
 
 private:
 };
 
 
-extern "C" rep_strong_const* CreateInstance()
+extern "C" rep_redis* CreateInstance()
 {
-	return new rep_strong_const;
+	return new rep_redis;
 }

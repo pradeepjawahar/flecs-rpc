@@ -132,6 +132,7 @@ private:
 		_readfile(obj_name, content);
 
 		_c2s_prx->Put(povm["bucket_name"].as<string>(), obj_name, content);
+		
 	}
 
 

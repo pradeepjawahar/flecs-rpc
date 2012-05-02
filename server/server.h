@@ -26,7 +26,7 @@ public:
 
 	static FleCS::MasterPrx& GetMasterProxy();
 
-	static std::string stg_root_dir;
+	static const char* stg_root_dir;
 
 	static std::map<std::string, FleCS::SM2SPrx*> peer_servers;
 

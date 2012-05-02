@@ -1,0 +1,39 @@
+Prerequisites
+-------------
+On Ubuntu 11.10,
+$ sudo apt-get install -y make cmake g++ libboost-dev libboost-program-options-dev libboost-filesystem-dev libboost-system-dev libzeroc-ice34-dev 
+
+
+Build
+-----
+$ mkdir .build
+$ cd .build
+$ cmake ..
+$ make -j8
+
+
+Running flecs-server manually
+-----------------------------
+Add . (current directory) to LD_LIBRARY_PATH when running flecs-server for
+loading container plugins, since the server executable and container plugins
+are at the same directory.
+
+
+Automation with helper scripts
+------------------------------
+Go to the script directory. Machine names and login account need to be modified
+depending on your environment.
+$ cd misc/flecs10-20-50
+
+Updates source code on all nodes using git and rebuild.
+$ ./update-build.sh
+
+Alternatively, you can copy working copy of the current developmenet machine to
+all nodes using scp and rebuild.
+$ ./update-build-working-copy.sh
+
+Kill existing flecs services and start flecs-agent-server and flecs-launcher.
+$ ./restart-flecs-agent-launcher.sh
+
+Run flecs-agent-client to launch master, servers, and clients on a target
+cluster.

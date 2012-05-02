@@ -4,8 +4,30 @@
 
 #include "container.h"
 #include "server.h"
+#include "util.h"
 
 using namespace std;
+
+
+
+long Container::C2S_Size(
+		const std::string& bucketID,
+		const std::string& objID)
+{
+	_LOG(objID);
+
+	return _file_size(FleCSServer::stg_root_dir + "/" + bucketID + "/" +objID);
+}
+
+
+long Container::S2S_Size(
+		const std::string& bucketID,
+		const std::string& objID)
+{
+	_LOG(objID);
+
+	return _file_size(FleCSServer::stg_root_dir + "/" + bucketID + "/" +objID);
+}
 
 
 ContainerMgr& ContainerMgr::GetInstance()

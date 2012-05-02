@@ -154,7 +154,7 @@ FleCS::MasterPrx& FleCSServer::GetMasterProxy()
 }
 
 
-const char* FleCSServer::stg_root_dir = NULL;
+std::string FleCSServer::stg_root_dir;
 
 std::map<std::string, FleCS::SM2SPrx*> FleCSServer::peer_servers;
 

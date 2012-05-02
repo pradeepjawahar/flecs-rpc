@@ -1,6 +1,7 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#include <stdint.h>
 #include <sys/time.h>
 
 #include <vector>
@@ -23,6 +24,11 @@ void _writefile(
 void _appendfile(
 		const char* filename,
 		const std::vector<unsigned char>& content);
+
+void _deletefile(
+		const char* filename);
+
+uintmax_t _file_size(const std::string& filename);
 
 void _create_parent_directories(const char* filename);
 void _create_directories(const std::string& dir);

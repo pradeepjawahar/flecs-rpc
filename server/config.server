@@ -52,6 +52,6 @@ Ice.Warn.Connections=1
 Ice.MessageSizeMax=102400
 
 # Max thread pool size. Need to be equal to or bigger than the number of servers.
-Ice.ThreadPool.Server.SizeMax=3
+Ice.ThreadPool.Server.SizeMax=6
 
 Ice.ThreadPool.Server.Serialize=1

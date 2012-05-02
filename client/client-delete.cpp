@@ -1,13 +1,4 @@
-#include <fstream>
-#include <string>
-#include <vector>
-
-#include <boost/tokenizer.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/asio/ip/host_name.hpp>
-
 #include <Ice/Ice.h>
-
 
 #include <log4cxx/logger.h>
 
@@ -27,7 +18,6 @@ public:
     FleCSClient() :
 		Ice::Application(Ice::NoSignalHandling)
 	{
-		_hostname = boost::asio::ip::host_name();
 	}
 
 
@@ -37,12 +27,50 @@ public:
 		{
 			_init();
 
+			vector<string> buckets;
+			buckets.push_back("rep-strong-const");
+			buckets.push_back("rep-no-const");
+
+			string obj_name = "abc/def";
 			FleCS::ByteSeq content;
+			const char* randstr = "abcdefg1234567890";
+			content.insert(content.end(), randstr, randstr + strlen(randstr));
 
-			//_c2s_prx->Get("rep-partial", "00000001/00000001/00000001", content);
+			// put, get, delete, and get. With a single client, the last get is
+			// expected to fail.  With multiple clients, the second get could
+			// also fail, since the object may have been already deleted by
+			// another client.
+			for (vector<string>::iterator b = buckets.begin(); b != buckets.end(); ++ b)
+			{
+				_LOG("bucket: " << *b);
 
-			//_writefile("abc", content);
-			_Put("b/c");
+				_c2s_prx->Put(*b, obj_name, content);
+				_LOG(" Put succeeded.");
+
+				long size = _c2s_prx->Size(*b, obj_name);
+				_LOG(" Size: " << size);
+
+				_c2s_prx->Get(*b, obj_name, content);
+				_LOG(" Get succeeded.");
+
+				_c2s_prx->Delete(*b, obj_name);
+				_LOG(" Delete succeeded");
+
+				bool exception_thrown = false;
+
+				try
+				{
+					_c2s_prx->Get(*b, obj_name, content);
+				}
+				catch(const Ice::Exception& e)
+				{
+					exception_thrown = true;
+					_LOG(" Get failed.");
+				}
+
+				if (!exception_thrown)
+					throw runtime_error("Get succeeded?? Expected to fail!!");
+			}
 
 			return EXIT_SUCCESS;
 		}
@@ -73,27 +101,9 @@ private:
 
 		_LOG("Initialized.");
 	}
-	 void _Put(const char *objname)
-        {
-                FleCS::ByteSeq content;
 
-                for (int i = 0; i <1000 ; i ++)
-                {
-                        content.insert(content.end(), _hostname.c_str(), _hostname.c_str() + _hostname.size());
-                        content.push_back('.');
-                }
-                content.push_back('\n');
-
-                StopWatch sw;
-                //TODO@ : Don't hard code bucket and obj name
-                _c2s_prx->Put("rep-redis", "b/c", content);
-                unsigned int laps = sw.GetMicro();
-                _LOG("A " << laps << " " << content.size());
-
-        }
 
 	FleCS::C2SPrx _c2s_prx;
-	string _hostname;
 };
 
 

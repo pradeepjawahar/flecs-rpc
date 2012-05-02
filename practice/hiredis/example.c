@@ -10,7 +10,7 @@ int main(void) {
     redisReply *reply;
 
     struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-    c = redisConnectWithTimeout((char*)"localhost", 6379, timeout);
+    c = redisConnectWithTimeout((char*)"127.0.0.1", 6379, timeout);
     if (c->err) {
         printf("Connection error: %s\n", c->errstr);
         exit(1);
@@ -22,8 +22,8 @@ int main(void) {
     freeReplyObject(reply);
 
     /* Set a key */
-    reply = redisCommand(c,"GET %s", "janani");
-    printf("GET: %s\n", reply->str);
+    reply = redisCommand(c,"SET %s %s", "foo", "hello world");
+    printf("SET: %s\n", reply->str);
     freeReplyObject(reply);
 
     /* Set a key using binary safe API */
@@ -32,9 +32,9 @@ int main(void) {
     freeReplyObject(reply);
 
     /* Try a GET and two INCR */
-    /*reply = redisCommand(c,"GET ");
+    reply = redisCommand(c,"GET foo");
     printf("GET foo: %s\n", reply->str);
-    freeReplyObject(reply);*/
+    freeReplyObject(reply);
 
     reply = redisCommand(c,"INCR counter");
     printf("INCR counter: %lld\n", reply->integer);
